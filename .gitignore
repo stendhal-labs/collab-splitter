@@ -1,0 +1,8 @@
+.DS_Store
+node_modules
+build
+functions
+.svelte-kit
+.idea
+.svelte
+*.log

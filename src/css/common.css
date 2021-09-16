@@ -1,0 +1,14 @@
+hr {
+  border: 1px solid var(--black);
+}
+
+html {
+  color: var(--whitey);
+  background-color: var(--black);
+}
+
+input {
+  color: var(--black);
+  background-color: var(--whitey);
+}
+
