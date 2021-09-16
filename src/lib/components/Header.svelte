@@ -21,9 +21,8 @@
         <ul>
           <li>
             <a
-              sveltekit:prefetch
-              href="/docs"
-              aria-current={segment.startsWith("/docs") ? true : undefined}
+              rel="external noopener"
+              href="https://github.com/stendhal-labs/collab-splitter-website"
               >Docs</a
             >
           </li>
