@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import '@openzeppelin/contracts-upgradeable/proxy/ClonesUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
 
-import './CollabSplitter/CollabSplitterStorage.sol';
+import './CollabSplitterFactory/CollabSplitterFactoryStorage.sol';
 import './CollabSplitter.sol';
 
 /// @title CollabSplitterFactory
@@ -16,7 +16,10 @@ import './CollabSplitter.sol';
 ///         However, the Factory has no authority over a Splitter after it's created
 ///         which ensure that updates to the current contract
 ///         won't create any problems / exploits on existing Splitter
-contract CollabSplitterFactory is OwnableUpgradeable, CollabSplitterStorage {
+contract CollabSplitterFactory is
+    OwnableUpgradeable,
+    CollabSplitterFactoryStorage
+{
     using EnumerableSetUpgradeable for EnumerableSetUpgradeable.AddressSet;
 
     // emitted when a splitter contract is created

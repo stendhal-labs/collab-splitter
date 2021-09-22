@@ -3,9 +3,9 @@ pragma solidity ^0.8.0;
 
 import '@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol';
 
-/// @title CollabSplitterStorage
+/// @title CollabSplitterFactoryStorage
 /// @author Simon Fremaux (@dievardump)
-contract CollabSplitterStorage {
+contract CollabSplitterFactoryStorage {
     // current Splitter implementation
     address internal _splitterImplementation;
 
