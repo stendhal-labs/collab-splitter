@@ -1,0 +1,17 @@
+{
+  "name": "solseedlings",
+  "license": "MIT",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ dievardump/collab-splitter",
+    "create-local": "graph create --node http://0.0.0.0:8020/ dievardump/collab-splitter",
+    "remove-local": "graph remove --node http://0.0.0.0:8020/ dievardump/collab-splitter",
+    "deploy-local": "graph deploy --node http://0.0.0.0:8020/ --ipfs http://0.0.0.0:5001 dievardump/collab-splitter"
+  },
+  "devDependencies": {
+    "@graphprotocol/graph-ts": "0.22.0",
+    "@openzeppelin/contracts": "4.3.2",
+    "@types/node": "^16.9.6"
+  }
+}

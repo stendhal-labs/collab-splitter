@@ -1,0 +1,20 @@
+type CollabSplitter @entity {
+    id: ID!
+    # contractURI: String!
+    name: String!
+    allocationsCount: BigInt!
+    allocations: [Allocation!]! @derivedFrom(field: "splitter")
+}
+
+type Allocation @entity {
+    "<contractAddress>-<tokenId>"
+    id: ID!
+    splitter: CollabSplitter!
+    recipient: Account!
+    allocation: BigInt!
+}
+
+type Account @entity {
+    id: ID!
+    allocations: [Allocation!]! @derivedFrom(field: "recipient")
+}

@@ -1,8 +1,8 @@
 <script>
-  import Form from "$lib/components/Form.svelte";
-  import { copyToClipBoard } from "$lib/utils/clipboard";
+  import Form from '$lib/components/Form.svelte';
+  import { copyToClipBoard } from '$lib/utils/clipboard';
 
-  let splitterAddress = "";
+  let splitterAddress = '';
 
   function handleSplitter(event) {
     splitterAddress = event.detail.address;
@@ -20,10 +20,11 @@
   <div class="wrapper">
     <h1>Collaboration Splitter</h1>
     <p>
-      Collaboration Splitter allows to create a cheap contract in charge of
+      Collaboration Splitter allows to cheaply create a contract in charge of
       receiving and splitting Ethereum and ERC20 payments. It can be used to
       split earnings from artworks sales if multiple artists were involved or as
       the recipient of royalties compatible with the new <a
+        target="_blank"
         href="https://eips.ethereum.org/EIPS/eip-2981"
         >EIP-2981: NFT Royalty Standard</a
       >.
@@ -56,11 +57,17 @@
   h2 {
     @apply text-xl my-4;
   }
+
   .create {
     @apply flex flex-col items-center mt-16;
   }
   .generated {
     @apply flex md:flex-row flex-col space-x-4 mt-8;
+  }
+
+  p,
+  .create {
+    @apply max-w-screen-md mx-auto w-full;
   }
 
   a {

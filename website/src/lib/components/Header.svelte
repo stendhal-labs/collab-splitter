@@ -1,11 +1,9 @@
 <script>
-  import { page } from "$app/stores";
+  import { page } from '$app/stores';
+  import { connect, connected, signer } from '$lib/modules/wallet';
+  import { shortenAddress } from '$lib/utils/utils';
 
   $: segment = $page.path;
-
-  function connect() {
-    alert("Connect to web3");
-  }
 </script>
 
 <div class="header__container">
@@ -14,7 +12,7 @@
       <a
         sveltekit:prefetch
         href="/"
-        aria-current={segment === "/" ? true : undefined}
+        aria-current={segment === '/' ? true : undefined}
         ><b>Collab splitter</b>
       </a>
       <nav>
@@ -29,7 +27,13 @@
         </ul>
       </nav>
     </div>
-    <button type="button" class="connect" on:click={connect}>Connect</button>
+    {#if !$connected}
+      <button type="button" class="connect" on:click={connect}>Connect</button>
+    {:else}
+      {#await $signer.getAddress() then address}
+        {shortenAddress(address)}
+      {/await}
+    {/if}
   </header>
 </div>
 
@@ -63,7 +67,7 @@
   }
 
   ul [aria-current]::after {
-    content: "";
+    content: '';
     position: absolute;
     top: calc(100% + 5px);
     left: 0;

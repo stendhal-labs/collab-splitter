@@ -1,0 +1,44 @@
+lockfileVersion: 5.3
+
+specifiers:
+  '@graphprotocol/graph-ts': 0.22.0
+  '@openzeppelin/contracts': 4.3.2
+  '@types/node': ^16.9.6
+
+devDependencies:
+  '@graphprotocol/graph-ts': 0.22.0
+  '@openzeppelin/contracts': 4.3.2
+  '@types/node': 16.9.6
+
+packages:
+
+  /@graphprotocol/graph-ts/0.22.0:
+    resolution: {integrity: sha512-kJIBL73xBxj0+NJdRABukAtcrc3Mb8jt31s0tCLPe6c57rQXEf7KR9oYrFdzE1ZsJCP6j+MX+A2+sj1Pj3aJtQ==}
+    dependencies:
+      assemblyscript: 0.19.10
+    dev: true
+
+  /@openzeppelin/contracts/4.3.2:
+    resolution: {integrity: sha512-AybF1cesONZStg5kWf6ao9OlqTZuPqddvprc0ky7lrUVOjXeKpmQ2Y9FK+6ygxasb+4aic4O5pneFBfwVsRRRg==}
+    dev: true
+
+  /@types/node/16.9.6:
+    resolution: {integrity: sha512-YHUZhBOMTM3mjFkXVcK+WwAcYmyhe1wL4lfqNtzI0b3qAy7yuSetnM7QJazgE5PFmgVTNGiLOgRFfJMqW7XpSQ==}
+    dev: true
+
+  /assemblyscript/0.19.10:
+    resolution: {integrity: sha512-HavcUBXB3mBTRGJcpvaQjmnmaqKHBGREjSPNsIvnAk2f9dj78y4BkMaSSdvBQYWcDDzsHQjyUC8stICFkD1Odg==}
+    hasBin: true
+    dependencies:
+      binaryen: 101.0.0-nightly.20210723
+      long: 4.0.0
+    dev: true
+
+  /binaryen/101.0.0-nightly.20210723:
+    resolution: {integrity: sha512-eioJNqhHlkguVSbblHOtLqlhtC882SOEPKmNFZaDuz1hzQjolxZ+eu3/kaS10n3sGPONsIZsO7R9fR00UyhEUA==}
+    hasBin: true
+    dev: true
+
+  /long/4.0.0:
+    resolution: {integrity: sha512-XsP+KhQif4bjX1kbuSiySJFNAehNxgLb6hPRGJ9QsUr8ajHkuXGdrHmFUTUUXhDwVX2R5bY4JNZEwbUiMhV+MA==}
+    dev: true
