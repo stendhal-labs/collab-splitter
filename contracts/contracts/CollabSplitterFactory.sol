@@ -13,8 +13,9 @@ import './CollabSplitter.sol';
 ///         allow to split the ETH or ERC20 it received, between several addresses
 ///         This contract is upgradeable, because we might have to add functionalities
 ///         or versioning over time.
-///         However; once a Splitter is created, this contract has no authority over it,
-///         which ensure that updates won't create any problems on existing Splitter
+///         However, the Factory has no authority over a Splitter after it's created
+///         which ensure that updates to the current contract
+///         won't create any problems / exploits on existing Splitter
 contract CollabSplitterFactory is OwnableUpgradeable, CollabSplitterStorage {
     using EnumerableSetUpgradeable for EnumerableSetUpgradeable.AddressSet;
 
@@ -23,7 +24,7 @@ contract CollabSplitterFactory is OwnableUpgradeable, CollabSplitterStorage {
         address indexed splitter,
         string name,
         address[] recipients,
-        uint256[] percents
+        uint256[] amounts
     );
 
     constructor() {}
