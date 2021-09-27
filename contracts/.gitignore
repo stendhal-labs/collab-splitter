@@ -6,3 +6,5 @@ artifacts
 
 .env*
 !.env.SAMPLE
+
+deployments/localhost

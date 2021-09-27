@@ -8,7 +8,7 @@ dataSources:
     source:
       abi: CollabSplitterFactory
       startBlock: 0
-      address: "0x5a90f63267e541e42a295a85848af0a55ec2db6b"
+      address: "0xC89Ce4735882C9F0f0FE26686c53074E09B0D550"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
