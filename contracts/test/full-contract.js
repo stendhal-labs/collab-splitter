@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const { deployments, ethers } = require('hardhat');
-const sdk = require('../../sdk/index');
+const sdk = require('../../sdk');
 
 const collab = [
     { account: '0xD53ADeC981F32482cb8bbDb733791EA41DD64F74', percent: 1000 },

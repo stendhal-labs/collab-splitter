@@ -1,25 +1,25 @@
 export class Recipient {
 	_address: string;
-	_percentage: number;
+	_percent: number;
 
-	constructor(address: string, percentage: number) {
-		this._address = address;
-		this._percentage = percentage;
+	constructor(account: string, percent: number) {
+		this._address = account;
+		this._percent = percent;
 	}
 
-	get address(): string {
+	get account(): string {
 		return this._address;
 	}
 
-	set address(value: string) {
+	set account(value: string) {
 		this._address = value;
 	}
 
-	get percentage(): number {
-		return this._percentage;
+	get percent(): number {
+		return this._percent;
 	}
 
-	set percentage(value: number) {
-		this._percentage = value;
+	set percent(value: number) {
+		this._percent = value;
 	}
 }

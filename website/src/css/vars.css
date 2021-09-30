@@ -1,4 +1,9 @@
 :root {
   --black: rgba(20, 20, 20, 1);
   --whitey: rgba(245, 245, 245, 1);
+
+
+  --primary: var(--whitey);
+  --secondary: var(--black);
+
 }

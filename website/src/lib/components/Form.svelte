@@ -1,42 +1,96 @@
 <script lang="ts">
   import { Recipient } from '$lib/modules/Recipient';
-  import { connected } from '$lib/modules/wallet';
+  import { connected, getSigner } from '$lib/modules/wallet';
   import { createEventDispatcher } from 'svelte';
   import OnlyConnected from './OnlyConnected.svelte';
 
+  import sdk from '../../../../sdk/';
+  import factoryABI from '$lib/data/abis/Factory';
+
   const dispatch = createEventDispatcher();
 
-  let name;
-  let recipients: Recipient[] = [new Recipient(undefined, 0)];
+  let name = '';
+  let recipients: Recipient[] = [];
 
-  $: sum = recipients.reduce((acc, recipient) => acc + recipient.percentage, 0);
-  $: invalidRecipients = recipients.filter((r) => !isAddressValid(r.address));
-  $: recipientsWithAllocation = recipients.filter((r) => r.percentage !== 0);
+  let mustReset = false;
+
+  $: sum = recipients.reduce((acc, recipient) => acc + recipient.percent, 0);
+  $: invalidRecipients = recipients.filter((r) => !isAddressValid(r.account));
+  $: recipientsWithAllocation = recipients.filter((r) => r.percent !== 0);
 
   $: canSubmit =
     $connected &&
+    name.trim().length > 0 &&
     sum == 100 &&
     invalidRecipients.length == 0 &&
     recipientsWithAllocation.length > 1;
 
   function isAddressValid(address = '') {
     try {
-      return ethers.utils.getAddress(address.toLowerCase());
+      return ethers.utils.getAddress(address);
     } catch (e) {
       return false;
     }
   }
 
-  function onSubmit() {
-    const noAllocation = recipients.filter((r) => r.percentage == 0);
+  function initRecipients() {
+    //  recipients = [new Recipient(undefined, 0)];
+    recipients = [
+      new Recipient('0xf4274229Bee63d4A6D1Edde6919afA815F6E1a25', 10),
+      new Recipient('0xF4274229bEe63d4A6D1edDE6919aFa815f6e1a24', 90),
+    ];
+  }
+
+  async function onSubmit() {
+    const withAllocation = recipients.filter((r) => r.percent !== 0);
+    const diff = withAllocation.length - recipients.length;
+
     if (
-      !noAllocation.length ||
-      confirm('Some recipients do not have any allocation. Are you sure?')
+      diff == 0 ||
+      confirm(
+        'Some recipients do not have any allocation and will be removed. Are you sure?'
+      )
     ) {
+      // calculate tree root
+      const root = sdk.getRoot(withAllocation);
+
+      console.log(
+        import.meta.env.VITE_FACTORY_ADDRESS,
+        factoryABI,
+        await getSigner()
+      );
+      // create contract
+      const contract = new ethers.Contract(
+        import.meta.env.VITE_FACTORY_ADDRESS,
+        factoryABI,
+        await getSigner()
+      );
+
+      // create collab splitter
+      const events = await contract
+        .createSplitter(
+          name,
+          root,
+          withAllocation.map((a) => a.account),
+          withAllocation.map((a) => a.percent)
+        )
+        .then((tx) => tx.wait())
+        .then((receipt) => {
+          console.log(receipt);
+          return receipt;
+        })
+        .then((receipt) => receipt.events);
+
+      mustReset = true;
       dispatch('splitter', {
-        address: '0xC17221a1Ba66BeB0c0721d70bD96cd0f0281F56A',
+        address: events[0].args[0],
       });
     }
+  }
+
+  function onReset() {
+    initRecipients();
+    mustReset = false;
   }
 
   function addLine() {
@@ -48,6 +102,8 @@
     recipients.splice(index, 1);
     recipients = [...recipients];
   }
+
+  initRecipients();
 </script>
 
 <form on:submit|preventDefault>
@@ -81,19 +137,19 @@
                 id="recipient-{index}"
                 placeholder="0x123456789"
                 title="Must be an ETH address"
-                bind:value={recipient.address}
+                bind:value={recipient.account}
               />
             </td>
             <td class="form__recipients__row__allocation">
               <input
                 type="number"
-                name="Percentage"
+                name="Percent"
                 id="split-{index}"
                 min="0"
                 max="100"
                 step="0.01"
                 placeholder="3.14"
-                bind:value={recipient.percentage}
+                bind:value={recipient.percent}
               /> %
             </td>
             <td>
@@ -128,9 +184,13 @@
   </p>
 
   <OnlyConnected>
-    <button on:click={onSubmit} disabled={!canSubmit} class="form__create"
-      >Create</button
-    >
+    {#if !mustReset}
+      <button on:click={onSubmit} disabled={!canSubmit} class="form__create"
+        >Create</button
+      >
+    {:else}
+      <button on:click={onReset} class="form__create">Reset</button>
+    {/if}
   </OnlyConnected>
 </form>
 
@@ -200,6 +260,6 @@
 
   input {
     @apply px-1 py-1;
-    color: var(--black);
+    color: var(--secondary);
   }
 </style>

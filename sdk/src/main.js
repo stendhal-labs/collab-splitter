@@ -1,4 +1,4 @@
-const ethers = require('ethers');
+import * as ethers from 'ethers';
 
 function getNode(account, percent) {
 	return ethers.utils.keccak256(
@@ -64,6 +64,7 @@ function toPairs(arr) {
 }
 
 function hashPair(a, b = a) {
+	let temp;
 	// for some reason, MerkleRoot.verify() always put the lowest value left
 	if (ethers.BigNumber.from(a).gt(ethers.BigNumber.from(b))) {
 			temp = a;
@@ -76,10 +77,8 @@ function hashPair(a, b = a) {
 	);
 };
 
-module.exports = {
+export default {
 	getNode,
 	getProof,
 	getRoot,
-	merkleProof,
-	merkleProofRoot
 }
