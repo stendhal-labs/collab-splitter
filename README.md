@@ -3,7 +3,7 @@
 Collaboration Splitter allows to create a cheap contract in charge of
 receiving and splitting Ethereum and ERC20 payments. It can be used to
 split earnings from artworks sales if multiple artists were involved or as
-the recipient of royalties compatible with the new [https://eips.ethereum.org/EIPS/eip-2981](EIP-2981: NFT Royalty Standard)
+the recipient of royalties compatible with the new [EIP-2981: NFT Royalty Standard](https://eips.ethereum.org/EIPS/eip-2981)
 
 The project has several components:
 
