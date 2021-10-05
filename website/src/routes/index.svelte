@@ -45,17 +45,8 @@
 </main>
 
 <style lang="postcss">
-  main {
-    @apply container mx-auto px-2;
-  }
   .wrapper {
     @apply flex flex-col justify-center;
-  }
-  h1 {
-    @apply text-center text-2xl my-8;
-  }
-  h2 {
-    @apply text-xl my-4;
   }
 
   .create {
