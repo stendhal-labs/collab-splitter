@@ -2,7 +2,7 @@ const { parseEther } = require('ethers/lib/utils');
 const hre = require('hardhat');
 // scripts/create-box.js
 const { deployments, ethers } = require('hardhat');
-const sdk = require('../../sdk/index');
+const sdk = require('../../sdk/dist/collab-splitter.umd.js');
 
 async function main() {
     const { deployer } = await getNamedAccounts();
