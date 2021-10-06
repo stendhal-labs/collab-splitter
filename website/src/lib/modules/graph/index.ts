@@ -1,3 +1,5 @@
+import { variables } from '../variables';
+
 export async function getCollabsByAccount(fetch, address: string) {
 	const res = await req(
 		fetch,
@@ -44,7 +46,7 @@ export async function getCollab(fetch, id: string) {
 }
 
 export default async function req(fetch, query) {
-	const res = await fetch(import.meta.env.VITE_THEGRAPH_URL, {
+	const res = await fetch(variables.THEGRAPH_URL, {
 		method: 'POST',
 		body: JSON.stringify({ query })
 	});

@@ -1,12 +1,12 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+	import sdk from '../../../../sdk/';
+	import { variables } from '$lib/modules/variables';
 	import { Recipient } from '$lib/modules/Recipient';
 	import { connected, getSigner } from '$lib/modules/wallet';
-	import { createEventDispatcher } from 'svelte';
-	import OnlyConnected from './OnlyConnected.svelte';
-
-	import sdk from '../../../../sdk/';
-	import factoryABI from '$lib/data/abis/factory';
 	import { convertPercentageToSolidityUint } from '$lib/utils/utils';
+	import factoryABI from '$lib/data/abis/factory';
+	import OnlyConnected from './OnlyConnected.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -58,10 +58,10 @@
 			// calculate tree root
 			const root = sdk.getRoot(withAllocation);
 
-			console.log(import.meta.env.VITE_FACTORY_ADDRESS, factoryABI, await getSigner());
+			console.log(variables.FACTORY_ADDRESS, factoryABI, await getSigner());
 			// create contract
 			const contract = new ethers.Contract(
-				import.meta.env.VITE_FACTORY_ADDRESS,
+				variables.FACTORY_ADDRESS,
 				factoryABI,
 				await getSigner()
 			);

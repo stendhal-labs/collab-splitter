@@ -15,6 +15,7 @@
 
 <script lang="ts">
 	import sdk from '../../../../sdk/';
+	import { variables } from '$lib/modules/variables';
 	import { account, getSigner, provider } from '$lib/modules/wallet';
 	import { convertBigIntToPercentage } from '$lib/utils/utils';
 
@@ -157,7 +158,7 @@
 		</OnlyConnected>
 
 		<h2>Contract:</h2>
-		<a href="{import.meta.env.VITE_EXPLORER_URL}/address/{collab.id}">{collab.id || ''}</a>
+		<a href="{variables.EXPLORER_URL}/address/{collab.id}">{collab.id || ''}</a>
 
 		<h2>Allocations (<b>{collab.allocationsCount}</b>):</h2>
 
