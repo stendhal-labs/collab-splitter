@@ -1,76 +1,68 @@
 <script>
-  import Form from '$lib/components/Form.svelte';
-  import { copyToClipBoard } from '$lib/utils/clipboard';
-
-  let splitterAddress = '';
-
-  function handleSplitter(event) {
-    splitterAddress = event.detail.address;
-  }
-
-  function copySplitterAddress() {
-    copyToClipBoard(splitterAddress);
-    alert(
-      `Copied collaboration splitter smartcontract address: ${splitterAddress} !`
-    );
-  }
+	import OnlyConnected from '$lib/components/OnlyConnected.svelte';
+	import { convertBigIntToPercentage } from '$lib/utils/utils';
+	import { getCollabsByAccount } from '$lib/modules/graph';
+	import { getAccount } from '$lib/modules/wallet';
 </script>
 
 <main>
-  <div class="wrapper">
-    <h1>Collaboration Splitter</h1>
-    <p>
-      Collaboration Splitter allows to cheaply create a contract in charge of
-      receiving and splitting Ethereum and ERC20 payments. It can be used to
-      split earnings from artworks sales if multiple artists were involved or as
-      the recipient of royalties compatible with the new <a
-        target="_blank"
-        href="https://eips.ethereum.org/EIPS/eip-2981"
-        >EIP-2981: NFT Royalty Standard</a
-      >.
-    </p>
+	<div class="wrapper">
+		<h1>Dashboard</h1>
 
-    <div class="create">
-      <h2>Create your collaboration splitter:</h2>
-      <Form on:splitter={handleSplitter} />
-      {#if splitterAddress}
-        <div class="generated">
-          <p>Generated address:</p>
-          <p><b>{splitterAddress}</b></p>
-        </div>
-        <a on:click={copySplitterAddress} href="/">Copy</a>
-      {/if}
-    </div>
-  </div>
+		<OnlyConnected>
+			{#await getCollabsByAccount(fetch, getAccount()) then collabs}
+				{#if collabs.length > 0}
+					<table>
+						<thead>
+							<tr>
+								<th>Splitter Name</th>
+								<th>My Percentage</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each collabs as collab}
+								<tr>
+									<td>{collab.splitter.name}</td>
+									<td>{convertBigIntToPercentage(collab.allocation)}%</td>
+
+									<td class="actions"><a href="/collab/{collab.splitter.id}">See details</a></td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				{:else}
+					No collaboration yet !
+				{/if}
+			{/await}
+		</OnlyConnected>
+	</div>
 </main>
 
 <style lang="postcss">
-  main {
-    @apply container mx-auto px-2;
-  }
-  .wrapper {
-    @apply flex flex-col justify-center;
-  }
-  h1 {
-    @apply text-center text-2xl my-8;
-  }
-  h2 {
-    @apply text-xl my-4;
-  }
+	main {
+		@apply container mx-auto px-2;
+	}
+	.wrapper {
+		@apply flex flex-col justify-center;
+	}
+	h1 {
+		@apply text-center text-2xl my-8;
+	}
+	h2 {
+		@apply text-xl my-4;
+	}
 
-  .create {
-    @apply flex flex-col items-center mt-16;
-  }
-  .generated {
-    @apply flex md:flex-row flex-col space-x-4 mt-8;
-  }
+	table {
+		@apply text-center;
+	}
 
-  p,
-  .create {
-    @apply max-w-screen-md mx-auto w-full;
-  }
+	.actions {
+		@apply py-2;
+	}
 
-  a {
-    text-decoration: underline;
-  }
+	table a {
+		@apply bg-blue-600 rounded px-2 py-2 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50 font-bold;
+		text-decoration: none;
+	}
 </style>

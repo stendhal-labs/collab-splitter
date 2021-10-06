@@ -1,5 +1,5 @@
 {
-  "name": "solseedlings",
+  "name": "collab-splitter-graph",
   "license": "MIT",
   "scripts": {
     "codegen": "graph codegen",
