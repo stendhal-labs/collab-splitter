@@ -3,9 +3,9 @@ export function shortenAddress(addr: string): string {
 }
 
 export function convertBigIntToPercentage(bigint: number): number {
-	return bigint * 10e-3;
+	return bigint * 1e-2;
 }
 
 export function convertPercentageToSolidityUint(percentage: number): number {
-	return Math.floor(percentage * 10e2);
+	return Math.floor(percentage * 1e2);
 }

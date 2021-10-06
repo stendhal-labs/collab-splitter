@@ -22,10 +22,12 @@
 						</thead>
 						<tbody>
 							{#each collabs as collab}
-								<td>{collab.splitter.name}</td>
-								<td>{convertBigIntToPercentage(collab.allocation)}%</td>
+								<tr>
+									<td>{collab.splitter.name}</td>
+									<td>{convertBigIntToPercentage(collab.allocation)}%</td>
 
-								<td><a href="/collab/{collab.splitter.id}">See details </a></td>
+									<td class="actions"><a href="/collab/{collab.splitter.id}">See details</a></td>
+								</tr>
 							{/each}
 						</tbody>
 					</table>
@@ -53,6 +55,10 @@
 
 	table {
 		@apply text-center;
+	}
+
+	.actions {
+		@apply py-2;
 	}
 
 	table a {
