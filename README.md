@@ -5,11 +5,14 @@ receiving and splitting Ethereum and ERC20 payments. It can be used to
 split earnings from artworks sales if multiple artists were involved or as
 the recipient of royalties compatible with the new [EIP-2981: NFT Royalty Standard](https://eips.ethereum.org/EIPS/eip-2981)
 
+Available on [https://purple-disk-1468.on.fleek.co/](https://purple-disk-1468.on.fleek.co/)
+
 The project has several components:
 
-- **Smartcontracts** ([`contracts/`](contracts/) folder)
-- **SDK** ([`sdk/`](sdk/) folder)
-- **Website** ([`website/`](website/) folder) available at [https://purple-disk-1468.on.fleek.co/](https://purple-disk-1468.on.fleek.co/)
+- **Smartcontracts** (in [`contracts/`](contracts/))
+- **The Graph** (in [`graph/`](graph/))
+- **SDK** (in [`sdk/`](sdk/))
+- **Website** (in [`website/`](website/))
 
 ## Overview
 
