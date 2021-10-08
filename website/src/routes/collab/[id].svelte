@@ -28,11 +28,15 @@
 
 	$: myAllocation = collab?.allocations.find((a) => $account === a.recipient.id);
 
+	const recipients = collab.allocations.map((a) => new Recipient(a.recipient.id, a.allocation));
+
 	let contractBalance;
 	let accountClaimable;
 	let alreadyClaimed;
 	let totalReceived;
 	let erc20Data;
+
+	let ethToClaim;
 	$: {
 		if ($account) {
 			updateDataFromContract();
@@ -48,6 +52,11 @@
 		// erc20Data = await contract.erc20Data('XXXX');
 
 		accountClaimable = totalReceived.mul(myAllocation.allocation).div(10e3).sub(alreadyClaimed);
+
+		ethToClaim = await contract.getBatchClaimableETH(
+			recipients.map((r) => r.account),
+			recipients.map((r) => r.percent)
+		);
 	}
 
 	async function onClaim() {
@@ -116,11 +125,13 @@
 			<div class="actions">
 				{#if myAllocation}
 					<div class="actions__eth">
-						<button on:click={onClaim} disabled={accountClaimable !== 0}
+						<button on:click={onClaim} disabled={accountClaimable && accountClaimable.lte(0)}
 							>Claim {accountClaimable ? ethers.utils.formatEther(accountClaimable) : ''} ETH</button
 						>
 
-						<button on:click={onClaimForAll} disabled>Claim ETH for all</button>
+						<button on:click={onClaimForAll} disabled={contractBalance && contractBalance.lte(0)}
+							>Claim ETH for all</button
+						>
 					</div>
 
 					<div class="actions__erc20">
@@ -168,25 +179,20 @@
 					<tr>
 						<th>Address</th>
 						<th>Percentage</th>
+						{#if ethToClaim}
+							<th>ETH to claim</th>
+						{/if}
 					</tr>
 				</thead>
 				<tbody>
-					{#each collab.allocations as allocation}
-						<tr>
-							{#if allocation.recipient.id === $account}
-								<td>
-									<b>{allocation.recipient.id}</b>
-								</td>
-								<td class="allocation__percentage"
-									><b>{convertBigIntToPercentage(allocation.allocation)}%</b>
-								</td>
-							{:else}
-								<td>
-									{allocation.recipient.id}
-								</td>
-								<td class="allocation__percentage"
-									>{convertBigIntToPercentage(allocation.allocation)}%</td
-								>
+					{#each collab.allocations as allocation, index}
+						<tr class:tr--account={allocation.recipient.id === $account}>
+							<td>
+								{allocation.recipient.id}
+							</td>
+							<td class="td--right">{convertBigIntToPercentage(allocation.allocation)}%</td>
+							{#if ethToClaim}
+								<td class="td--right">{ethers.utils.formatEther(ethToClaim[index])}</td>
 							{/if}
 						</tr>
 					{/each}
@@ -221,7 +227,11 @@
 		@apply px-2 py-3 text-justify;
 	}
 
-	.allocation__percentage {
+	.tr--account {
+		@apply font-bold;
+	}
+
+	.td--right {
 		@apply text-right;
 	}
 </style>

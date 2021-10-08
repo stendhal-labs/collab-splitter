@@ -6,10 +6,10 @@
 
 	function handleSplitter(event) {
 		splitterAddress = event.detail.address;
+		copyToClipBoard(splitterAddress);
 		alert(
 			`Collaboration splitter contract successfully created 🤖 !!!\nThank you for using collab splitter.\n\n${splitterAddress}\n(copied to clipboard)`
 		);
-		copyToClipBoard(splitterAddress);
 	}
 
 	function copySplitterAddress() {
