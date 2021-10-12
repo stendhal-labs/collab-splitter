@@ -23,6 +23,10 @@ The project has several components:
 
 Use the SDK or create your contract directly [on the website](https://purple-disk-1468.on.fleek.co/)
 
+
+![Use cases](doc/collab-splitter-use-cases.png)
+
+
 ### Create a collaboration splitter
 
 In order to create a splitter contract you will need:
@@ -33,7 +37,7 @@ In order to create a splitter contract you will need:
 
 Fill out the form, click on the 'Create' button and once your transaction is confirmed and the contract deployed, you will get the address to use for your NFT creations.
 
-### See a collaboration
+### See a collaboration / get info
 
 On this page you can all the information about a deployed collab splitter.
 
