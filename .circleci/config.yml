@@ -1,0 +1,22 @@
+version: 2.1
+
+executors:
+  contracts:
+    docker:
+      - image: cimg/node:lts
+      
+jobs:
+  unit-test:
+    environment:
+      ENABLE_GAS_REPORT: 'true'
+    executor: contracts
+    steps:
+      - checkout
+      - run: |
+          cd contracts
+          npm install
+          npm test
+workflows:
+  contracts:
+    jobs:
+      - unit-test
