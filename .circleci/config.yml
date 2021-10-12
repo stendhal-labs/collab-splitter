@@ -6,17 +6,25 @@ executors:
       - image: cimg/node:lts
       
 jobs:
-  unit-test:
+  build-and-test:
     environment:
       ENABLE_GAS_REPORT: 'true'
     executor: contracts
     steps:
       - checkout
-      - run: |
-          cd contracts
-          npm install
-          npm test
+      - run:
+          name: Build SDK
+          command: |
+            cd sdk
+            npm install
+            npm run build
+      - run:
+          name: Test sol contracts
+          command: |
+            cd contracts
+            npm install
+            npm test
 workflows:
   contracts:
     jobs:
-      - unit-test
+      - build-and-test
