@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  codecov: codecov/codecov@3.1.1
+
 executors:
   contracts:
     docker:
@@ -24,6 +27,8 @@ jobs:
             cd contracts
             npm install
             npm test
+      - codecov/upload:
+          file: coverage/lcov.info
 workflows:
   contracts:
     jobs:
