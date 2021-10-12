@@ -10,3 +10,4 @@ artifacts
 deployments/localhost
 
 coverage
+coverage.json

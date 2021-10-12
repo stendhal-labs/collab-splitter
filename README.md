@@ -1,3 +1,8 @@
+![Discord](https://img.shields.io/discord/778527994451853333)
+[![CircleCI](https://circleci.com/gh/stendhal-labs/collab-splitter/tree/main.svg?style=svg)](https://circleci.com/gh/stendhal-labs/collab-splitter/tree/main)
+[![codecov](https://codecov.io/gh/stendhal-labs/collab-splitter/branch/main/graph/badge.svg)](https://codecov.io/gh/stendhal-labs/collab-splitter)
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/stendhal-labs/collab-splitter/blob/main/LICENSE)
+
 # Collab splitter
 
 Collaboration Splitter allows to create a cheap contract in charge of

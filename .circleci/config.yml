@@ -1,22 +1,53 @@
 version: 2.1
 
+orbs:
+  codecov: codecov/codecov@3.1.1
+
 executors:
   contracts:
     docker:
       - image: cimg/node:lts
       
 jobs:
-  unit-test:
+  build-and-test:
     environment:
       ENABLE_GAS_REPORT: 'true'
     executor: contracts
     steps:
       - checkout
-      - run: |
-          cd contracts
-          npm install
-          npm test
+      - restore_cache:
+          keys:
+            - v1-sdk-deps-{{ checksum "sdk/package-lock.json" }}
+            - v1-sdk-deps-
+      - restore_cache:
+          keys:
+            - v1-contracts-deps-{{ checksum "contracts/package-lock.json" }}
+            - v1-contracts-deps-
+      - run:
+          name: Build SDK
+          command: |
+            cd sdk
+            npm install
+            npm run build
+      - run:
+          name: Test sol contracts
+          command: |
+            cd contracts
+            npm install
+            npm run coverage
+      - save_cache:
+          key: v1-sdk-deps-{{ checksum "sdk/package-lock.json" }}
+          paths:
+            - sdk/node_modules
+      - save_cache:
+          key: v1-contracts-deps-{{ checksum "contracts/package-lock.json" }}
+          paths:
+            - contracts/node_modules
+      - store_test_results:
+          path: ./contracts/coverage.json
+      - codecov/upload:
+          file: './contracts/coverage.json'
 workflows:
   contracts:
     jobs:
-      - unit-test
+      - build-and-test
