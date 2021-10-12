@@ -1,20 +1,8 @@
-# create-svelte
+# Collab-splitter website
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte);
+A convenient website to interact with the smart contract (Factory or created collab splitter) & see indexed info from TheGraph.
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm init svelte@next
-
-# create a new project in my-app
-npm init svelte@next my-app
-```
-
-> Note: the `@next` is temporary
+Built with [SvelteKit](https://kit.svelte.dev/) using [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte)
 
 ## Developing
 

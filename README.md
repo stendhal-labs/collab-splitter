@@ -14,19 +14,44 @@ The project has several components:
 - **SDK** (in [`sdk/`](sdk/))
 - **Website** (in [`website/`](website/))
 
-## Overview
-
-### Installation
-
-Work in Progress
-
-### Usage
+## Usage
 
 Use the SDK or create your contract directly [on the website](https://purple-disk-1468.on.fleek.co/)
 
+### Create a collaboration splitter
+
+In order to create a splitter contract you will need:
+
+- An Ethereum wallet with some ethers (only needed by the splitter creator)
+- The list of recipients and their allocations e.g. 13.37%
+- A name for your collaboration
+
+Fill out the form, click on the 'Create' button and once your transaction is confirmed and the contract deployed, you will get the address to use for your NFT creations.
+
+### See a collaboration
+
+On this page you can all the information about a deployed collab splitter.
+
+If you connect your wallet, you will be able to see if you can claim ETH or ERC20.
+
+https://purple-disk-1468.on.fleek.co/collab/0x
+
+### Claim
+
+You can claim **ETH** or the listed **ERC20** from incoming transactions.
+
+You can also claim **individually** or **for all** the contract recipients.
+
+## Installation
+
+Simply run `npm install`
+
+This will install all the necessary `node_modules`, to run each component individually please see their respective `README.md` files.
+
 ## Contributing
 
-Collab splitter exists thanks to its contributors. There are many ways you can participate and help build high quality software. Check out the [contribution guide](CONTRIBUTING.md/)!
+Contributions are always welcome! Feel free to open any issue or send a pull request.
+Check out the [contribution guide](CONTRIBUTING.md/) to learn about how to set up !
 
 ## License
 

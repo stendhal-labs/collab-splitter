@@ -1,0 +1,24 @@
+{
+    "name": "collab-splitter",
+    "version": "0.0.1",
+    "description": "Collaboration Splitter allows to create a cheap contract in charge of receiving and splitting Ethereum and ERC20 payments e.g. a NFT made by several artists.",
+    "homepage": "https://github.com/stendhal-labs/collab-splitter",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/stendhal-labs/collab-splitter.git"
+    },
+    "bugs": {
+        "url": "https://github.com/stendhal-labs/collab-splitter/issues"
+    },
+    "keywords": [
+        "ethereum",
+        "smartcontract",
+        "collaboration",
+        "splitter",
+        "eip-2981"
+    ],
+    "license": "MIT",
+    "scripts": {
+        "postinstall": "(cd sdk && npm install); (cd website && npm install); (cd contracts && npm install)"
+    }
+}

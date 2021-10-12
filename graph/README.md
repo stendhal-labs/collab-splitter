@@ -1,7 +1,6 @@
-This is the repository to create a Subgraph for __*Collab Splitter*__
+This is the repository to create a Subgraph for **_Collab Splitter_** using [The Graph](https://thegraph.com/).
 
-
-# installation
+# Installation
 
 After cloning this repository, install ganache-cli
 
@@ -13,13 +12,13 @@ Then you will need to [start](#start) the the chain, [create and deploy](#create
 
 The graph will now listen to the right contract events
 
-# Start
+## Start
 
 run `./start.sh` to run the ganache cli and the graph node
 
 The chain data will be stored in `./ganache-db` in order to be able to stop and restart at the same state
 
-# Create and deploy the graph
+## Create and deploy the graph
 
 ```
 cd splitter
@@ -27,17 +26,7 @@ npm run create-local
 npm run deploy-local
 ```
 
-# Deploy to a network
-
-This repository contains different branches for each networks:
-
-- localhost
-- rinkeby
-- mainnet
-
-The idea is to keep the main branch, and always rebase the other branch on it, and just update the contracts addresses on those branches
-
-# Setup
+# Manual setup (non-recommended)
 
 ## Graph-node
 
@@ -52,7 +41,7 @@ cd graph-node/docker
 ./setup.sh
 ```
 
-# Running the app
+## Running the app
 
 I do both next actions in separate terminals:
 
@@ -86,7 +75,7 @@ npm run create-local
 npm run deploy-local
 ```
 
-# Deploying the app
+## Deploying the app
 
 In order to deploy the app, we will need:
 
@@ -95,7 +84,6 @@ In order to deploy the app, we will need:
 2 - to set the same name in the deploying scripts in `package.json`
 
 3 - to set the right contracts' `address`, `startBlock` and `network` in `./splitter/subgraph.yaml`
-
 
 We can then run:
 
