@@ -1,21 +1,33 @@
 {
-  "name": "genuinehumann-contract",
+  "name": "collabsplitter-contracts",
   "version": "0.0.1",
-  "description": "Genuine Human contracts",
-  "main": "index.js",
+  "description": "Smart contract for the Collaboration Splitter Factory",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "hardhat compile",
+    "coverage": "env COVERAGE=true hardhat coverage",
+    "lint": "npm run lint:js && npm run lint:sol",
+    "lint:fix": "npm run lint:js:fix && npm run lint:sol:fix",
+    "lint:js": "eslint --ignore-path .gitignore .",
+    "lint:js:fix": "eslint --ignore-path .gitignore . --fix",
+    "lint:sol": "solhint 'contracts/**/*.sol' && prettier -c 'contracts/**/*.sol'",
+    "lint:sol:fix": "prettier --write \"contracts/**/*.sol\"",
+    "clean": "hardhat clean && rimraf build contracts/build",
+    "prepare": "npm run clean && env COMPILE_MODE=production npm run compile",
+    "test": "hardhat test",
+    "gas-report": "env ENABLE_GAS_REPORT=true npm run test"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-etherscan": "^2.1.2",
+    "@nomiclabs/hardhat-solhint": "^2.0.0",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "@openzeppelin/contracts": "^4.2.0",
     "@openzeppelin/contracts-upgradeable": "^4.1.0",
     "chai": "^4.3.4",
     "dotenv": "^10.0.0",
+    "eslint": "^6.5.1",
     "ethereum-waffle": "^3.3.0",
     "ethers": "^5.3.1",
     "hardhat": "^2.3.0",
@@ -23,6 +35,8 @@
     "hardhat-deploy-ethers": "*",
     "hardhat-gas-reporter": "^1.0.4",
     "hardhat-tracer": "*",
-    "minimist": "^1.2.5"
+    "minimist": "^1.2.5",
+    "solhint": "^3.3.6",
+    "solidity-coverage": "^0.7.11"
   }
 }

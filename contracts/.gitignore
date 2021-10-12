@@ -8,3 +8,5 @@ artifacts
 !.env.SAMPLE
 
 deployments/localhost
+
+coverage

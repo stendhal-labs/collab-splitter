@@ -4,7 +4,9 @@ require('hardhat-deploy');
 require('hardhat-deploy-ethers');
 require('hardhat-tracer');
 require('@nomiclabs/hardhat-etherscan');
-require("hardhat-gas-reporter");
+require('hardhat-gas-reporter');
+require('solidity-coverage');
+require('@nomiclabs/hardhat-solhint');
 const dotenv = require('dotenv');
 const minimist = require('minimist');
 
@@ -68,7 +70,7 @@ module.exports = {
         apiKey: process.env.ETHERSCAN_API_KEY,
     },
     gasReporter: {
-        enabled: (process.env.REPORT_GAS) ? true : false,
-        gasPrice: 21
-    }
+        enabled: process.env.ENABLE_GAS_REPORT ? true : false,
+        gasPrice: 21,
+    },
 };
