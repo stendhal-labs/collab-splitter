@@ -34,7 +34,7 @@ jobs:
           command: |
             cd contracts
             npm install
-            npm test
+            npm run coverage
       - save_cache:
           key: v1-sdk-deps-{{ checksum "sdk/package-lock.json" }}
           paths:
