@@ -15,6 +15,14 @@ jobs:
     executor: contracts
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - v1-sdk-deps-{{ checksum "sdk/package-lock.json" }}
+            - v1-sdk-deps-
+      - restore_cache:
+          keys:
+            - v1-contracts-deps-{{ checksum "contracts/package-lock.json" }}
+            - v1-contracts-deps-
       - run:
           name: Build SDK
           command: |
@@ -27,6 +35,16 @@ jobs:
             cd contracts
             npm install
             npm test
+      - save_cache:
+          key: v1-sdk-deps-{{ checksum "sdk/package-lock.json" }}
+          paths:
+            - sdk/node_modules
+      - save_cache:
+          key: v1-contracts-deps-{{ checksum "contracts/package-lock.json" }}
+          paths:
+            - contracts/node_modules
+      - store_artifacts: 
+          path: ./coverage/lcov.info
       - codecov/upload:
           file: './coverage/lcov.info'
 workflows:
