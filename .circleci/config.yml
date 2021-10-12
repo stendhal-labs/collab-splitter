@@ -44,9 +44,9 @@ jobs:
           paths:
             - contracts/node_modules
       - store_test_results:
-          path: ./contracts/coverage/ 
+          path: ./contracts/coverage.json
       - codecov/upload:
-          file: './contracts/coverage/lcov.info'
+          file: './contracts/coverage.json'
 workflows:
   contracts:
     jobs:
