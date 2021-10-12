@@ -43,10 +43,10 @@ jobs:
           key: v1-contracts-deps-{{ checksum "contracts/package-lock.json" }}
           paths:
             - contracts/node_modules
-      - store_artifacts: 
-          path: ./coverage/lcov.info
+      - store_test_results:
+          path: ./contracts/coverage/ 
       - codecov/upload:
-          file: './coverage/lcov.info'
+          file: './contracts/coverage/lcov.info'
 workflows:
   contracts:
     jobs:
