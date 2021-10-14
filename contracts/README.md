@@ -1,6 +1,6 @@
 # Collaboration splitter smarcontracts
 
-Smartcontracts for collaboration splitters using Solidity `0.8.0` and [Hardhat](https://hardhat.org/)
+Smartcontracts for collaboration splitters using Solidity `0.8.9` and [Hardhat](https://hardhat.org/)
 
 The most important files are :
 

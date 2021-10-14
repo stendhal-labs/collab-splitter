@@ -94,7 +94,7 @@ describe('CollabSplitter', () => {
             collabAccount.account,
             collabAccount.percent,
             sdk.getProof(collab, accountIndex),
-            erc20Contract.address,
+            [erc20Contract.address],
         );
 
         expect(await erc20Mock.balanceOf(collabAccount.account)).to.be.equal(
