@@ -19,6 +19,7 @@
     ],
     "license": "MIT",
     "scripts": {
-        "postinstall": "(cd sdk && npm install); (cd website && npm install); (cd contracts && npm install)"
+        "install:all": "(cd sdk && npm install); (cd website && npm install); (cd contracts && npm install)",
+        "install:all:pnpm": "(cd sdk && pnpm install); (cd website && pnpm install); (cd contracts && pnpm install)"
     }
 }

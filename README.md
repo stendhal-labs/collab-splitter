@@ -23,9 +23,7 @@ The project has several components:
 
 Use the SDK or create your contract directly [on the website](https://purple-disk-1468.on.fleek.co/)
 
-
 ![Use cases](doc/collab-splitter-use-cases.png)
-
 
 ### Create a collaboration splitter
 
@@ -53,7 +51,7 @@ You can also claim **individually** or **for all** the contract recipients.
 
 ## Installation
 
-Simply run `npm install`
+Simply run `npm run install:all` or ` npm run install:all:pnpm` if you are using [pnpm](https://pnpm.io/).
 
 This will install all the necessary `node_modules`, to run each component individually please see their respective `README.md` files.
 
