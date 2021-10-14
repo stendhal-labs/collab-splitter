@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.9;
 
 import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
 import '@openzeppelin/contracts-upgradeable/utils/cryptography/MerkleProofUpgradeable.sol';
@@ -43,6 +43,28 @@ contract CollabSplitter is Initializable {
         totalReceived += msg.value;
     }
 
+    function claimBatch(
+        address account,
+        uint256 percent,
+        bytes32[] memory merkleProof,
+        address[] memory erc20s
+    ) public {
+        require(
+            MerkleProofUpgradeable.verify(
+                merkleProof,
+                merkleRoot,
+                getNode(account, percent)
+            ),
+            'Invalid proof.'
+        );
+
+        _claimETH(account, percent);
+
+        for (uint256 i; i < erc20s.length; i++) {
+            _claimERC20(account, percent, erc20s[i]);
+        }
+    }
+
     /// @notice Allows to claim the ETH for an account
     /// @param account the account we want to claim for
     /// @param percent the allocation for this account | 2 decimal basis, meaning 1 = 100, 2.5 = 250 etc...
@@ -61,27 +83,7 @@ contract CollabSplitter is Initializable {
             'Invalid proof.'
         );
 
-        require(totalReceived > 0, 'Nothing to claim.');
-
-        uint256 dueNow = _calculateDue(
-            totalReceived,
-            percent,
-            alreadyClaimed[account]
-        );
-
-        require(dueNow > 0, 'Already claimed everything');
-
-        // update the already claimed first, blocking reEntrancy
-        alreadyClaimed[account] += dueNow;
-
-        // send the due;
-        // @TODO: .call{}() calls with all gas left in the tx
-        // Question: Should we limit the gas used here?!
-        // It has to be at least enough for contracts (Gnosis etc...) to proxy and store
-        (bool success, ) = account.call{value: dueNow}('');
-        require(success, 'Error when sending ETH');
-
-        emit ETHClaimed(msg.sender, account, dueNow);
+        _claimETH(account, percent);
     }
 
     /// @notice Allows to claim an ERC20 for an account
@@ -91,12 +93,12 @@ contract CollabSplitter is Initializable {
     /// @param account the account we want to claim for
     /// @param percent the allocation for this account | 2 decimal basis, meaning 1% = 100, 2.5% = 250 etc...
     /// @param merkleProof the merkle proof used to ensure this claim is legit
-    /// @param erc20 the ERC20 to claim from
+    /// @param erc20s the ERC20 contracts addresses to claim from
     function claimERC20(
         address account,
         uint256 percent,
         bytes32[] memory merkleProof,
-        address erc20
+        address[] memory erc20s
     ) public {
         require(
             MerkleProofUpgradeable.verify(
@@ -107,40 +109,9 @@ contract CollabSplitter is Initializable {
             'Invalid proof.'
         );
 
-        ERC20Data storage data = erc20Data[erc20];
-        uint256 balance = IERC20(erc20).balanceOf(address(this));
-        uint256 sinceLast = balance - data.lastBalance;
-
-        // the difference between last known balance and today's balance is what has been received as royalties
-        // so we can add it to the total received
-        data.totalReceived += sinceLast;
-
-        // now we can calculate how much is due to current account the same way we do for ETH
-        require(data.totalReceived > 0, 'Nothing to claim.');
-
-        uint256 dueNow = _calculateDue(
-            data.totalReceived,
-            percent,
-            erc20AlreadyClaimed[account][erc20]
-        );
-
-        require(dueNow > 0, 'Already claimed everything');
-
-        // update the already claimed first
-        erc20AlreadyClaimed[account][erc20] += dueNow;
-
-        // transfer the dueNow
-        IERC20(erc20).transfer(account, dueNow);
-
-        // update the lastBalance, so we can recalculate next time
-        // we could save this call by doing (balance - dueNow) but some ERC20 might have weird behavior
-        // and actually make the balance different than this after the transfer
-        // so for safety, reading the actual state again
-        data.lastBalance = IERC20(erc20).balanceOf(address(this));
-
-        // emitting an event will allow to identify claimable ERC20 in TheGraph
-        // to be able to display them in the UI and keep stats
-        emit ERC20Claimed(msg.sender, account, dueNow, erc20);
+        for (uint256 i; i < erc20s.length; i++) {
+            _claimERC20(account, percent, erc20s[i]);
+        }
     }
 
     function getNode(address account, uint256 percent)
@@ -196,6 +167,78 @@ contract CollabSplitter is Initializable {
         }
 
         return claimable;
+    }
+
+    /// @dev internal function to claim ETH
+    /// @param account the account we want to claim for
+    /// @param percent the allocation for this account | 2 decimal basis, meaning 1% = 100, 2.5% = 250 etc...
+    function _claimETH(address account, uint256 percent) internal {
+        require(totalReceived > 0, 'Nothing to claim.');
+
+        uint256 dueNow = _calculateDue(
+            totalReceived,
+            percent,
+            alreadyClaimed[account]
+        );
+
+        require(dueNow > 0, 'Already claimed everything');
+
+        // update the already claimed first, blocking reEntrancy
+        alreadyClaimed[account] += dueNow;
+
+        // send the due;
+        // @TODO: .call{}() calls with all gas left in the tx
+        // Question: Should we limit the gas used here?!
+        // It has to be at least enough for contracts (Gnosis etc...) to proxy and store
+        (bool success, ) = account.call{value: dueNow}('');
+        require(success, 'Error when sending ETH');
+
+        emit ETHClaimed(msg.sender, account, dueNow);
+    }
+
+    /// @dev internal function to claim an ERC20
+    /// @param account the account we want to claim for
+    /// @param percent the allocation for this account | 2 decimal basis, meaning 1% = 100, 2.5% = 250 etc...
+    /// @param erc20 the ERC20 contract to claim from
+    function _claimERC20(
+        address account,
+        uint256 percent,
+        address erc20
+    ) internal {
+        ERC20Data storage data = erc20Data[erc20];
+        uint256 balance = IERC20(erc20).balanceOf(address(this));
+        uint256 sinceLast = balance - data.lastBalance;
+
+        // the difference between last known balance and today's balance is what has been received as royalties
+        // so we can add it to the total received
+        data.totalReceived += sinceLast;
+
+        // now we can calculate how much is due to current account the same way we do for ETH
+        require(data.totalReceived > 0, 'Nothing to claim.');
+
+        uint256 dueNow = _calculateDue(
+            data.totalReceived,
+            percent,
+            erc20AlreadyClaimed[account][erc20]
+        );
+
+        require(dueNow > 0, 'Already claimed everything');
+
+        // update the already claimed first
+        erc20AlreadyClaimed[account][erc20] += dueNow;
+
+        // transfer the dueNow
+        IERC20(erc20).transfer(account, dueNow);
+
+        // update the lastBalance, so we can recalculate next time
+        // we could save this call by doing (balance - dueNow) but some ERC20 might have weird behavior
+        // and actually make the balance different than this after the transfer
+        // so for safety, reading the actual state again
+        data.lastBalance = IERC20(erc20).balanceOf(address(this));
+
+        // emitting an event will allow to identify claimable ERC20 in TheGraph
+        // to be able to display them in the UI and keep stats
+        emit ERC20Claimed(msg.sender, account, dueNow, erc20);
     }
 
     /// @dev Helpers that calculates how much is still left to claim
