@@ -43,7 +43,7 @@ contract CollabSplitter is Initializable {
         totalReceived += msg.value;
     }
 
-    /// @notice Claims ETH and all ERC20 contracts given
+    /// @notice Does claimETH and claimERC20 in one call
     /// @param account the account we want to claim for
     /// @param percent the allocation for this account | 2 decimal basis, meaning 1 = 100, 2.5 = 250 etc...
     /// @param merkleProof the merkle proof used to ensure this claim is legit
@@ -176,6 +176,27 @@ contract CollabSplitter is Initializable {
         }
 
         return claimable;
+    }
+
+    /// @notice Helper to query how much an account already claimed for a list of tokens
+    /// @param account the account to check for
+    /// @param tokens the tokens addresses
+    ///        use address(0) to query for nativ chain token
+    function getBatchClaimed(address account, address[] memory tokens)
+        public
+        view
+        returns (uint256[] memory)
+    {
+        uint256[] memory claimed = new uint256[](tokens.length);
+        for (uint256 i; i < tokens.length; i++) {
+            if (tokens[i] == address(0)) {
+                claimed[i] = alreadyClaimed[account];
+            } else {
+                claimed[i] = erc20AlreadyClaimed[account][tokens[i]];
+            }
+        }
+
+        return claimed;
     }
 
     /// @dev internal function to claim ETH

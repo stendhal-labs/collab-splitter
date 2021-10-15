@@ -21,6 +21,8 @@ describe('CollabSplitter', () => {
     let factory;
     let splitterImplementation;
     let erc20Mock;
+    let erc20Mock2;
+
     beforeEach(async () => {
         [deployer] = await ethers.getSigners();
 
@@ -31,8 +33,8 @@ describe('CollabSplitter', () => {
             CollabSplitterFactory.address,
             deployer,
         );
-
-        CollabSplitter = await deployments.get('CollabSplitter');
+        //laverieprivee.com/2018/02/08/regles-dor-du-lavage/
+        https: CollabSplitter = await deployments.get('CollabSplitter');
         splitterImplementation = await ethers.getContractAt(
             'CollabSplitter',
             CollabSplitter.address,
@@ -42,6 +44,9 @@ describe('CollabSplitter', () => {
         const ERC20Mock = await ethers.getContractFactory('ERC20Mock');
         erc20Mock = await ERC20Mock.deploy('name', 'ticker');
         await erc20Mock.deployed();
+
+        erc20Mock2 = await ERC20Mock.deploy('name2', 'ticker2');
+        await erc20Mock2.deployed();
     });
 
     async function claimETH(contract, accountIndex) {
@@ -72,7 +77,7 @@ describe('CollabSplitter', () => {
         return due;
     }
 
-    async function claimERC20(contract, accountIndex, erc20Contract) {
+    async function claimERC20(contract, accountIndex, erc20Contracts) {
         // try to withdraw for account
         const splitter = await ethers.getContractAt(
             'CollabSplitter',
@@ -82,27 +87,50 @@ describe('CollabSplitter', () => {
 
         const collabAccount = collab[accountIndex];
 
-        const balance = await erc20Mock.balanceOf(collabAccount.account);
+        const dues = [];
+        const balances = [];
 
-        const [due] = await splitter.getBatchClaimableERC20(
-            [collabAccount.account],
-            [collabAccount.percent],
-            erc20Contract.address,
-        );
+        // for each ERC20, get current balance + what is left to be claimed
+        for (let i = 0; i < erc20Contracts.length; i++) {
+            const erc20Contract = erc20Contracts[i];
+            const balance = await erc20Contract.balanceOf(
+                collabAccount.account,
+            );
+
+            const [due] = await splitter.getBatchClaimableERC20(
+                [collabAccount.account],
+                [collabAccount.percent],
+                erc20Contract.address,
+            );
+
+            balances[i] = balance;
+            dues[i] = due;
+        }
 
         await splitter.claimERC20(
             collabAccount.account,
             collabAccount.percent,
             sdk.getProof(collab, accountIndex),
-            [erc20Contract.address],
+            erc20Contracts.map((c) => c.address),
         );
 
-        expect(await erc20Mock.balanceOf(collabAccount.account)).to.be.equal(
-            balance.add(due),
-        );
+        // check that for each ERC20, the balance is what is expected
+        for (let i = 0; i < erc20Contracts.length; i++) {
+            const erc20Contract = erc20Contracts[i];
+            const due = dues[i];
+            const balance = balances[i];
+            expect(
+                await erc20Contract.balanceOf(collabAccount.account),
+            ).to.be.equal(balance.add(due), 'WRONG_ERC20_BALANCE_+_DUE');
+        }
 
         // return what has been claimed since the start
-        return balance.add(due);
+        const claimed = await splitter.getBatchClaimed(
+            collabAccount.account,
+            erc20Contracts.map((c) => c.address),
+        );
+
+        return claimed;
     }
 
     describe('Merkle Tree', async function () {
@@ -241,7 +269,7 @@ describe('CollabSplitter', () => {
             ).to.be.revertedWith('Invalid proof.');
         });
 
-        it('can works all the same with ERC20', async function () {
+        it('can claim all the same with ERC20', async function () {
             const tx = await factory.createSplitter(
                 'Test',
                 sdk.getRoot(collab),
@@ -274,23 +302,23 @@ describe('CollabSplitter', () => {
                 ZERO,
             );
 
-            await claimERC20(address, 1, erc20Mock);
+            await claimERC20(address, 1, [erc20Mock]);
 
             // again send eth to the contract
             // and ensure the claim only gives the rest due and not again 9% of everything
             // send ONE to contract
             await erc20Mock.mint(address, ONE);
 
-            const due = await claimERC20(address, 1, erc20Mock);
+            const [claimed] = await claimERC20(address, 1, [erc20Mock]);
 
             // verify that the contract balance is only totalReceived - due
 
             // first get erc20Data
-            const erc20Data = await splitter.erc20Data(erc20Mock.address);
+            const tokenData = await splitter.erc20Data(erc20Mock.address);
 
             // then check that our contract's balance is now totalReceived - what was claimed
             expect(await erc20Mock.balanceOf(address)).to.be.equal(
-                erc20Data.totalReceived.sub(due),
+                tokenData.totalReceived.sub(claimed),
             );
 
             // now try to claim with another account
@@ -299,11 +327,98 @@ describe('CollabSplitter', () => {
                 ZERO,
             );
 
-            const due2 = await claimERC20(address, 5, erc20Mock);
+            const [claimed2] = await claimERC20(address, 5, [erc20Mock]);
 
-            // then check that our contract's balance is now totalReceived - (due + due2)
+            // then check that our contract's balance is now totalReceived - (claimed + claimed2)
             expect(await erc20Mock.balanceOf(address)).to.be.equal(
-                erc20Data.totalReceived.sub(due.add(due2)),
+                tokenData.totalReceived.sub(claimed.add(claimed2)),
+            );
+        });
+
+        it('can claim all the same with 2 tokens', async function () {
+            const tx = await factory.createSplitter(
+                'Test',
+                sdk.getRoot(collab),
+                collab.map((a) => a.account),
+                collab.map((a) => a.percent),
+            );
+
+            const receipt = await tx.wait();
+
+            // get splitter address from events
+            const address = receipt.events[0].args[0];
+
+            // try to withdraw for account
+            const splitter = await ethers.getContractAt(
+                'CollabSplitter',
+                address,
+                deployer,
+            );
+
+            const ZERO = ethers.utils.parseEther('0');
+            const ONE = ethers.utils.parseEther('1.0');
+
+            // send ONE to both tokens
+            await erc20Mock.mint(address, ONE);
+            await erc20Mock2.mint(address, ONE);
+
+            expect(await erc20Mock.balanceOf(address)).to.be.equal(ONE);
+            expect(await erc20Mock2.balanceOf(address)).to.be.equal(ONE);
+
+            // verify account is empty
+            expect(await erc20Mock.balanceOf(collab[1].account)).to.be.equal(
+                ZERO,
+            );
+            expect(await erc20Mock2.balanceOf(collab[1].account)).to.be.equal(
+                ZERO,
+            );
+
+            await claimERC20(address, 1, [erc20Mock, erc20Mock2]);
+
+            // again send eth to the contract
+            // and ensure the claim only gives the rest due and not again 9% of everything
+            // send ONE to both tokens contracts
+            await erc20Mock.mint(address, ONE);
+            await erc20Mock2.mint(address, ONE);
+
+            const [claimed, claimed2] = await claimERC20(address, 1, [
+                erc20Mock,
+                erc20Mock2,
+            ]);
+
+            // verify that the contract balance is only totalReceived - due
+
+            // first get erc20Data
+            const tokenData = await splitter.erc20Data(erc20Mock.address);
+            const token2Data = await splitter.erc20Data(erc20Mock2.address);
+
+            // then check that our contract's balance for each tokens is totalReceived - what was claimed
+            expect(await erc20Mock.balanceOf(address)).to.be.equal(
+                tokenData.totalReceived.sub(claimed),
+            );
+
+            expect(await erc20Mock2.balanceOf(address)).to.be.equal(
+                token2Data.totalReceived.sub(claimed2),
+            );
+
+            // now try to claim with another account
+            // verify account is empty
+            expect(await erc20Mock.balanceOf(collab[5].account)).to.be.equal(
+                ZERO,
+            );
+
+            const [claimed3, claimed4] = await claimERC20(address, 5, [
+                erc20Mock,
+                erc20Mock2,
+            ]);
+
+            // then check that our contract's balance is now right
+            expect(await erc20Mock.balanceOf(address)).to.be.equal(
+                tokenData.totalReceived.sub(claimed.add(claimed3)),
+            );
+
+            expect(await erc20Mock.balanceOf(address)).to.be.equal(
+                tokenData.totalReceived.sub(claimed2.add(claimed4)),
             );
         });
     });
