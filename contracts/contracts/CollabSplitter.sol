@@ -43,6 +43,11 @@ contract CollabSplitter is Initializable {
         totalReceived += msg.value;
     }
 
+    /// @notice Claims ETH and all ERC20 contracts given
+    /// @param account the account we want to claim for
+    /// @param percent the allocation for this account | 2 decimal basis, meaning 1 = 100, 2.5 = 250 etc...
+    /// @param merkleProof the merkle proof used to ensure this claim is legit
+    /// @param erc20s the ERC20 contracts addresses to claim from
     function claimBatch(
         address account,
         uint256 percent,
@@ -114,6 +119,10 @@ contract CollabSplitter is Initializable {
         }
     }
 
+    /// @notice Function to create the "node" in the merkle tree, given account and allocation
+    /// @param account the account
+    /// @param percent the allocation
+    /// @return the bytes32 representing the node / leaf
     function getNode(address account, uint256 percent)
         public
         pure
