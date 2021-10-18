@@ -4,6 +4,7 @@ type CollabSplitter @entity {
     name: String!
     allocationsCount: BigInt!
     allocations: [Allocation!]! @derivedFrom(field: "splitter")
+    tokens: [CollabSplitterToken!] @derivedFrom(field: "splitter")
 }
 
 type Allocation @entity {
@@ -17,4 +18,17 @@ type Allocation @entity {
 type Account @entity {
     id: ID!
     allocations: [Allocation!]! @derivedFrom(field: "recipient")
+}
+
+type ERC20 @entity {
+    id: ID!
+    name: String!
+    symbol: String!
+    splitters: [CollabSplitterToken!] @derivedFrom(field: "token")
+}
+
+type CollabSplitterToken @entity {
+    id: ID!
+    token: ERC20!
+    splitter: CollabSplitter!
 }

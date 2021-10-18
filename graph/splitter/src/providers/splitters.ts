@@ -5,6 +5,11 @@ import { ONE, ZERO } from '../constants';
 
 import * as accounts from './accounts';
 
+export function get(address: Address) : CollabSplitter | null {
+	let id = address.toHex();
+	return CollabSplitter.load(id);
+}
+
 export function create(address: Address, name: String, recipients: Address[], percents: BigInt[]) : CollabSplitter {
 	let id = address.toHex();
 	let splitter = new CollabSplitter(id);

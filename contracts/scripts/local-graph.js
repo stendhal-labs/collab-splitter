@@ -23,7 +23,7 @@ async function main() {
         })),
     );
 
-    await deployments.execute(
+    const receipt = await deployments.execute(
         'CollabSplitterFactory',
         { from: deployer, log: true },
         'createSplitter',
@@ -32,6 +32,16 @@ async function main() {
         recipients,
         amounts,
     );
+
+    const splitterAddress = receipt.events[0].args[0];
+
+    // create an ERC20 Mock
+    const ERC20Mock = await ethers.getContractFactory('ERC20Mock');
+    erc20Mock = await ERC20Mock.deploy('name', 'ticker');
+    await erc20Mock.deployed();
+
+    // mint some of this ERC20 to the CollabSplitter just created
+    await erc20Mock.mint(splitterAddress, '10000000000000000000');
 }
 
 main()

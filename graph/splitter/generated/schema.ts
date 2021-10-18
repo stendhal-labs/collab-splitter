@@ -73,6 +73,23 @@ export class CollabSplitter extends Entity {
   set allocations(value: Array<string>) {
     this.set("allocations", Value.fromStringArray(value));
   }
+
+  get tokens(): Array<string> | null {
+    let value = this.get("tokens");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set tokens(value: Array<string> | null) {
+    if (!value) {
+      this.unset("tokens");
+    } else {
+      this.set("tokens", Value.fromStringArray(<Array<string>>value));
+    }
+  }
 }
 
 export class Allocation extends Entity {
@@ -178,5 +195,132 @@ export class Account extends Entity {
 
   set allocations(value: Array<string>) {
     this.set("allocations", Value.fromStringArray(value));
+  }
+}
+
+export class ERC20 extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("name", Value.fromString(""));
+    this.set("symbol", Value.fromString(""));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save ERC20 entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save ERC20 entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("ERC20", id.toString(), this);
+    }
+  }
+
+  static load(id: string): ERC20 | null {
+    return changetype<ERC20 | null>(store.get("ERC20", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get name(): string {
+    let value = this.get("name");
+    return value!.toString();
+  }
+
+  set name(value: string) {
+    this.set("name", Value.fromString(value));
+  }
+
+  get symbol(): string {
+    let value = this.get("symbol");
+    return value!.toString();
+  }
+
+  set symbol(value: string) {
+    this.set("symbol", Value.fromString(value));
+  }
+
+  get splitters(): Array<string> | null {
+    let value = this.get("splitters");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set splitters(value: Array<string> | null) {
+    if (!value) {
+      this.unset("splitters");
+    } else {
+      this.set("splitters", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+}
+
+export class CollabSplitterToken extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("token", Value.fromString(""));
+    this.set("splitter", Value.fromString(""));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save CollabSplitterToken entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save CollabSplitterToken entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("CollabSplitterToken", id.toString(), this);
+    }
+  }
+
+  static load(id: string): CollabSplitterToken | null {
+    return changetype<CollabSplitterToken | null>(
+      store.get("CollabSplitterToken", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get token(): string {
+    let value = this.get("token");
+    return value!.toString();
+  }
+
+  set token(value: string) {
+    this.set("token", Value.fromString(value));
+  }
+
+  get splitter(): string {
+    let value = this.get("splitter");
+    return value!.toString();
+  }
+
+  set splitter(value: string) {
+    this.set("splitter", Value.fromString(value));
   }
 }

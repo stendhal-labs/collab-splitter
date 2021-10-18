@@ -8,7 +8,7 @@ dataSources:
     source:
       abi: CollabSplitterFactory
       startBlock: 0
-      address: "0xC89Ce4735882C9F0f0FE26686c53074E09B0D550"
+      address: "0x254dffcd3277C0b1660F6d42EFbB754edaBAbC2B"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -24,6 +24,27 @@ dataSources:
       eventHandlers:
         - event: SplitterCreated(indexed address,string,address[],uint256[])
           handler: handleSplitterCreation
+  - name: CollabSplitterTokenPayment
+    kind: ethereum/contract
+    network: mainnet
+    source:
+      abi: ERC20
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: CollabSplitterFactory/CollabSplitterFactory.wasm
+      entities:
+        - CollabSplitter
+        - ERC20
+        - CollabSplitterToken
+      abis:
+        - name: ERC20
+          file: CollabSplitterTokenPayment/abis/ERC20.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTokenPayment
 templates:
   - name: CollabSplitter
     kind: ethereum/contract
