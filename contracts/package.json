@@ -5,6 +5,7 @@
   "scripts": {
     "compile": "hardhat compile",
     "coverage": "env COVERAGE=true hardhat coverage",
+    "deploy:local": "hardhat deploy  --network localhost",
     "lint": "npm run lint:js && npm run lint:sol",
     "lint:fix": "npm run lint:js:fix && npm run lint:sol:fix",
     "lint:js": "eslint --ignore-path .gitignore .",

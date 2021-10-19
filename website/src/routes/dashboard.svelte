@@ -1,8 +1,58 @@
-<script>
+<script lang="ts">
 	import OnlyConnected from '$lib/components/OnlyConnected.svelte';
 	import { convertBigIntToPercentage } from '$lib/utils/utils';
-	import { getCollabsByAccount } from '$lib/modules/graph';
-	import { getAccount } from '$lib/modules/wallet';
+	import { geAllocationsByAccount } from '$lib/modules/graph';
+	import { account, getAccount } from '$lib/modules/wallet';
+	import {
+		claimBatch,
+		getTokenAddresses,
+		isThereSomethingToClaimForAccount
+	} from '$lib/modules/splitter';
+
+	let getAllocationsByAccountPromise;
+	let allocations;
+	let allocationsAdditionalInfo = [];
+	$: {
+		if ($account) {
+			updateData();
+		}
+	}
+
+	async function updateData() {
+		getAllocationsByAccountPromise = geAllocationsByAccount(fetch, getAccount());
+		allocations = await getAllocationsByAccountPromise;
+		let allocationsInfoFromContract = [];
+
+		for (let alloc of allocations) {
+			const tokenAddresses = getTokenAddresses(alloc.splitter);
+			const isThereSomethingToClaim = await isThereSomethingToClaimForAccount(
+				alloc.splitter.id,
+				$account,
+				alloc.allocation,
+				tokenAddresses
+			);
+
+			allocationsInfoFromContract.push({
+				tokenAddresses,
+				isThereSomethingToClaim
+			});
+		}
+		allocationsAdditionalInfo = [...allocationsInfoFromContract];
+	}
+
+	async function onClaimAll(allocation) {
+		try {
+			await claimBatch($account, allocation.splitter);
+		} catch (err) {
+			console.error(err);
+			if (err?.data?.message) {
+				alert(`Failed to claim ETH: \n\n${err.message} \n${err.data.message}`);
+			} else {
+				alert(`Failed to claim ETH: \n\n${err.message}`);
+			}
+		}
+		// alert(collab.splitter.name);
+	}
 </script>
 
 <main>
@@ -10,31 +60,42 @@
 		<h1>Dashboard</h1>
 
 		<OnlyConnected>
-			{#await getCollabsByAccount(fetch, getAccount()) then collabs}
-				{#if collabs.length > 0}
-					<table>
-						<thead>
-							<tr>
-								<th>Splitter Name</th>
-								<th>My Percentage</th>
-								<th>Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							{#each collabs as collab}
-								<tr>
-									<td>{collab.splitter.name}</td>
-									<td>{convertBigIntToPercentage(collab.allocation)}%</td>
-
-									<td class="actions"><a href="/collab/{collab.splitter.id}">See details</a></td>
-								</tr>
-							{/each}
-						</tbody>
-					</table>
-				{:else}
-					No collaboration yet !
-				{/if}
+			{#await getAllocationsByAccountPromise}
+				<p>Loading...</p>
+			{:catch error}
+				<p>Something went wrong: {error.message}</p>
 			{/await}
+			{#if allocations?.length > 0 && allocationsAdditionalInfo.length > 0}
+				<table>
+					<thead>
+						<tr>
+							<th>Splitter Name</th>
+							<th>My Percentage</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each allocations as allocation, index}
+							<tr>
+								<td>{allocation.splitter.name}</td>
+								<td>{convertBigIntToPercentage(allocation.allocation)}%</td>
+
+								<td class="actions">
+									<a href="/collab/{allocation.splitter.id}">See details</a>
+									<button
+										on:click={onClaimAll(allocation)}
+										class="actions__claim"
+										disabled={!allocationsAdditionalInfo[index]?.isThereSomethingToClaim}
+										>Claim</button
+									>
+								</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			{:else}
+				No collaboration yet !
+			{/if}
 		</OnlyConnected>
 	</div>
 </main>
@@ -59,10 +120,14 @@
 
 	.actions {
 		@apply py-2;
+		@apply flex flex-row space-x-3 justify-center;
 	}
 
 	table a {
 		@apply bg-blue-600 rounded px-2 py-2 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50 font-bold;
 		text-decoration: none;
+	}
+	.actions__claim {
+		@apply bg-green-600 hover:bg-green-700 focus:ring-green-600;
 	}
 </style>

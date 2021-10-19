@@ -1,6 +1,6 @@
 import { variables } from '../variables';
 
-export async function getCollabsByAccount(fetch, address: string) {
+export async function geAllocationsByAccount(fetch, address: string) {
 	const res = await req(
 		fetch,
 		`{
@@ -9,10 +9,23 @@ export async function getCollabsByAccount(fetch, address: string) {
           allocations {
             id
             splitter{
-                id
-                name
-                allocationsCount
-            }
+              id
+              name
+              allocationsCount
+              allocations {
+                recipient {
+                  id
+                }
+                allocation
+              }
+              tokens {
+                token {
+                  id
+                  name
+                  symbol
+                }
+              }
+          }
             allocation
           }
         }
@@ -36,6 +49,13 @@ export async function getCollab(fetch, id: string) {
                     id
                   }
                   allocation
+                }
+                tokens {
+                  token {
+                    id
+                    name
+                    symbol
+                  }
                 }
               }
         }`
