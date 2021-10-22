@@ -92,9 +92,37 @@ export default [
 				type: 'bytes32[]'
 			},
 			{
+				internalType: 'address[]',
+				name: 'erc20s',
+				type: 'address[]'
+			}
+		],
+		name: 'claimBatch',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{
 				internalType: 'address',
-				name: 'erc20',
+				name: 'account',
 				type: 'address'
+			},
+			{
+				internalType: 'uint256',
+				name: 'percent',
+				type: 'uint256'
+			},
+			{
+				internalType: 'bytes32[]',
+				name: 'merkleProof',
+				type: 'bytes32[]'
+			},
+			{
+				internalType: 'address[]',
+				name: 'erc20s',
+				type: 'address[]'
 			}
 		],
 		name: 'claimERC20',
@@ -192,6 +220,30 @@ export default [
 			}
 		],
 		name: 'getBatchClaimableETH',
+		outputs: [
+			{
+				internalType: 'uint256[]',
+				name: '',
+				type: 'uint256[]'
+			}
+		],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: 'account',
+				type: 'address'
+			},
+			{
+				internalType: 'address[]',
+				name: 'tokens',
+				type: 'address[]'
+			}
+		],
+		name: 'getBatchClaimed',
 		outputs: [
 			{
 				internalType: 'uint256[]',
