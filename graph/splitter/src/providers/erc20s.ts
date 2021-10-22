@@ -1,4 +1,4 @@
-import { Address, ethereum } from "@graphprotocol/graph-ts"
+import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts"
 
 import { ERC20 } from "../../generated/CollabSplitterTokenPayment/ERC20";
 import { ERC20 as ERC20Schema } from "../../generated/schema";
@@ -17,6 +17,9 @@ export function get(address: Address) : ERC20Schema {
 
 		let trySymbol = contract.try_symbol();
 		erc20.symbol = trySymbol.reverted ? '' : trySymbol.value;
+
+		let tryDecimals = contract.try_decimals();
+		erc20.decimals = tryDecimals.reverted ? BigInt.fromInt32(0) : tryDecimals.value;
 
 		erc20.save();
 	}

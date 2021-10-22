@@ -203,7 +203,7 @@ contract CollabSplitter is Initializable {
     /// @param account the account we want to claim for
     /// @param percent the allocation for this account | 2 decimal basis, meaning 1% = 100, 2.5% = 250 etc...
     function _claimETH(address account, uint256 percent) internal {
-        require(totalReceived > 0, 'Nothing to claim.');
+        if (totalReceived == 0) return;
 
         uint256 dueNow = _calculateDue(
             totalReceived,
@@ -211,7 +211,7 @@ contract CollabSplitter is Initializable {
             alreadyClaimed[account]
         );
 
-        require(dueNow > 0, 'Already claimed everything');
+        if (dueNow == 0) return;
 
         // update the already claimed first, blocking reEntrancy
         alreadyClaimed[account] += dueNow;
@@ -244,7 +244,7 @@ contract CollabSplitter is Initializable {
         data.totalReceived += sinceLast;
 
         // now we can calculate how much is due to current account the same way we do for ETH
-        require(data.totalReceived > 0, 'Nothing to claim.');
+        if (data.totalReceived == 0) return;
 
         uint256 dueNow = _calculateDue(
             data.totalReceived,
@@ -252,13 +252,16 @@ contract CollabSplitter is Initializable {
             erc20AlreadyClaimed[account][erc20]
         );
 
-        require(dueNow > 0, 'Already claimed everything');
+        if (dueNow == 0) return;
 
         // update the already claimed first
         erc20AlreadyClaimed[account][erc20] += dueNow;
 
         // transfer the dueNow
-        IERC20(erc20).transfer(account, dueNow);
+        require(
+            IERC20(erc20).transfer(account, dueNow),
+            'Error when sending ERC20'
+        );
 
         // update the lastBalance, so we can recalculate next time
         // we could save this call by doing (balance - dueNow) but some ERC20 might have weird behavior
