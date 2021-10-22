@@ -26,9 +26,25 @@ function mergeConfigs(path) {
 dotenv.config();
 // override .env with specific .env.[network]
 var argv = minimist(process.argv.slice(2));
+
+const networks = {};
 if (argv.network && ['rinkeby', 'mainnet'].indexOf(argv.network) !== -1) {
     mergeConfigs(`.env.${argv.network}`);
+
+    if (argv.network == 'rinkeby') {
+        networks.rinkeby = {
+            url: process.env.PROVIDER,
+            accounts: [process.env.DEPLOYER_PKEY],
+        };
+    } else if (argv.network == 'mainnet') {
+        networks.mainnet = {
+            url: process.env.PROVIDER,
+            gasPrice: 8000000000,
+            accounts: [process.env.DEPLOYER_PKEY],
+        };
+    }
 }
+
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
 
@@ -45,17 +61,7 @@ module.exports = {
             },
         },
     },
-    networks: {
-        // rinkeby: {
-        //     url: process.env.PROVIDER,
-        //     accounts: [process.env.DEPLOYER_PKEY],
-        // },
-        // mainnet: {
-        //     url: process.env.PROVIDER,
-        //     gasPrice: 8000000000,
-        //     accounts: [process.env.DEPLOYER_PKEY],
-        // },
-    },
+    networks,
     namedAccounts: {
         deployer: {
             default: 0, // here this will by default take the first account as deployer

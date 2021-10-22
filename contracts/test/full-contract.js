@@ -421,5 +421,112 @@ describe('CollabSplitter', () => {
                 tokenData.totalReceived.sub(claimed2.add(claimed4)),
             );
         });
+
+        it('can claim all', async function () {
+            let tx = await factory.createSplitter(
+                'Test',
+                sdk.getRoot(collab),
+                collab.map((a) => a.account),
+                collab.map((a) => a.percent),
+            );
+
+            const receipt = await tx.wait();
+
+            // get splitter address from events
+            const address = receipt.events[0].args[0];
+
+            // try to withdraw for account
+            const splitter = await ethers.getContractAt(
+                'CollabSplitter',
+                address,
+                deployer,
+            );
+
+            const ZERO = ethers.utils.parseEther('0');
+            const ONE = ethers.utils.parseEther('1.0');
+
+            // first send some eth
+            await deployer.sendTransaction({
+                to: address,
+                value: ONE,
+            });
+
+            const collabAccount = collab[1];
+
+            const voidSigner = new ethers.VoidSigner(
+                collabAccount.account,
+                deployer.provider,
+            );
+
+            await expect(() =>
+                splitter.claimBatch(
+                    collabAccount.account,
+                    collabAccount.percent,
+                    sdk.getProof(collab, 1),
+                    [],
+                ),
+            ).to.changeEtherBalance(
+                voidSigner,
+                ONE.mul(collabAccount.percent).div(10000),
+            );
+
+            // then claim batch with only erc20Mock in the contract
+            await erc20Mock.mint(address, ONE);
+
+            await expect(() =>
+                splitter.claimBatch(
+                    collabAccount.account,
+                    collabAccount.percent,
+                    sdk.getProof(collab, 1),
+                    [erc20Mock.address],
+                ),
+            ).to.changeTokenBalance(
+                erc20Mock,
+                voidSigner,
+                ONE.mul(collabAccount.percent).div(10000),
+            );
+
+            // then claim batch with both ETH and ERC20 in the contract
+            await deployer.sendTransaction({
+                to: address,
+                value: ONE,
+            });
+
+            await erc20Mock.mint(address, ONE);
+            await erc20Mock2.mint(address, ONE);
+
+            const balance = await deployer.provider.getBalance(
+                collabAccount.account,
+            );
+
+            const balanceMock1 = await erc20Mock.balanceOf(
+                collabAccount.account,
+            );
+
+            const balanceMock2 = await erc20Mock2.balanceOf(
+                collabAccount.account,
+            );
+
+            await splitter.claimBatch(
+                collabAccount.account,
+                collabAccount.percent,
+                sdk.getProof(collab, 1),
+                [erc20Mock.address, erc20Mock2.address],
+            );
+
+            const diff = ONE.mul(collabAccount.percent).div(10000);
+
+            expect(
+                await deployer.provider.getBalance(collabAccount.account),
+            ).to.be.equal(balance.add(diff));
+
+            expect(
+                await erc20Mock.balanceOf(collabAccount.account),
+            ).to.be.equal(balanceMock1.add(diff));
+
+            expect(
+                await erc20Mock2.balanceOf(collabAccount.account),
+            ).to.be.equal(balanceMock2.add(diff));
+        });
     });
 });

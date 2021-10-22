@@ -67,6 +67,14 @@ contract CollabSplitterFactory is
 
         require(recipients.length == amounts.length, '!LENGTH_MISMATCH!');
 
+        uint256 total;
+        for (uint256 i; i < amounts.length; i++) {
+            require(amounts[i] != 0, '!NO_NULL_VALUE!');
+            total += amounts[i];
+        }
+
+        require(total == 10000, '!VALUE_MUST_BE_100!');
+
         // create minimal proxy to _splitterImplementation
         newContract = ClonesUpgradeable.clone(_splitterImplementation);
 
