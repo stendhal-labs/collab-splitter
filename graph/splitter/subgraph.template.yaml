@@ -1,0 +1,70 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - name: CollabSplitterFactory
+    kind: ethereum/contract
+    network: {{network}}
+    source:
+      abi: CollabSplitterFactory
+      startBlock: 0
+      address: "{{address}}"
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/mapping.ts
+      entities:
+        - CollabSplitter
+        - Account
+        - Allocation
+      abis:
+        - name: CollabSplitterFactory
+          file: ./abis/CollabSplitterFactory.json
+      eventHandlers:
+        - event: SplitterCreated(indexed address,string,address[],uint256[])
+          handler: handleSplitterCreation
+  - name: CollabSplitterTokenPayment
+    kind: ethereum/contract
+    network: {{network}}
+    source:
+      abi: ERC20
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/mapping.ts
+      entities:
+        - CollabSplitter
+        - ERC20
+        - CollabSplitterToken
+      abis:
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTokenPayment
+templates:
+- name: CollabSplitter
+  kind: ethereum/contract
+  network: {{network}}
+  source:
+    abi: CollabSplitter
+  mapping:
+    kind: ethereum/events
+    apiVersion: 0.0.5
+    language: wasm/assemblyscript
+    file: ./src/mapping.ts
+    entities:
+      - CollabSplitter
+      - Account
+      - Allocation
+    abis:
+      - name: CollabSplitter
+        file: ./abis/CollabSplitter.json
+    eventHandlers:
+      - event: ETHClaimed(address,address,uint256)
+        handler: handleETHClaim
+      - event: ERC20Claimed(address,address,uint256,address)
+        handler: handleERC20Claim

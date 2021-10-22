@@ -24,6 +24,7 @@ type ERC20 @entity {
     id: ID!
     name: String!
     symbol: String!
+    decimals: BigInt!
     splitters: [CollabSplitterToken!] @derivedFrom(field: "token")
 }
 

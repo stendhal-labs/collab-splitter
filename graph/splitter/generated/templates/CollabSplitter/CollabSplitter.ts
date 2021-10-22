@@ -218,6 +218,38 @@ export class CollabSplitter extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigIntArray());
   }
 
+  getBatchClaimed(account: Address, tokens: Array<Address>): Array<BigInt> {
+    let result = super.call(
+      "getBatchClaimed",
+      "getBatchClaimed(address,address[]):(uint256[])",
+      [
+        ethereum.Value.fromAddress(account),
+        ethereum.Value.fromAddressArray(tokens)
+      ]
+    );
+
+    return result[0].toBigIntArray();
+  }
+
+  try_getBatchClaimed(
+    account: Address,
+    tokens: Array<Address>
+  ): ethereum.CallResult<Array<BigInt>> {
+    let result = super.tryCall(
+      "getBatchClaimed",
+      "getBatchClaimed(address,address[]):(uint256[])",
+      [
+        ethereum.Value.fromAddress(account),
+        ethereum.Value.fromAddressArray(tokens)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigIntArray());
+  }
+
   getNode(account: Address, percent: BigInt): Bytes {
     let result = super.call("getNode", "getNode(address,uint256):(bytes32)", [
       ethereum.Value.fromAddress(account),
@@ -278,6 +310,48 @@ export class CollabSplitter extends ethereum.SmartContract {
   }
 }
 
+export class ClaimBatchCall extends ethereum.Call {
+  get inputs(): ClaimBatchCall__Inputs {
+    return new ClaimBatchCall__Inputs(this);
+  }
+
+  get outputs(): ClaimBatchCall__Outputs {
+    return new ClaimBatchCall__Outputs(this);
+  }
+}
+
+export class ClaimBatchCall__Inputs {
+  _call: ClaimBatchCall;
+
+  constructor(call: ClaimBatchCall) {
+    this._call = call;
+  }
+
+  get account(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get percent(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
+  }
+
+  get merkleProof(): Array<Bytes> {
+    return this._call.inputValues[2].value.toBytesArray();
+  }
+
+  get erc20s(): Array<Address> {
+    return this._call.inputValues[3].value.toAddressArray();
+  }
+}
+
+export class ClaimBatchCall__Outputs {
+  _call: ClaimBatchCall;
+
+  constructor(call: ClaimBatchCall) {
+    this._call = call;
+  }
+}
+
 export class ClaimERC20Call extends ethereum.Call {
   get inputs(): ClaimERC20Call__Inputs {
     return new ClaimERC20Call__Inputs(this);
@@ -307,8 +381,8 @@ export class ClaimERC20Call__Inputs {
     return this._call.inputValues[2].value.toBytesArray();
   }
 
-  get erc20(): Address {
-    return this._call.inputValues[3].value.toAddress();
+  get erc20s(): Array<Address> {
+    return this._call.inputValues[3].value.toAddressArray();
   }
 }
 

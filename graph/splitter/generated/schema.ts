@@ -205,6 +205,7 @@ export class ERC20 extends Entity {
 
     this.set("name", Value.fromString(""));
     this.set("symbol", Value.fromString(""));
+    this.set("decimals", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -249,6 +250,15 @@ export class ERC20 extends Entity {
 
   set symbol(value: string) {
     this.set("symbol", Value.fromString(value));
+  }
+
+  get decimals(): BigInt {
+    let value = this.get("decimals");
+    return value!.toBigInt();
+  }
+
+  set decimals(value: BigInt) {
+    this.set("decimals", Value.fromBigInt(value));
   }
 
   get splitters(): Array<string> | null {
