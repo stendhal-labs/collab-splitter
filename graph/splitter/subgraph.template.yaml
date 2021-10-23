@@ -7,7 +7,7 @@ dataSources:
     network: {{network}}
     source:
       abi: CollabSplitterFactory
-      startBlock: 0
+      startBlock: {{startBlock}}
       address: "{{address}}"
     mapping:
       kind: ethereum/events
@@ -29,7 +29,7 @@ dataSources:
     network: {{network}}
     source:
       abi: ERC20
-      startBlock: 0
+      startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
