@@ -15,7 +15,7 @@
 		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-static": "^1.0.0-next.20",
+		"sveltejs-adapter-ipfs": "^0.1.6",
 		"@sveltejs/kit": "next",
 		"@typescript-eslint/eslint-plugin": "^4.33.0",
 		"@typescript-eslint/parser": "^4.33.0",
