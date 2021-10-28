@@ -1,28 +1,19 @@
 import * as ethers from 'ethers';
-import type { Provider } from '@ethersproject/abstract-provider';
-import type { Signer } from '@ethersproject/abstract-signer';
-import type { BigNumber } from 'ethers';
 
 import * as factoryABI from './data/abis/factory';
 import * as splitterABI from './data/abis/splitter';
 
 import { getProof, getRoot } from './merkleproof';
-import { Recipient } from './model/Recipient';
-
-type Claimable = {
-	eth: BigNumber;
-	erc20?: BigNumber[];
-};
 
 /**
  * Create a collab-splitter contract using the factory contract
  * (verification/validation of inputs are done by the factory contract in Solidity)
- * @param name
- * @param recipients
- * @param signer
+ * @param name string
+ * @param recipients Recipient[]
+ * @param signer Signer | Provider
  * @returns
  */
-export async function create(name: string, recipients: Recipient[], signer: Signer | Provider) {
+export async function create(name, recipients, signer) {
 	// calculate tree root
 	const root = getRoot(recipients);
 
@@ -38,27 +29,27 @@ export async function create(name: string, recipients: Recipient[], signer: Sign
 	);
 }
 
-export async function getTotalReceived(collabId: string, signer: Signer | Provider) {
+export async function getTotalReceived(collabId, signer) {
 	const contract = new ethers.Contract(collabId, splitterABI, signer);
 	return contract.totalReceived();
 }
 
 /**
  * Check if account can claim something (ETH or ERC20) by calling contract methods
- * @param collabId
- * @param account
- * @param percent
- * @param tokenAddresses
- * @param signer
+ * @param collabId string
+ * @param account string
+ * @param percent string
+ * @param tokenAddresses string[]
+ * @param signer Signer | Provider
  * @returns
  */
 export async function isThereSomethingToClaimForAccount(
-	collabId: string,
-	account: string,
-	percent: number,
-	tokenAddresses: string[],
-	signer: Signer | Provider
-): Promise<boolean> {
+	collabId,
+	account,
+	percent,
+	tokenAddresses,
+	signer
+) {
 	const claimable = await getClaimable(collabId, account, percent, tokenAddresses, signer);
 	return isThereSomethingToClaim(claimable);
 }
@@ -68,26 +59,20 @@ export async function isThereSomethingToClaimForAccount(
  * @param claimable
  * @returns
  */
-export function isThereSomethingToClaim(claimable: Claimable): boolean {
-	return claimable && (claimable.eth?.gt(0) || claimable.erc20?.some((erc20) => erc20.gt(0)));
+export function isThereSomethingToClaim(claimable) {
+	return claimable && (claimable.eth.gt(0) || claimable.erc20.some((erc20) => erc20.gt(0)));
 }
 
 /**
  * Check how much ETH & ERC20 can be claimed (for ONE account)
- * @param collabId
- * @param account
- * @param percent
- * @param tokenAddresses
- * @param signer
+ * @param collabId string
+ * @param account string
+ * @param percent string
+ * @param tokenAddresses string[]
+ * @param signer Signer | Provider
  * @returns
  */
-export async function getClaimable(
-	collabId: string,
-	account: string,
-	percent: number,
-	tokenAddresses: string[],
-	signer: Signer | Provider
-): Promise<Claimable> {
+export async function getClaimable(collabId, account, percent, tokenAddresses, signer) {
 	const batchClaimable = await getBatchClaimable(
 		collabId,
 		[account],
@@ -104,26 +89,20 @@ export async function getClaimable(
 
 /**
  * Check how much ETH & ERC20 can be claimed (for multiple accounts)
- * @param collabId
- * @param accounts
- * @param percents
- * @param tokenAddresses
- * @param signer
+ * @param collabId string
+ * @param accounts string[]
+ * @param percents string[]
+ * @param tokenAddresses string[]
+ * @param signer Signer | Provider
  * @returns
  */
-export async function getBatchClaimable(
-	collabId: string,
-	accounts: string[],
-	percents: number[],
-	tokenAddresses: string[],
-	signer: Signer | Provider
-) {
+export async function getBatchClaimable(collabId, accounts, percents, tokenAddresses, signer) {
 	// create contract
 	const contract = new ethers.Contract(collabId, splitterABI, signer);
 
 	const claimableETH = await contract.getBatchClaimableETH(accounts, percents);
 	let claimableERC20 = [];
-	if (tokenAddresses?.length > 0) {
+	if (tokenAddresses.length > 0) {
 		for (let token of tokenAddresses) {
 			claimableERC20.push(await contract.getBatchClaimableERC20(accounts, percents, token));
 		}
@@ -137,23 +116,18 @@ export async function getBatchClaimable(
 
 /**
  * Get already claimed ETH & ERC20 tokens from contract
- * @param collabId
- * @param account
- * @param tokenAddresses
- * @param signer
+ * @param collabId string
+ * @param account string
+ * @param tokenAddresses string[]
+ * @param signer Signer | Provider
  * @returns
  */
-export async function getAlreadyClaimed(
-	collabId: string,
-	account: string,
-	tokenAddresses: string[],
-	signer: Signer | Provider
-) {
+export async function getAlreadyClaimed(collabId, account, tokenAddresses, signer) {
 	const contract = new ethers.Contract(collabId, splitterABI, signer);
 
 	const alreadyClaimedETH = await contract.alreadyClaimed(account);
 	let alreadyClaimedERC20 = [];
-	if (tokenAddresses?.length > 0) {
+	if (tokenAddresses.length > 0) {
 		alreadyClaimedERC20.push(await contract.getBatchClaimed(account, tokenAddresses));
 	}
 
@@ -165,19 +139,22 @@ export async function getAlreadyClaimed(
 
 /**
  * Claim ETH & all available ERC20 tokens for a collab
- * @param account
+ * @param account string
  * @param collab
- * @param signer
+ * @param signer Signer | Provider
  * @returns
  */
-export async function claimBatch(account: string, collab, signer: Signer | Provider) {
+export async function claimBatch(account, collab, signer) {
 	if (!account || !collab) {
 		return;
 	}
 	// create contract
 	const contract = new ethers.Contract(collab.id, splitterABI, signer);
 
-	const recipients = collab.allocations.map((a) => new Recipient(a.recipient.id, a.allocation));
+	const recipients = collab.allocations.map((a) => ({
+		account: a.recipient.id,
+		percent: a.allocation
+	}));
 	const accountIndex = recipients.findIndex((r) => account === r.account);
 
 	const tokenAddresses = getTokenAddresses(collab);
@@ -199,19 +176,22 @@ export async function claimBatch(account: string, collab, signer: Signer | Provi
 
 /**
  * Claim ETH for a collab
- * @param account
+ * @param account string
  * @param collab
- * @param signer
+ * @param signer Signer | Provider
  * @returns
  */
-export async function claimETH(account: string, collab, signer: Signer | Provider) {
+export async function claimETH(account, collab, signer) {
 	if (!account || !collab) {
 		return;
 	}
 	// create contract
 	const contract = new ethers.Contract(collab.id, splitterABI, signer);
 
-	const recipients = collab.allocations.map((a) => new Recipient(a.recipient.id, a.allocation));
+	const recipients = collab.allocations.map((a) => ({
+		account: a.recipient.id,
+		percent: a.allocation
+	}));
 	const accountIndex = recipients.findIndex((r) => account === r.account);
 
 	console.log(
@@ -228,25 +208,23 @@ export async function claimETH(account: string, collab, signer: Signer | Provide
 }
 /**
  * Claim tokens of a ERC20 contract for a collab
- * @param account
+ * @param account string
  * @param collab
- * @param tokenAddress
- * @param signer
+ * @param tokenAddress string
+ * @param signer Signer | Provider
  * @returns
  */
-export async function claimERC20(
-	account: string,
-	collab,
-	tokenAddress: string,
-	signer: Signer | Provider
-) {
+export async function claimERC20(account, collab, tokenAddress, signer) {
 	if (!account || !collab || !tokenAddress) {
 		return;
 	}
 	// create contract
 	const contract = new ethers.Contract(collab.id, splitterABI, signer);
 
-	const recipients = collab.allocations.map((a) => new Recipient(a.recipient.id, a.allocation));
+	const recipients = collab.allocations.map((a) => ({
+		account: a.recipient.id,
+		percent: a.allocation
+	}));
 	const accountIndex = recipients.findIndex((r) => account === r.account);
 
 	console.log(
@@ -268,5 +246,5 @@ export async function claimERC20(
  * @returns
  */
 export function getTokenAddresses(collab) {
-	return collab?.tokens.map((token) => token.token.id);
+	return collab.tokens.map((token) => token.token.id);
 }

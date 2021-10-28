@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script context="module">
 	import { getCollab } from '$lib/modules/graph';
 	/**
 	 * @type {import('@sveltejs/kit').Load}
@@ -13,13 +13,12 @@
 	}
 </script>
 
-<script lang="ts">
+<script>
 	import { variables } from '$lib/modules/variables';
 	import { account, getSigner, provider } from '$lib/modules/wallet';
 	import { convertBigIntToPercentage } from '$lib/utils/utils';
 
 	import {
-		Recipient,
 		getTokenAddresses,
 		getTotalReceived,
 		getClaimable,
@@ -35,7 +34,10 @@
 
 	$: myAllocation = collab?.allocations.find((a) => $account === a.recipient.id);
 
-	const recipients = collab.allocations.map((a) => new Recipient(a.recipient.id, a.allocation));
+	const recipients = collab.allocations.map((a) => ({
+		account: a.recipient.id,
+		percent: a.allocation
+	}));
 
 	let contractBalance;
 	let accountClaimable;

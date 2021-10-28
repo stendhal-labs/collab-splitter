@@ -3,32 +3,24 @@ lockfileVersion: 5.3
 specifiers:
   '@rollup/plugin-commonjs': ^11.0.1
   '@rollup/plugin-node-resolve': ^7.0.0
-  '@rollup/plugin-typescript': ^8.3.0
-  '@tsconfig/svelte': ^2.0.1
-  '@types/jest': ^27.0.2
+  dotenv: ^10.0.0
   ethers: ^5.4.7
-  jest: ^27.0.2
-  ms: ^2.0.0
+  jest: ^27.3.1
+  prettier: 2.4.1
   rollup: ^1.29.0
-  ts-jest: ^27.0.7
-  tslib: ^2.3.1
-  typescript: ^4.4.4
+  rollup-plugin-sourcemaps: ^0.6.3
 
 dependencies:
   ethers: registry.npmjs.org/ethers/5.4.7
-  ms: registry.npmjs.org/ms/2.1.3
 
 devDependencies:
   '@rollup/plugin-commonjs': registry.npmjs.org/@rollup/plugin-commonjs/11.1.0_rollup@1.32.1
   '@rollup/plugin-node-resolve': registry.npmjs.org/@rollup/plugin-node-resolve/7.1.3_rollup@1.32.1
-  '@rollup/plugin-typescript': registry.npmjs.org/@rollup/plugin-typescript/8.3.0_9bb8e913c3f320aea777593f71e25319
-  '@tsconfig/svelte': registry.npmjs.org/@tsconfig/svelte/2.0.1
-  '@types/jest': registry.npmjs.org/@types/jest/27.0.2
+  dotenv: registry.npmjs.org/dotenv/10.0.0
   jest: registry.npmjs.org/jest/27.3.1
+  prettier: registry.npmjs.org/prettier/2.4.1
   rollup: registry.npmjs.org/rollup/1.32.1
-  ts-jest: registry.npmjs.org/ts-jest/27.0.7_2c4ca6574207836d1023f54689cc81ac
-  tslib: registry.npmjs.org/tslib/2.3.1
-  typescript: registry.npmjs.org/typescript/4.4.4
+  rollup-plugin-sourcemaps: registry.npmjs.org/rollup-plugin-sourcemaps/0.6.3_rollup@1.32.1
 
 packages:
 
@@ -1104,24 +1096,6 @@ packages:
       rollup: registry.npmjs.org/rollup/1.32.1
     dev: true
 
-  registry.npmjs.org/@rollup/plugin-typescript/8.3.0_9bb8e913c3f320aea777593f71e25319:
-    resolution: {integrity: sha512-I5FpSvLbtAdwJ+naznv+B4sjXZUcIvLLceYpITAn7wAP8W0wqc5noLdGIp9HGVntNhRWXctwPYrSSFQxtl0FPA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@rollup/plugin-typescript/-/plugin-typescript-8.3.0.tgz}
-    id: registry.npmjs.org/@rollup/plugin-typescript/8.3.0
-    name: '@rollup/plugin-typescript'
-    version: 8.3.0
-    engines: {node: '>=8.0.0'}
-    peerDependencies:
-      rollup: ^2.14.0
-      tslib: '*'
-      typescript: '>=3.7.0'
-    dependencies:
-      '@rollup/pluginutils': registry.npmjs.org/@rollup/pluginutils/3.1.0_rollup@1.32.1
-      resolve: registry.npmjs.org/resolve/1.20.0
-      rollup: registry.npmjs.org/rollup/1.32.1
-      tslib: registry.npmjs.org/tslib/2.3.1
-      typescript: registry.npmjs.org/typescript/4.4.4
-    dev: true
-
   registry.npmjs.org/@rollup/pluginutils/3.1.0_rollup@1.32.1:
     resolution: {integrity: sha512-GksZ6pr6TpIjHm8h9lSQ8pi8BE9VeubNT0OMJ3B5uZJ8pz73NPiqOtCog/x2/QzM1ENChPKxMDhiQuRHsqc+lg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@rollup/pluginutils/-/pluginutils-3.1.0.tgz}
     id: registry.npmjs.org/@rollup/pluginutils/3.1.0
@@ -1158,12 +1132,6 @@ packages:
     name: '@tootallnate/once'
     version: 1.1.2
     engines: {node: '>= 6'}
-    dev: true
-
-  registry.npmjs.org/@tsconfig/svelte/2.0.1:
-    resolution: {integrity: sha512-aqkICXbM1oX5FfgZd2qSSAGdyo/NRxjWCamxoyi3T8iVQnzGge19HhDYzZ6NrVOW7bhcWNSq9XexWFtMzbB24A==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@tsconfig/svelte/-/svelte-2.0.1.tgz}
-    name: '@tsconfig/svelte'
-    version: 2.0.1
     dev: true
 
   registry.npmjs.org/@types/babel__core/7.1.16:
@@ -1243,15 +1211,6 @@ packages:
     version: 3.0.1
     dependencies:
       '@types/istanbul-lib-report': registry.npmjs.org/@types/istanbul-lib-report/3.0.0
-    dev: true
-
-  registry.npmjs.org/@types/jest/27.0.2:
-    resolution: {integrity: sha512-4dRxkS/AFX0c5XW6IPMNOydLn2tEhNhJV7DnYK+0bjoJZ+QTmfucBlihX7aoEsh/ocYtkLC73UbnBXBXIxsULA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@types/jest/-/jest-27.0.2.tgz}
-    name: '@types/jest'
-    version: 27.0.2
-    dependencies:
-      jest-diff: registry.npmjs.org/jest-diff/27.3.1
-      pretty-format: registry.npmjs.org/pretty-format/27.3.1
     dev: true
 
   registry.npmjs.org/@types/node/16.10.1:
@@ -1414,6 +1373,14 @@ packages:
     version: 0.4.0
     dev: true
 
+  registry.npmjs.org/atob/2.1.2:
+    resolution: {integrity: sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/atob/-/atob-2.1.2.tgz}
+    name: atob
+    version: 2.1.2
+    engines: {node: '>= 4.5.0'}
+    hasBin: true
+    dev: true
+
   registry.npmjs.org/babel-jest/27.3.1_@babel+core@7.15.8:
     resolution: {integrity: sha512-SjIF8hh/ir0peae2D6S6ZKRhUy7q/DnpH7k/V6fT4Bgs/LXXUztOpX4G2tCgq8mLo5HA9mN6NmlFMeYtKmIsTQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/babel-jest/-/babel-jest-27.3.1.tgz}
     id: registry.npmjs.org/babel-jest/27.3.1
@@ -1560,15 +1527,6 @@ packages:
       escalade: registry.npmjs.org/escalade/3.1.1
       node-releases: registry.npmjs.org/node-releases/2.0.1
       picocolors: registry.npmjs.org/picocolors/1.0.0
-    dev: true
-
-  registry.npmjs.org/bs-logger/0.2.6:
-    resolution: {integrity: sha512-pd8DCoxmbgc7hyPKOvxtqNcjYoOsABPQdcCUjGp3d42VR2CX1ORhk2A87oqqu5R1kk+76nsxZupkmyd+MVtCog==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/bs-logger/-/bs-logger-0.2.6.tgz}
-    name: bs-logger
-    version: 0.2.6
-    engines: {node: '>= 6'}
-    dependencies:
-      fast-json-stable-stringify: registry.npmjs.org/fast-json-stable-stringify/2.1.0
     dev: true
 
   registry.npmjs.org/bser/2.1.1:
@@ -1803,6 +1761,13 @@ packages:
     version: 10.3.1
     dev: true
 
+  registry.npmjs.org/decode-uri-component/0.2.0:
+    resolution: {integrity: sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/decode-uri-component/-/decode-uri-component-0.2.0.tgz}
+    name: decode-uri-component
+    version: 0.2.0
+    engines: {node: '>=0.10'}
+    dev: true
+
   registry.npmjs.org/dedent/0.7.0:
     resolution: {integrity: sha1-JJXduvbrh0q7Dhvp3yLS5aVEMmw=, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/dedent/-/dedent-0.7.0.tgz}
     name: dedent
@@ -1850,6 +1815,13 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       webidl-conversions: registry.npmjs.org/webidl-conversions/5.0.0
+    dev: true
+
+  registry.npmjs.org/dotenv/10.0.0:
+    resolution: {integrity: sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/dotenv/-/dotenv-10.0.0.tgz}
+    name: dotenv
+    version: 10.0.0
+    engines: {node: '>=10'}
     dev: true
 
   registry.npmjs.org/electron-to-chromium/1.3.882:
@@ -3068,12 +3040,6 @@ packages:
       p-locate: registry.npmjs.org/p-locate/4.1.0
     dev: true
 
-  registry.npmjs.org/lodash.memoize/4.1.2:
-    resolution: {integrity: sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/lodash.memoize/-/lodash.memoize-4.1.2.tgz}
-    name: lodash.memoize
-    version: 4.1.2
-    dev: true
-
   registry.npmjs.org/lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz}
     name: lodash
@@ -3104,12 +3070,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       semver: registry.npmjs.org/semver/6.3.0
-    dev: true
-
-  registry.npmjs.org/make-error/1.3.6:
-    resolution: {integrity: sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/make-error/-/make-error-1.3.6.tgz}
-    name: make-error
-    version: 1.3.6
     dev: true
 
   registry.npmjs.org/makeerror/1.0.12:
@@ -3190,12 +3150,6 @@ packages:
     name: ms
     version: 2.1.2
     dev: true
-
-  registry.npmjs.org/ms/2.1.3:
-    resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/ms/-/ms-2.1.3.tgz}
-    name: ms
-    version: 2.1.3
-    dev: false
 
   registry.npmjs.org/natural-compare/1.4.0:
     resolution: {integrity: sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz}
@@ -3371,6 +3325,14 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
+  registry.npmjs.org/prettier/2.4.1:
+    resolution: {integrity: sha512-9fbDAXSBcc6Bs1mZrDYb3XKzDLm4EXXL9sC1LqKP5rZkT6KRr/rf9amVUcODVXgguK/isJz0d0hP72WeaKWsvA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/prettier/-/prettier-2.4.1.tgz}
+    name: prettier
+    version: 2.4.1
+    engines: {node: '>=10.13.0'}
+    hasBin: true
+    dev: true
+
   registry.npmjs.org/pretty-format/27.3.1:
     resolution: {integrity: sha512-DR/c+pvFc52nLimLROYjnXPtolawm+uWDxr4FjuLDLUn+ktWnSN851KoHwHzzqq6rfCOjkzN8FLgDrSub6UDuA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/pretty-format/-/pretty-format-27.3.1.tgz}
     name: pretty-format
@@ -3458,6 +3420,24 @@ packages:
     hasBin: true
     dependencies:
       glob: registry.npmjs.org/glob/7.2.0
+    dev: true
+
+  registry.npmjs.org/rollup-plugin-sourcemaps/0.6.3_rollup@1.32.1:
+    resolution: {integrity: sha512-paFu+nT1xvuO1tPFYXGe+XnQvg4Hjqv/eIhG8i5EspfYYPBKL57X7iVbfv55aNVASg3dzWvES9dmWsL2KhfByw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/rollup-plugin-sourcemaps/-/rollup-plugin-sourcemaps-0.6.3.tgz}
+    id: registry.npmjs.org/rollup-plugin-sourcemaps/0.6.3
+    name: rollup-plugin-sourcemaps
+    version: 0.6.3
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      '@types/node': '>=10.0.0'
+      rollup: '>=0.31.2'
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+    dependencies:
+      '@rollup/pluginutils': registry.npmjs.org/@rollup/pluginutils/3.1.0_rollup@1.32.1
+      rollup: registry.npmjs.org/rollup/1.32.1
+      source-map-resolve: registry.npmjs.org/source-map-resolve/0.6.0
     dev: true
 
   registry.npmjs.org/rollup/1.32.1:
@@ -3548,6 +3528,15 @@ packages:
     name: slash
     version: 3.0.0
     engines: {node: '>=8'}
+    dev: true
+
+  registry.npmjs.org/source-map-resolve/0.6.0:
+    resolution: {integrity: sha512-KXBr9d/fO/bWo97NXsPIAW1bFSBOuCnjbNTBMO7N59hsv5i9yzRDfcYwwt0l04+VqnKC+EwzvJZIP/qkuMgR/w==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/source-map-resolve/-/source-map-resolve-0.6.0.tgz}
+    name: source-map-resolve
+    version: 0.6.0
+    dependencies:
+      atob: registry.npmjs.org/atob/2.1.2
+      decode-uri-component: registry.npmjs.org/decode-uri-component/0.2.0
     dev: true
 
   registry.npmjs.org/source-map-support/0.5.20:
@@ -3757,46 +3746,6 @@ packages:
       punycode: registry.npmjs.org/punycode/2.1.1
     dev: true
 
-  registry.npmjs.org/ts-jest/27.0.7_2c4ca6574207836d1023f54689cc81ac:
-    resolution: {integrity: sha512-O41shibMqzdafpuP+CkrOL7ykbmLh+FqQrXEmV9CydQ5JBk0Sj0uAEF5TNNe94fZWKm3yYvWa/IbyV4Yg1zK2Q==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/ts-jest/-/ts-jest-27.0.7.tgz}
-    id: registry.npmjs.org/ts-jest/27.0.7
-    name: ts-jest
-    version: 27.0.7
-    engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
-    hasBin: true
-    peerDependencies:
-      '@babel/core': '>=7.0.0-beta.0 <8'
-      '@types/jest': ^27.0.0
-      babel-jest: '>=27.0.0 <28'
-      jest: ^27.0.0
-      typescript: '>=3.8 <5.0'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      '@types/jest':
-        optional: true
-      babel-jest:
-        optional: true
-    dependencies:
-      '@types/jest': registry.npmjs.org/@types/jest/27.0.2
-      bs-logger: registry.npmjs.org/bs-logger/0.2.6
-      fast-json-stable-stringify: registry.npmjs.org/fast-json-stable-stringify/2.1.0
-      jest: registry.npmjs.org/jest/27.3.1
-      jest-util: registry.npmjs.org/jest-util/27.3.1
-      json5: registry.npmjs.org/json5/2.2.0
-      lodash.memoize: registry.npmjs.org/lodash.memoize/4.1.2
-      make-error: registry.npmjs.org/make-error/1.3.6
-      semver: registry.npmjs.org/semver/7.3.5
-      typescript: registry.npmjs.org/typescript/4.4.4
-      yargs-parser: registry.npmjs.org/yargs-parser/20.2.9
-    dev: true
-
-  registry.npmjs.org/tslib/2.3.1:
-    resolution: {integrity: sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/tslib/-/tslib-2.3.1.tgz}
-    name: tslib
-    version: 2.3.1
-    dev: true
-
   registry.npmjs.org/type-check/0.3.2:
     resolution: {integrity: sha1-WITKtRLPHTVeP7eE8wgEsrUg23I=, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/type-check/-/type-check-0.3.2.tgz}
     name: type-check
@@ -3826,14 +3775,6 @@ packages:
     version: 3.1.5
     dependencies:
       is-typedarray: registry.npmjs.org/is-typedarray/1.0.0
-    dev: true
-
-  registry.npmjs.org/typescript/4.4.4:
-    resolution: {integrity: sha512-DqGhF5IKoBl8WNf8C1gu8q0xZSInh9j1kJJMqT3a94w1JzVaBU4EXOSMrz9yDqMT0xt3selp83fuFMQ0uzv6qA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/typescript/-/typescript-4.4.4.tgz}
-    name: typescript
-    version: 4.4.4
-    engines: {node: '>=4.2.0'}
-    hasBin: true
     dev: true
 
   registry.npmjs.org/universalify/0.1.2:

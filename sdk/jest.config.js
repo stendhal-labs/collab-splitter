@@ -1,10 +1,5 @@
-/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
-module.exports = {
-	preset: 'ts-jest',
-	testEnvironment: 'node',
-	globals: {
-		'ts-jest': {
-			// isolatedModules: false
-		}
-	}
-};
+module.exports = async () => {
+	return {
+	  verbose: true,
+	};
+  };

@@ -27,14 +27,14 @@ export function getRoot(collab) {
  * @param index
  * @returns
  */
-export function getProof(collab, index: number) {
+export function getProof(collab, index) {
 	return merkleProof(
 		collab.map((a) => getNode(a.account, a.percent)),
 		getNode(collab[index].account, collab[index].percent)
 	);
 }
 
-function merkleRoot(txs: string[]) {
+function merkleRoot(txs) {
 	if (txs.length === 1) {
 		return txs[0];
 	}
@@ -42,14 +42,14 @@ function merkleRoot(txs: string[]) {
 	return merkleRoot(toPairs(txs).map((pair) => hashPair(pair[0], pair[1])));
 }
 
-function merkleProof(txs: string[], tx: string, proof = []) {
+function merkleProof(txs, tx, proof = []) {
 	if (txs.length === 1) {
 		return proof;
 	}
 
 	const tree = [];
 
-	toPairs(txs).forEach((pair: string[]) => {
+	toPairs(txs).forEach((pair) => {
 		const hash = hashPair(pair[0], pair[1]);
 
 		if (pair.includes(tx)) {
@@ -64,15 +64,15 @@ function merkleProof(txs: string[], tx: string, proof = []) {
 	return merkleProof(tree, tx, proof);
 }
 
-function merkleProofRoot(proof, tx: string) {
+function merkleProofRoot(proof, tx) {
 	return proof.reduce((root, [idx, tx]) => (idx ? hashPair(root, tx) : hashPair(tx, root)), tx);
 }
 
-function toPairs(arr: string[]) {
+function toPairs(arr) {
 	return Array.from(Array(Math.ceil(arr.length / 2)), (_, i) => arr.slice(i * 2, i * 2 + 2));
 }
 
-function hashPair(a: string, b: string = a) {
+function hashPair(a, b = a) {
 	let temp;
 	// for some reason, MerkleRoot.verify() always put the lowest value left
 	if (ethers.BigNumber.from(a).gt(ethers.BigNumber.from(b))) {

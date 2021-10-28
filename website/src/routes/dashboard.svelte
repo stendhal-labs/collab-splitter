@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import OnlyConnected from '$lib/components/OnlyConnected.svelte';
 	import { convertBigIntToPercentage } from '$lib/utils/utils';
 	import { geAllocationsByAccount } from '$lib/modules/graph';
@@ -39,7 +39,7 @@
 
 	async function onClaimAll(allocation) {
 		try {
-			await claimBatch($account, allocation.splitter);
+			await claimBatch($account, allocation.splitter, await getSigner());
 		} catch (err) {
 			console.error(err);
 			if (err?.data?.message) {

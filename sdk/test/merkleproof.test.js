@@ -1,14 +1,11 @@
 import * as ethers from 'ethers';
 import { getNode, getProof, getRoot } from '../src/merkleproof';
 
-// bad hack as isolatedModules is enabled by tsconfig.json
-export {};
-
 describe('getNode', () => {
 	it('getNode OK', () => {
 		// Arrange
 		const account = '0xdc58f594e82f7592163687915f61b031d2102fdb';
-		const percent = 10 * 100;
+		const percent = 1000;
 		// Act
 
 		const node = getNode(account, percent);

@@ -1,6 +1,6 @@
-<script lang="ts">
+<script>
 	import { createEventDispatcher } from 'svelte';
-	import { Recipient, create } from '../../../../sdk/';
+	import { create } from '../../../../sdk/';
 	import { variables } from '$lib/modules/variables';
 	import { connected, getSigner } from '$lib/modules/wallet';
 	import { convertPercentageToSolidityUint } from '$lib/utils/utils';
@@ -9,7 +9,7 @@
 	const dispatch = createEventDispatcher();
 
 	let name = '';
-	let recipients: Recipient[] = [];
+	let recipients = [];
 
 	let mustReset = false;
 
@@ -35,16 +35,16 @@
 	function initRecipients() {
 		//  recipients = [new Recipient(undefined, 0)];
 		recipients = [
-			new Recipient('0xf4274229Bee63d4A6D1Edde6919afA815F6E1a25', 10),
-			new Recipient('0xF4274229bEe63d4A6D1edDE6919aFa815f6e1a24', 80)
-			// new Recipient(getAccount(), 10)
+		{account:'0xf4274229Bee63d4A6D1Edde6919afA815F6E1a25', percent: 10},
+		{account:'0xF4274229bEe63d4A6D1edDE6919aFa815f6e1a24', percent:80}
+			// {account:getAccount(), 10}
 		];
 	}
 
 	async function onSubmit() {
 		const withAllocation = recipients
 			.filter((r) => r.percent !== 0)
-			.map((r) => new Recipient(r.account, convertPercentageToSolidityUint(r.percent)));
+			.map((r) => ({account:r.account, percent: convertPercentageToSolidityUint(r.percent)}));
 		const diff = withAllocation.length - recipients.length;
 
 		console.log(withAllocation);
@@ -78,10 +78,10 @@
 	}
 
 	function addLine() {
-		recipients = [...recipients, new Recipient(undefined, 0)];
+		recipients = [...recipients, {account: undefined,  percent:0}];
 	}
 
-	function removeLine(index: number) {
+	function removeLine(index) {
 		recipients.splice(index, 1);
 		recipients = [...recipients];
 	}

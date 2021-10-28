@@ -1,18 +1,14 @@
 import * as ethers from 'ethers';
-import { BigNumber } from 'ethers';
+// import { BigNumber } from 'ethers';
 import { create, getTokenAddresses, isThereSomethingToClaim } from '../src/collaboration';
-import { Recipient } from '../src/model/Recipient';
-
-// bad hack as isolatedModules is enabled by tsconfig.json
-export {};
 
 describe('create()', () => {
 	it('create collab splitter', async () => {
 		// Arrange
 		const name = 'Test';
 		const recipients = [
-			new Recipient('0xD53ADeC981F32482cb8bbDb733791EA41DD64F74', 5100),
-			new Recipient('0x7642BE7ccd476c76a0b49c4c631bd9A403dF3E83', 4900)
+			{ account: '0xD53ADeC981F32482cb8bbDb733791EA41DD64F74', percent: 5100 },
+			{ account: '0x7642BE7ccd476c76a0b49c4c631bd9A403dF3E83', percent: 4900 }
 		];
 		const signer = null;
 		// Act
@@ -35,20 +31,20 @@ describe('getAlreadyClaimed()', () => {
 });
 
 describe('claimBatch()', () => {
-    it('no account', async () => {});
-    it('no collab', async () => {});
-    it('claim eth & erc20', async () => {});
+	it('no account', async () => {});
+	it('no collab', async () => {});
+	it('claim eth & erc20', async () => {});
 });
 describe('claimETH()', () => {
-    it('no account', async () => {});
-    it('no collab', async () => {});
-    it('claim eth', async () => {});
+	it('no account', async () => {});
+	it('no collab', async () => {});
+	it('claim eth', async () => {});
 });
 describe('claimERC20()', () => {
-    it('no account', async () => {});
-    it('no collab', async () => {});
-    it('no tokenAddress', async () => {});
-    it('claim erc20', async () => {});
+	it('no account', async () => {});
+	it('no collab', async () => {});
+	it('no tokenAddress', async () => {});
+	it('claim erc20', async () => {});
 });
 
 describe('utils', () => {
