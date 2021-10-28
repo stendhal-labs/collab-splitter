@@ -14,7 +14,6 @@
 </script>
 
 <script lang="ts">
-	import sdk from '../../../../sdk/';
 	import { variables } from '$lib/modules/variables';
 	import { account, getSigner, provider } from '$lib/modules/wallet';
 	import { convertBigIntToPercentage } from '$lib/utils/utils';
@@ -23,6 +22,15 @@
 
 	import OnlyConnected from '$lib/components/OnlyConnected.svelte';
 	import { Recipient } from '$lib/modules/Recipient';
+	import {
+		claimBatch,
+		claimERC20,
+		claimETH,
+		getAlreadyClaimed,
+		getClaimable,
+		getTokenAddresses,
+		isThereSomethingToClaim
+	} from '$lib/modules/splitter';
 
 	export let collab;
 
@@ -34,9 +42,9 @@
 	let accountClaimable;
 	let alreadyClaimed;
 	let totalReceived;
-	let erc20Data;
 
-	let ethToClaim;
+	let tokenAddresses = getTokenAddresses(collab);
+
 	$: {
 		if ($account) {
 			updateDataFromContract();
@@ -47,73 +55,58 @@
 		contractBalance = await $provider.getBalance(collab.id);
 
 		const contract = new ethers.Contract(collab.id, splitterABI, await getSigner());
-		alreadyClaimed = await contract.alreadyClaimed($account);
 		totalReceived = await contract.totalReceived();
-		// erc20Data = await contract.erc20Data('XXXX');
 
-		accountClaimable = totalReceived.mul(myAllocation.allocation).div(10e3).sub(alreadyClaimed);
-
-		ethToClaim = await contract.getBatchClaimableETH(
-			recipients.map((r) => r.account),
-			recipients.map((r) => r.percent)
+		accountClaimable = await getClaimable(
+			collab.id,
+			$account,
+			myAllocation.allocation,
+			tokenAddresses
 		);
+		alreadyClaimed = await getAlreadyClaimed(collab.id, $account, tokenAddresses);
+
+		// ethToClaim = await contract.getBatchClaimableETH(
+		// 	recipients.map((r) => r.account),
+		// 	recipients.map((r) => r.percent)
+		// );
 	}
 
 	async function onClaim() {
-		// create contract
-		const contract = new ethers.Contract(collab.id, splitterABI, await getSigner());
-
-		const recipients = collab.allocations.map((a) => new Recipient(a.recipient.id, a.allocation));
-		console.log(recipients);
-		const accountIndex = recipients.findIndex((r) => $account === r.account);
-		console.log(accountIndex);
-		//claimETH
-		// claimERC20
-
-		console.log(
-			recipients[accountIndex].account,
-			recipients[accountIndex].percent,
-			sdk.getProof(recipients, accountIndex)
-		);
-
-		const events = await contract
-			.claimETH(
-				recipients[accountIndex].account,
-				recipients[accountIndex].percent,
-				sdk.getProof(recipients, accountIndex)
-			)
-			.then((tx) => tx.wait())
-			.then((receipt) => {
-				console.log(receipt);
-				return receipt;
-			})
-			.then((receipt) => receipt.events)
-			.catch((err) => {
-				console.error(err);
+		try {
+			await claimETH($account, collab);
+		} catch (err) {
+			console.error(err);
+			if (err?.data?.message) {
 				alert(`Failed to claim ETH: \n\n${err.message} \n${err.data.message}`);
-			});
+			} else {
+				alert(`Failed to claim ETH: \n\n${err.message}`);
+			}
+		}
+	}
+	async function onClaimERC20(tokenAddress) {
+		try {
+			await claimERC20($account, collab, tokenAddress);
+		} catch (err) {
+			console.error(err);
+			if (err?.data?.message) {
+				alert(`Failed to claim ERC20: \n\n${err.message} \n${err.data.message}`);
+			} else {
+				alert(`Failed to claim ERC20: \n\n${err.message}`);
+			}
+		}
+	}
 
-		// const eventsERC20 = await contract
-		// 	.claimERC20($account, myAllocation, 'merkleProof', 'token')
-		// 	.then((tx) => tx.wait())
-		// 	.then((receipt) => {
-		// 		console.log(receipt);
-		// 		return receipt;
-		// 	})
-		// 	.then((receipt) => receipt.events)
-		// 	.catch((err) => {
-		// 		console.error(err);
-		// 		alert(`Failed to claim ERC20 : \n ${err.message}`);
-		// 	});
-	}
-	async function onClaimForAll() {
-		alert('Available soon...');
-	}
-	async function onClaimERC20() {
-		alert('Available soon...');
-	}
-	async function onClaimERC20ForAll() {
-		alert('Available soon...');
+	async function onClaimBatch() {
+		try {
+			await claimBatch($account, collab);
+		} catch (err) {
+			console.error(err);
+			if (err?.data?.message) {
+				alert(`Failed to claim ETH & ERC20: \n\n${err.message} \n${err.data.message}`);
+			} else {
+				alert(`Failed to claim ETH & ERC20: \n\n${err.message}`);
+			}
+		}
 	}
 </script>
 
@@ -124,22 +117,14 @@
 		<OnlyConnected>
 			<div class="actions">
 				{#if myAllocation}
-					<div class="actions__eth">
-						<button on:click={onClaim} disabled={accountClaimable && accountClaimable.lte(0)}
-							>Claim {accountClaimable ? ethers.utils.formatEther(accountClaimable) : ''} ETH</button
+					<div class="actions__etherc20">
+						<button on:click={onClaimBatch} disabled={!isThereSomethingToClaim(accountClaimable)}
+							>Claim {accountClaimable && accountClaimable.eth
+								? ethers.utils.formatEther(accountClaimable.eth)
+								: ''} ETH & {accountClaimable && accountClaimable.erc20
+								? accountClaimable.erc20.length
+								: 'all'} ERC20</button
 						>
-
-						<button on:click={onClaimForAll} disabled={contractBalance && contractBalance.lte(0)}
-							>Claim ETH for all</button
-						>
-					</div>
-
-					<div class="actions__erc20">
-						<button on:click={onClaimERC20} disabled>Claim ERC20</button>
-						<button on:click={onClaimERC20ForAll} disabled>Claim ERC20 for all</button>
-						<select disabled>
-							<option>wETH</option>
-						</select>
 					</div>
 				{:else}
 					You are not one of the recipient of this contract.
@@ -149,22 +134,66 @@
 			<div class="balance">
 				{#if contractBalance}
 					<p>
-						Current:
+						Current contract's balance:
 						<b>{ethers.utils.formatEther(contractBalance)}</b> ETH
 					</p>
 				{/if}
 				{#if totalReceived}
 					<p>
-						Total received:
+						Total received by contract:
 						<b>{ethers.utils.formatEther(totalReceived)}</b> ETH
 					</p>
 				{/if}
-				{#if alreadyClaimed}
-					<p>
-						You already claimed:
-						<b>{ethers.utils.formatEther(alreadyClaimed)}</b> ETH
-					</p>
-				{/if}
+				<h3>My allocation ({convertBigIntToPercentage(myAllocation.allocation)}%)</h3>
+
+				<div class="claim-wrapper">
+					<p>Ethereum</p>
+					<button
+						on:click={onClaim}
+						disabled={accountClaimable && accountClaimable.eth && accountClaimable.eth.lte(0)}
+						>Claim {accountClaimable && accountClaimable.eth
+							? ethers.utils.formatEther(accountClaimable.eth)
+							: ''} ETH</button
+					>
+					<!-- <details>
+					<summary>Tokens to claim</summary> -->
+					{#if collab.tokens.length > 0}
+						{#each collab.tokens as token, index}
+							<p>
+								{token.token.name}
+								(<a href="{variables.EXPLORER_URL}/token/{token.token.id}"
+									>{token.token.symbol.toUpperCase()}</a
+								>)
+							</p>
+							<button
+								on:click={() => onClaimERC20(token.token.id)}
+								disabled={accountClaimable?.erc20[index].lte(0)}
+								>Claim {accountClaimable && accountClaimable.erc20[index]
+									? accountClaimable?.erc20[index]
+									: ''}
+								{token.token.symbol.toUpperCase()}</button
+							>
+						{/each}
+					{:else}
+						<p>No ERC20 tokens received.</p>
+					{/if}
+				</div>
+				<div>
+					{#if alreadyClaimed}
+						<h3>Claimed</h3>
+						<p>
+							You already claimed <b>{ethers.utils.formatEther(alreadyClaimed.eth)}</b> ETH
+						</p>
+						{#each alreadyClaimed.erc20 as claimedToken, index}
+							<p>
+								And <b>{claimedToken}</b>
+								{collab.tokens[index].token.symbol.toUpperCase()}
+							</p>
+						{/each}
+						<p />
+					{/if}
+				</div>
+				<!-- </details> -->
 			</div>
 		</OnlyConnected>
 
@@ -179,9 +208,6 @@
 					<tr>
 						<th>Address</th>
 						<th>Percentage</th>
-						{#if ethToClaim}
-							<th>ETH to claim</th>
-						{/if}
 					</tr>
 				</thead>
 				<tbody>
@@ -191,9 +217,6 @@
 								{allocation.recipient.id}
 							</td>
 							<td class="td--right">{convertBigIntToPercentage(allocation.allocation)}%</td>
-							{#if ethToClaim}
-								<td class="td--right">{ethers.utils.formatEther(ethToClaim[index])}</td>
-							{/if}
 						</tr>
 					{/each}
 				</tbody>
@@ -206,19 +229,20 @@
 
 <style lang="postcss">
 	.actions {
-		@apply grid grid-flow-col justify-center gap-8;
+		@apply grid justify-center gap-8;
+	}
+
+	.actions__etherc20 {
+		@apply col-span-2;
 	}
 
 	.actions button {
 		@apply w-full;
 	}
-	.actions__eth {
-		@apply flex flex-col  space-y-4 items-center mt-8;
-	}
-	.actions__erc20 {
-		@apply flex flex-col  space-y-4 items-center mt-8;
-	}
 
+	.claim-wrapper {
+		@apply grid grid-cols-2 justify-items-center gap-4;
+	}
 	.allocations {
 		@apply flex justify-center items-center;
 	}

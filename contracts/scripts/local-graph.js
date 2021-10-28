@@ -8,7 +8,7 @@ async function main() {
     const { deployer } = await getNamedAccounts();
 
     const recipients = [
-        '0x3E5e9111Ae8eB78Fe1CC3bb8915d5D461F3Ef9A9',
+        '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
         '0x28a8746e75304c0780E011BEd21C72cD78cd535E',
         '0xACa94ef8bD5ffEE41947b4585a84BdA5a3d3DA6E',
     ];
