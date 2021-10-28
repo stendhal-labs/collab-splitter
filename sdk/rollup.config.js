@@ -1,6 +1,7 @@
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import typescript from '@rollup/plugin-typescript';
+import typescript from 'rollup-plugin-typescript2'
+import sourceMaps from 'rollup-plugin-sourcemaps';
 import pkg from './package.json';
 
 export default [
@@ -10,13 +11,16 @@ export default [
 		output: {
 			name: 'collabSplitter',
 			file: pkg.browser,
-			format: 'umd'
+			format: 'umd',
+			preserveModules: true,
+			preserveModulesRoot: 'src'
 		},
 		plugins: [
 			resolve(), // so Rollup can find `ms`
-			commonjs() // so Rollup can convert `ms` to an ES module
-		],
-		plugins: [typescript()]
+			commonjs(), // so Rollup can convert `ms` to an ES module
+			typescript({ useTsconfigDeclarationDir: true }),
+			sourceMaps()
+		]
 	},
 
 	// CommonJS (for Node) and ES module (for bundlers) build.
@@ -27,11 +31,23 @@ export default [
 	// `file` and `format` for each target)
 	{
 		input: 'src/main.ts',
-		external: ['ms'],
+		external: ['ms', 'ethers'],
 		output: [
-			{ file: pkg.main, format: 'cjs' },
-			{ file: pkg.module, format: 'es' }
+			{
+				file: pkg.main,
+				format: 'cjs',
+				sourcemap: true,
+				preserveModules: true,
+				preserveModulesRoot: 'src'
+			},
+			{
+				file: pkg.module,
+				format: 'es',
+				sourcemap: true,
+				preserveModules: true,
+				preserveModulesRoot: 'src'
+			}
 		],
-		plugins: [typescript()]
+		plugins: [typescript({ useTsconfigDeclarationDir: true }), sourceMaps()]
 	}
 ];

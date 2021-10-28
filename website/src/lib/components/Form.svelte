@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import sdk from '../../../../sdk/';
+	import { Recipient, create } from '../../../../sdk/';
 	import { variables } from '$lib/modules/variables';
-	import { Recipient } from '$lib/modules/Recipient';
 	import { connected, getSigner } from '$lib/modules/wallet';
 	import { convertPercentageToSolidityUint } from '$lib/utils/utils';
-	import factoryABI from '$lib/data/abis/factory';
 	import OnlyConnected from './OnlyConnected.svelte';
 
 	const dispatch = createEventDispatcher();
@@ -55,27 +53,7 @@
 			diff == 0 ||
 			confirm('Some recipients do not have any allocation and will be removed. Are you sure?')
 		) {
-			// calculate tree root
-			const root = sdk.getRoot(withAllocation);
-
-			console.log(variables.FACTORY_ADDRESS, factoryABI, await getSigner());
-			// create contract
-			const contract = new ethers.Contract(
-				variables.FACTORY_ADDRESS,
-				factoryABI,
-				await getSigner()
-			);
-
-			console.log(convertPercentageToSolidityUint(50.5));
-
-			// create collab splitter
-			const events = await contract
-				.createSplitter(
-					name,
-					root,
-					withAllocation.map((a) => a.account),
-					withAllocation.map((a) => a.percent)
-				)
+			const events = await create(name, withAllocation, await getSigner())
 				.then((tx) => tx.wait())
 				.then((receipt) => {
 					console.log(receipt);

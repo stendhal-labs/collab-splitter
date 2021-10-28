@@ -2,12 +2,8 @@
 	import OnlyConnected from '$lib/components/OnlyConnected.svelte';
 	import { convertBigIntToPercentage } from '$lib/utils/utils';
 	import { geAllocationsByAccount } from '$lib/modules/graph';
-	import { account, getAccount } from '$lib/modules/wallet';
-	import {
-		claimBatch,
-		getTokenAddresses,
-		isThereSomethingToClaimForAccount
-	} from '$lib/modules/splitter';
+	import { account, getAccount, getSigner } from '$lib/modules/wallet';
+	import { getTokenAddresses, isThereSomethingToClaimForAccount, claimBatch } from '../../../sdk/';
 
 	let getAllocationsByAccountPromise;
 	let allocations;
@@ -29,7 +25,8 @@
 				alloc.splitter.id,
 				$account,
 				alloc.allocation,
-				tokenAddresses
+				tokenAddresses,
+				await getSigner()
 			);
 
 			allocationsInfoFromContract.push({

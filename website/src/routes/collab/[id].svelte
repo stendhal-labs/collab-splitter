@@ -18,19 +18,18 @@
 	import { account, getSigner, provider } from '$lib/modules/wallet';
 	import { convertBigIntToPercentage } from '$lib/utils/utils';
 
-	import splitterABI from '$lib/data/abis/splitter';
-
-	import OnlyConnected from '$lib/components/OnlyConnected.svelte';
-	import { Recipient } from '$lib/modules/Recipient';
 	import {
-		claimBatch,
-		claimERC20,
-		claimETH,
-		getAlreadyClaimed,
-		getClaimable,
+		Recipient,
 		getTokenAddresses,
+		getTotalReceived,
+		getClaimable,
+		getAlreadyClaimed,
+		claimETH,
+		claimERC20,
+		claimBatch,
 		isThereSomethingToClaim
-	} from '$lib/modules/splitter';
+	} from '../../../../sdk/';
+	import OnlyConnected from '$lib/components/OnlyConnected.svelte';
 
 	export let collab;
 
@@ -53,17 +52,21 @@
 
 	async function updateDataFromContract() {
 		contractBalance = await $provider.getBalance(collab.id);
-
-		const contract = new ethers.Contract(collab.id, splitterABI, await getSigner());
-		totalReceived = await contract.totalReceived();
+		totalReceived = await getTotalReceived(collab.id, await getSigner());
 
 		accountClaimable = await getClaimable(
 			collab.id,
 			$account,
 			myAllocation.allocation,
-			tokenAddresses
+			tokenAddresses,
+			await getSigner()
 		);
-		alreadyClaimed = await getAlreadyClaimed(collab.id, $account, tokenAddresses);
+		alreadyClaimed = await getAlreadyClaimed(
+			collab.id,
+			$account,
+			tokenAddresses,
+			await getSigner()
+		);
 
 		// ethToClaim = await contract.getBatchClaimableETH(
 		// 	recipients.map((r) => r.account),
@@ -73,7 +76,7 @@
 
 	async function onClaim() {
 		try {
-			await claimETH($account, collab);
+			await claimETH($account, collab, await getSigner());
 		} catch (err) {
 			console.error(err);
 			if (err?.data?.message) {
@@ -85,7 +88,7 @@
 	}
 	async function onClaimERC20(tokenAddress) {
 		try {
-			await claimERC20($account, collab, tokenAddress);
+			await claimERC20($account, collab, tokenAddress, await getSigner());
 		} catch (err) {
 			console.error(err);
 			if (err?.data?.message) {
@@ -98,7 +101,7 @@
 
 	async function onClaimBatch() {
 		try {
-			await claimBatch($account, collab);
+			await claimBatch($account, collab, await getSigner());
 		} catch (err) {
 			console.error(err);
 			if (err?.data?.message) {
