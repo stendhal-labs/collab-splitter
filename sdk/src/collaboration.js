@@ -60,7 +60,11 @@ export async function isThereSomethingToClaimForAccount(
  * @returns
  */
 export function isThereSomethingToClaim(claimable) {
-	return claimable && (claimable.eth.gt(0) || claimable.erc20.some((erc20) => erc20.gt(0)));
+	return (
+		claimable &&
+		((claimable.eth && claimable.eth.gt(0)) ||
+			(claimable.erc20 && claimable.erc20.some((erc20) => erc20.gt(0))))
+	);
 }
 
 /**
@@ -101,10 +105,15 @@ export async function getBatchClaimable(collabId, accounts, percents, tokenAddre
 	const contract = new ethers.Contract(collabId, splitterABI, signer);
 
 	const claimableETH = await contract.getBatchClaimableETH(accounts, percents);
-	let claimableERC20 = [];
+	let claimableERC20 = new Array(accounts.length);
+	claimableERC20.fill([]);
 	if (tokenAddresses.length > 0) {
+		let claimableERC20ByToken = [];
 		for (let token of tokenAddresses) {
-			claimableERC20.push(await contract.getBatchClaimableERC20(accounts, percents, token));
+			claimableERC20ByToken = await contract.getBatchClaimableERC20(accounts, percents, token);
+			for (let j = 0; j < accounts.length; j++) {
+				claimableERC20[j] = [...claimableERC20[j], claimableERC20ByToken[j]];
+			}
 		}
 	}
 
@@ -128,7 +137,7 @@ export async function getAlreadyClaimed(collabId, account, tokenAddresses, signe
 	const alreadyClaimedETH = await contract.alreadyClaimed(account);
 	let alreadyClaimedERC20 = [];
 	if (tokenAddresses.length > 0) {
-		alreadyClaimedERC20.push(await contract.getBatchClaimed(account, tokenAddresses));
+		alreadyClaimedERC20 = await contract.getBatchClaimed(account, tokenAddresses);
 	}
 
 	return {
@@ -145,8 +154,8 @@ export async function getAlreadyClaimed(collabId, account, tokenAddresses, signe
  * @returns
  */
 export async function claimBatch(account, collab, signer) {
-	if (!account || !collab) {
-		return;
+	if (!(account && collab)) {
+		throw new Error('Invalid parameter');
 	}
 	// create contract
 	const contract = new ethers.Contract(collab.id, splitterABI, signer);
@@ -183,7 +192,7 @@ export async function claimBatch(account, collab, signer) {
  */
 export async function claimETH(account, collab, signer) {
 	if (!account || !collab) {
-		return;
+		throw new Error('Invalid parameter');
 	}
 	// create contract
 	const contract = new ethers.Contract(collab.id, splitterABI, signer);
@@ -216,7 +225,7 @@ export async function claimETH(account, collab, signer) {
  */
 export async function claimERC20(account, collab, tokenAddress, signer) {
 	if (!account || !collab || !tokenAddress) {
-		return;
+		throw new Error('Invalid parameter');
 	}
 	// create contract
 	const contract = new ethers.Contract(collab.id, splitterABI, signer);
