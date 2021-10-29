@@ -18,6 +18,7 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.1",
     "@rollup/plugin-node-resolve": "^7.0.0",
+    "@rollup/plugin-replace": "^3.0.0",
     "depay-web3-mock": "^8.2.7",
     "dotenv": "^10.0.0",
     "jest": "^27.3.1",

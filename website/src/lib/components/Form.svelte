@@ -35,8 +35,8 @@
 	function initRecipients() {
 		//  recipients = [new Recipient(undefined, 0)];
 		recipients = [
-		{account:'0xf4274229Bee63d4A6D1Edde6919afA815F6E1a25', percent: 10},
-		{account:'0xF4274229bEe63d4A6D1edDE6919aFa815f6e1a24', percent:80}
+			{ account: '0xf4274229Bee63d4A6D1Edde6919afA815F6E1a25', percent: 10 },
+			{ account: '0xF4274229bEe63d4A6D1edDE6919aFa815f6e1a24', percent: 80 }
 			// {account:getAccount(), 10}
 		];
 	}
@@ -44,7 +44,7 @@
 	async function onSubmit() {
 		const withAllocation = recipients
 			.filter((r) => r.percent !== 0)
-			.map((r) => ({account:r.account, percent: convertPercentageToSolidityUint(r.percent)}));
+			.map((r) => ({ account: r.account, percent: convertPercentageToSolidityUint(r.percent) }));
 		const diff = withAllocation.length - recipients.length;
 
 		console.log(withAllocation);
@@ -78,7 +78,7 @@
 	}
 
 	function addLine() {
-		recipients = [...recipients, {account: undefined,  percent:0}];
+		recipients = [...recipients, { account: undefined, percent: 0 }];
 	}
 
 	function removeLine(index) {

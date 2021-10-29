@@ -1,9 +1,9 @@
 <script>
 	import OnlyConnected from '$lib/components/OnlyConnected.svelte';
 	import { convertBigIntToPercentage } from '$lib/utils/utils';
-	import { getAllocationsByAccount } from '../../../sdk/';
+	import { getAllocationsByAccount } from '../../../sdk';
 	import { account, getAccount, getSigner } from '$lib/modules/wallet';
-	import { getTokenAddresses, isThereSomethingToClaimForAccount, claimBatch } from '../../../sdk/';
+	import { getTokenAddresses, isThereSomethingToClaimForAccount, claimBatch } from '../../../sdk';
 
 	let getAllocationsByAccountPromise;
 	let allocations;
