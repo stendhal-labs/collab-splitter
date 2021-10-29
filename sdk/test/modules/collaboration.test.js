@@ -11,9 +11,9 @@ import {
 	claimERC20,
 	claimBatch,
 	isThereSomethingToClaimForAccount
-} from '../src/collaboration';
-import * as factoryABI from '../src/data/abis/factory';
-import * as splitterABI from '../src/data/abis/splitter';
+} from '../../src/modules/collaboration';
+import * as factoryABI from '../../src/data/abis/factory';
+import * as splitterABI from '../../src/data/abis/splitter';
 import { anything, mock, resetMocks } from 'depay-web3-mock';
 
 beforeAll(() => {

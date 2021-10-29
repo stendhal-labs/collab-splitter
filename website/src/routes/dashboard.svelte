@@ -1,7 +1,7 @@
 <script>
 	import OnlyConnected from '$lib/components/OnlyConnected.svelte';
 	import { convertBigIntToPercentage } from '$lib/utils/utils';
-	import { geAllocationsByAccount } from '$lib/modules/graph';
+	import { getAllocationsByAccount } from '../../../sdk/';
 	import { account, getAccount, getSigner } from '$lib/modules/wallet';
 	import { getTokenAddresses, isThereSomethingToClaimForAccount, claimBatch } from '../../../sdk/';
 
@@ -15,7 +15,7 @@
 	}
 
 	async function updateData() {
-		getAllocationsByAccountPromise = geAllocationsByAccount(fetch, getAccount());
+		getAllocationsByAccountPromise = getAllocationsByAccount(fetch, getAccount());
 		allocations = await getAllocationsByAccountPromise;
 		let allocationsInfoFromContract = [];
 

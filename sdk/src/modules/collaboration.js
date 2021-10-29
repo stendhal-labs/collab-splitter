@@ -1,7 +1,7 @@
 import * as ethers from 'ethers';
 
-import * as factoryABI from './data/abis/factory';
-import * as splitterABI from './data/abis/splitter';
+import * as factoryABI from '../data/abis/factory';
+import * as splitterABI from '../data/abis/splitter';
 
 import { getProof, getRoot } from './merkleproof';
 

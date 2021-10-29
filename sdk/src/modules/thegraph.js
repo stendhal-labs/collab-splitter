@@ -1,6 +1,4 @@
-import { variables } from '../variables';
-
-export async function geAllocationsByAccount(fetch, address: string) {
+export async function getAllocationsByAccount(fetch, address) {
 	const res = await req(
 		fetch,
 		`{
@@ -33,9 +31,9 @@ export async function geAllocationsByAccount(fetch, address: string) {
 	);
 	const data = await res.json();
 
-	return data.data.account?.allocations || [];
+	return data.data.account ? data.data.account.allocations : [];
 }
-export async function getCollab(fetch, id: string) {
+export async function getCollab(fetch, id) {
 	const res = await req(
 		fetch,
 		`{
@@ -62,11 +60,11 @@ export async function getCollab(fetch, id: string) {
 	);
 	const data = await res.json();
 
-	return data.data.collabSplitter || null;
+	return data.data.collabSplitter;
 }
 
-export default async function req(fetch, query) {
-	const res = await fetch(variables.THEGRAPH_URL, {
+async function req(fetch, query) {
+	const res = await fetch(process.env.THEGRAPH_URL, {
 		method: 'POST',
 		body: JSON.stringify({ query })
 	});

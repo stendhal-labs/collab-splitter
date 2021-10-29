@@ -1,5 +1,5 @@
 import * as ethers from 'ethers';
-import { getNode, getProof, getRoot } from '../src/merkleproof';
+import { getNode, getProof, getRoot } from '../../src/modules/merkleproof';
 
 describe('getNode', () => {
 	it('getNode OK', () => {

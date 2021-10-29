@@ -1,5 +1,5 @@
 <script context="module">
-	import { getCollab } from '$lib/modules/graph';
+	import { getCollab } from '../../../../sdk/';
 	/**
 	 * @type {import('@sveltejs/kit').Load}
 	 */
