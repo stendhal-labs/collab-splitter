@@ -1,5 +1,5 @@
 import * as ethers from 'ethers';
-// import { BigNumber } from 'ethers';
+import { BigNumber } from 'ethers';
 import { create, getTokenAddresses, isThereSomethingToClaim } from '../src/collaboration';
 
 describe('create()', () => {
