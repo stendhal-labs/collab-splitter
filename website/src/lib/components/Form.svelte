@@ -5,11 +5,13 @@
 	import { connected, getSigner } from '$lib/modules/wallet';
 	import { convertPercentageToSolidityUint } from '$lib/utils/utils';
 	import OnlyConnected from './OnlyConnected.svelte';
+	import Loading from './Loading.svelte';
 
 	const dispatch = createEventDispatcher();
 
 	let name = '';
 	let recipients = [];
+	let loading = false;
 
 	let mustReset = false;
 
@@ -53,6 +55,7 @@
 			diff == 0 ||
 			confirm('Some recipients do not have any allocation and will be removed. Are you sure?')
 		) {
+			loading = true;
 			const events = await create(name, withAllocation, await getSigner())
 				.then((tx) => tx.wait())
 				.then((receipt) => {
@@ -65,6 +68,7 @@
 					alert(`Failed to create Splitter contract: \n ${err.message}`);
 				});
 
+			loading = false;
 			mustReset = true;
 			dispatch('splitter', {
 				address: events[0].args[0]
@@ -168,7 +172,15 @@
 
 	<OnlyConnected>
 		{#if !mustReset}
-			<button on:click={onSubmit} disabled={!canSubmit} class="form__create">Create</button>
+			<button on:click={onSubmit} disabled={!canSubmit} class="form__create">
+				{#if loading}
+					<Loading>
+						<p>Creating...</p>
+					</Loading>
+				{:else}
+					Create
+				{/if}
+			</button>
 		{:else}
 			<button on:click={onReset} class="form__create">Reset</button>
 		{/if}
@@ -236,7 +248,7 @@
 	}
 
 	.form__create {
-		@apply w-full mt-4;
+		@apply w-full mt-4 flex justify-center;
 	}
 
 	input {

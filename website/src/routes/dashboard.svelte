@@ -1,9 +1,11 @@
 <script>
-	import OnlyConnected from '$lib/components/OnlyConnected.svelte';
 	import { convertBigIntToPercentage } from '$lib/utils/utils';
 	import { getAllocationsByAccount } from '../../../sdk';
 	import { account, getAccount, getSigner } from '$lib/modules/wallet';
 	import { getTokenAddresses, isThereSomethingToClaimForAccount, claimBatch } from '../../../sdk';
+
+	import OnlyConnected from '$lib/components/OnlyConnected.svelte';
+	import Loading from '$lib/components/Loading.svelte';
 
 	let getAllocationsByAccountPromise;
 	let allocations;
@@ -58,41 +60,46 @@
 
 		<OnlyConnected>
 			{#await getAllocationsByAccountPromise}
-				<p>Loading...</p>
+				<div class="loading">
+					<Loading>
+						<p>Loading...</p>
+					</Loading>
+				</div>
+			{:then}
+				{#if allocations?.length > 0 && allocationsAdditionalInfo.length > 0}
+					<table>
+						<thead>
+							<tr>
+								<th>Splitter Name</th>
+								<th>My Percentage</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each allocations as allocation, index}
+								<tr>
+									<td>{allocation.splitter.name}</td>
+									<td>{convertBigIntToPercentage(allocation.allocation)}%</td>
+
+									<td class="actions">
+										<a href="/collab/{allocation.splitter.id}">See details</a>
+										<button
+											on:click={onClaimAll(allocation)}
+											class="actions__claim"
+											disabled={!allocationsAdditionalInfo[index]?.isThereSomethingToClaim}
+											>Claim</button
+										>
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				{:else}
+					No collaboration yet !
+				{/if}
 			{:catch error}
 				<p>Something went wrong: {error.message}</p>
 			{/await}
-			{#if allocations?.length > 0 && allocationsAdditionalInfo.length > 0}
-				<table>
-					<thead>
-						<tr>
-							<th>Splitter Name</th>
-							<th>My Percentage</th>
-							<th>Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						{#each allocations as allocation, index}
-							<tr>
-								<td>{allocation.splitter.name}</td>
-								<td>{convertBigIntToPercentage(allocation.allocation)}%</td>
-
-								<td class="actions">
-									<a href="/collab/{allocation.splitter.id}">See details</a>
-									<button
-										on:click={onClaimAll(allocation)}
-										class="actions__claim"
-										disabled={!allocationsAdditionalInfo[index]?.isThereSomethingToClaim}
-										>Claim</button
-									>
-								</td>
-							</tr>
-						{/each}
-					</tbody>
-				</table>
-			{:else}
-				No collaboration yet !
-			{/if}
 		</OnlyConnected>
 	</div>
 </main>
