@@ -69,4 +69,78 @@ describe('getProof', () => {
 			'0x45617ba582385cc439e4b0240a59c02936a72ddf449e1cd41e0f2eb62da200ae'
 		]);
 	});
+	it.skip('undefined merkleProof', () => {
+		// Arrange
+		const collab = [
+			{
+				account: '0xf4274229bee63d4a6d1edde6919afa815f6e1a25',
+				percent: '1000'
+			},
+			{
+				account: '0xf4274229bee63d4a6d1edde6919afa815f6e1a24',
+				percent: '1000'
+			},
+			{
+				account: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1',
+				percent: '8000'
+			}
+		];
+		const index = 2;
+
+		// Act
+		const nodes = collab.map((a) => getNode(a.account, a.percent));
+		console.log(nodes);
+		const proof = getProof(collab, index);
+
+		//Assert
+		expect(proof).toEqual([
+			'0xf90a7bf448b34bcccfb215014a884434c9ecfe1fd9e70c491d7a845e11d65094',
+			'0x21405eaaba97888224ce4c48b51fe340e8f0cc6bc673895aa6f04fd57da5390f',
+			'0x311a521d1f42e8a29951eb8eb01853a85f4ae5b125872d1d082002c74f55a99f'
+		]);
+	});
+	it('undefined merkleProof detailed', () => {
+		// Arrange
+		const collab = [
+			{
+				account: ethers.utils.getAddress('0xf4274229bee63d4a6d1edde6919afa815f6e1a25'),
+				percent: '1000'
+			},
+			{
+				account: ethers.utils.getAddress('0xf4274229bee63d4a6d1edde6919afa815f6e1a24'),
+				percent: '1000'
+			},
+			{
+				account: ethers.utils.getAddress('0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1'),
+				percent: '8000'
+			}
+		];
+		const index = 2;
+
+		// Act
+		const nodes = collab.map((a) => getNode(a.account, a.percent));
+		// console.log(nodes);
+		// const encoded = ethers.utils.defaultAbiCoder.encode(
+		// 	['address', 'uint256'],
+		// 	[collab[0].account, collab[0].percent]
+		// );
+		// console.log(encoded);
+		// console.log(ethers.utils.keccak256(encoded));
+		// console.log(getNode(collab[0].account, collab[0].percent));
+		// console.log(getNode(collab[1].account, collab[1].percent));
+		// console.log(getNode(collab[2].account, collab[2].percent));
+		// const tx = getNode(collab[index].account, collab[index].percent);
+		// console.log(tx);
+
+		// const pairs = toPairs(nodes);
+		// console.log(pairs);
+
+		// const merklePf = merkleProof(nodes, tx);
+		// console.log(merklePf);
+
+		const proof = getProof(collab, index);
+
+		//Assert
+		expect(proof).toEqual(['0x']);
+	});
 });

@@ -204,6 +204,7 @@ export async function claimETH(account, collab, signer) {
 	}));
 	const accountIndex = recipients.findIndex((r) => account === r.account);
 
+	console.log(`Claiming ETH`);
 	console.log(
 		recipients[accountIndex].account,
 		recipients[accountIndex].percent,
