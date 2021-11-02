@@ -1,7 +1,7 @@
 import * as ethers from 'ethers';
 
-import * as factoryABI from '../data/abis/factory';
-import * as splitterABI from '../data/abis/splitter';
+import { abi as factoryABI } from '../data/abis/factory';
+import { abi as splitterABI } from '../data/abis/splitter';
 
 import { getProof, getRoot } from './merkleproof';
 
@@ -11,14 +11,15 @@ import { getProof, getRoot } from './merkleproof';
  * @param name string
  * @param recipients Recipient[]
  * @param signer Signer | Provider
+ * @param factoryAddress contract address
  * @returns
  */
-export async function create(name, recipients, signer) {
+export async function create(name, recipients, signer, factoryAddress) {
 	// calculate tree root
 	const root = getRoot(recipients);
 
 	// create contract
-	const contract = new ethers.Contract(process.env.FACTORY_ADDRESS, factoryABI, signer);
+	const contract = new ethers.Contract(factoryAddress, factoryABI, signer);
 
 	// create collab splitter
 	return contract.createSplitter(

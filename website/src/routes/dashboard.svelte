@@ -1,8 +1,8 @@
 <script>
-	import { convertBigIntToPercentage } from '$lib/utils/utils';
-	import { getAllocationsByAccount } from '../../../sdk';
+	import { convertUIntToPercentage, getAllocationsByAccount } from '../../../sdk';
 	import { account, getAccount, getSigner } from '$lib/modules/wallet';
 	import { getTokenAddresses, isThereSomethingToClaimForAccount, claimBatch } from '../../../sdk';
+	import { variables } from '$lib/modules/variables';
 
 	import OnlyConnected from '$lib/components/OnlyConnected.svelte';
 	import Loading from '$lib/components/Loading.svelte';
@@ -17,7 +17,11 @@
 	}
 
 	async function updateData() {
-		getAllocationsByAccountPromise = getAllocationsByAccount(fetch, getAccount());
+		getAllocationsByAccountPromise = getAllocationsByAccount(
+			fetch,
+			variables.THEGRAPH_URL,
+			getAccount()
+		);
 		allocations = await getAllocationsByAccountPromise;
 		let allocationsInfoFromContract = [];
 
@@ -79,7 +83,7 @@
 							{#each allocations as allocation, index}
 								<tr>
 									<td>{allocation.splitter.name}</td>
-									<td>{convertBigIntToPercentage(allocation.allocation)}%</td>
+									<td>{convertUIntToPercentage(allocation.allocation)}%</td>
 
 									<td class="actions">
 										<a href="/collab/{allocation.splitter.id}">See details</a>

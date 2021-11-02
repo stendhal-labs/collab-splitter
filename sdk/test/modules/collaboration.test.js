@@ -12,9 +12,10 @@ import {
 	claimBatch,
 	isThereSomethingToClaimForAccount
 } from '../../src/modules/collaboration';
-import * as factoryABI from '../../src/data/abis/factory';
-import * as splitterABI from '../../src/data/abis/splitter';
+import { abi as factoryABI } from '../../src/data/abis/factory';
+import { abi as splitterABI } from '../../src/data/abis/splitter';
 import { anything, mock, resetMocks } from 'depay-web3-mock';
+import { FACTORY_ADDRESS_RINKEBY } from '../../src/main';
 
 beforeAll(() => {
 	process.env = {
@@ -53,7 +54,7 @@ describe('create()', () => {
 				return: '0x123'
 			}
 		});
-		const result = await create(name, recipients, signer);
+		const result = await create(name, recipients, signer, FACTORY_ADDRESS_RINKEBY);
 
 		//Assert
 		// only test that call doesn't throw error, contracts tests are done in /contracts/test

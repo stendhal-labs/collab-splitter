@@ -1,6 +1,7 @@
-export async function getAllocationsByAccount(fetch, address) {
+export async function getAllocationsByAccount(fetch, theGraphUrl, address) {
 	const res = await req(
 		fetch,
+		theGraphUrl,
 		`{
         account(id:"${address}") {
           id
@@ -33,9 +34,10 @@ export async function getAllocationsByAccount(fetch, address) {
 
 	return data.data.account ? data.data.account.allocations : [];
 }
-export async function getCollab(fetch, id) {
+export async function getCollab(fetch, theGraphUrl, id) {
 	const res = await req(
 		fetch,
+		theGraphUrl,
 		`{
             collabSplitter(id:"${id}"){
                 id
@@ -63,8 +65,15 @@ export async function getCollab(fetch, id) {
 	return data.data.collabSplitter;
 }
 
-async function req(fetch, query) {
-	const res = await fetch(process.env.THEGRAPH_URL, {
+/**
+ * Make the GraphQL query
+ * @param {*} fetch
+ * @param {*} theGraphUrl
+ * @param {*} query
+ * @returns
+ */
+async function req(fetch, theGraphUrl, query) {
+	const res = await fetch(theGraphUrl, {
 		method: 'POST',
 		body: JSON.stringify({ query })
 	});

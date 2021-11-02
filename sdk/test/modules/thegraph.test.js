@@ -50,6 +50,7 @@ describe('getAllocationsByAccount()', () => {
 		);
 		const result = await getAllocationsByAccount(
 			fetch,
+			process.env.THEGRAPH_URL,
 			'0xd8da6bf26964af9d7eed9e03e53415d37aa96045'
 		);
 
@@ -94,7 +95,7 @@ describe('getAllocationsByAccount()', () => {
 					})
 			})
 		);
-		const result = await getAllocationsByAccount(fetch, '0x123');
+		const result = await getAllocationsByAccount(fetch, process.env.THEGRAPH_URL, '0x123');
 
 		// Assert
 		expect(result).toEqual([]);
@@ -135,7 +136,11 @@ describe('getCollab()', () => {
 					})
 			})
 		);
-		const result = await getCollab(fetch, '0xc506cd1a02b4c1223b005298b54f16aca31bbf34');
+		const result = await getCollab(
+			fetch,
+			process.env.THEGRAPH_URL,
+			'0xc506cd1a02b4c1223b005298b54f16aca31bbf34'
+		);
 
 		// Assert
 		expect(result).toEqual({
@@ -173,7 +178,7 @@ describe('getCollab()', () => {
 					})
 			})
 		);
-		const result = await getCollab(fetch, '0x123');
+		const result = await getCollab(fetch, process.env.THEGRAPH_URL, '0x123');
 
 		// Assert
 		expect(result).toBeUndefined();

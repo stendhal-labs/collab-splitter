@@ -1,10 +1,10 @@
 <script context="module">
-	import { getCollab } from '../../../../sdk/';
+	import { convertUIntToPercentage, getCollab } from '../../../../sdk/';
 	/**
 	 * @type {import('@sveltejs/kit').Load}
 	 */
 	export async function load({ page, fetch, session, context }) {
-		const collab = await getCollab(fetch, page.params.id);
+		const collab = await getCollab(fetch, variables.THEGRAPH_URL, page.params.id);
 		return {
 			props: {
 				collab
@@ -16,7 +16,6 @@
 <script>
 	import { variables } from '$lib/modules/variables';
 	import { account, getSigner, provider } from '$lib/modules/wallet';
-	import { convertBigIntToPercentage } from '$lib/utils/utils';
 
 	import {
 		getTokenAddresses,
@@ -149,7 +148,7 @@
 						<b>{ethers.utils.formatEther(totalReceived)}</b> ETH
 					</p>
 				{/if}
-				<h3>My allocation ({convertBigIntToPercentage(myAllocation.allocation)}%)</h3>
+				<h3>My allocation ({convertUIntToPercentage(myAllocation.allocation)}%)</h3>
 
 				<div class="claim-wrapper">
 					<p>Ethereum</p>
@@ -221,7 +220,7 @@
 							<td>
 								{allocation.recipient.id}
 							</td>
-							<td class="td--right">{convertBigIntToPercentage(allocation.allocation)}%</td>
+							<td class="td--right">{convertUIntToPercentage(allocation.allocation)}%</td>
 						</tr>
 					{/each}
 				</tbody>

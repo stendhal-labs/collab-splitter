@@ -55,7 +55,12 @@
 			confirm('Some recipients do not have any allocation and will be removed. Are you sure?')
 		) {
 			loading = true;
-			const events = await create(name, withAllocation, await getSigner())
+			const events = await create(
+				name,
+				withAllocation,
+				await getSigner(),
+				variables.FACTORY_ADDRESS
+			)
 				.then((tx) => tx.wait())
 				.then((receipt) => {
 					console.log(receipt);
