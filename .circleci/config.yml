@@ -47,12 +47,12 @@ jobs:
       - store_test_results:
           path: ./contracts/coverage.json
       - store_test_results:
-          path: ./sdk/coverage.json
+          path: ./sdk/coverage-final.json
       - codecov/upload:
           file: "./contracts/coverage.json"
           flags: "contracts"
       - codecov/upload:
-          file: "./sdk/coverage.json"
+          file: "./sdk/coverage-final.json"
           flags: "sdk"
 workflows:
   contracts:
