@@ -169,6 +169,7 @@ export async function claimBatch(account, collab, signer) {
 
 	const tokenAddresses = getTokenAddresses(collab);
 
+	console.log(`Claiming ETH + ERC20s`);
 	console.log(
 		recipients[accountIndex].account,
 		recipients[accountIndex].percent,
@@ -238,10 +239,12 @@ export async function claimERC20(account, collab, tokenAddress, signer) {
 	}));
 	const accountIndex = recipients.findIndex((r) => account === r.account);
 
+	console.log(`Claiming ERC20`);
 	console.log(
 		recipients[accountIndex].account,
 		recipients[accountIndex].percent,
-		getProof(recipients, accountIndex)
+		getProof(recipients, accountIndex),
+		[tokenAddress]
 	);
 	return contract.claimERC20(
 		recipients[accountIndex].account,

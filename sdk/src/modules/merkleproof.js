@@ -39,7 +39,7 @@ function merkleRoot(txs) {
 		return txs[0];
 	}
 
-	return merkleRoot(toPairs(txs).map((pair) => hashPair(...pair)));
+	return merkleRoot(toPairs(txs).map((pair) => hashPair(pair[0], pair[1])));
 }
 
 function merkleProof(txs, tx, proof = []) {
@@ -50,14 +50,16 @@ function merkleProof(txs, tx, proof = []) {
 	const tree = [];
 
 	toPairs(txs).forEach((pair) => {
-		const hash = hashPair(...pair);
-		// console.log(`hash: ${hash}`);
+		if (pair.length === 1) {
+			pair[1] = pair[0];
+		}
+		const hash = hashPair(pair[0], pair[1]);
 
 		if (pair.includes(tx)) {
 			const idx = (pair[0] === tx) | 0;
-			if (idx > pair.length - 1) {
-				console.error(`Array index out of bounds: index ${idx}, length ${pair.length}`);
-			}
+			// if (idx > pair.length - 1) {
+			// 	console.error(`Array index out of bounds: index ${idx}, length ${pair.length}`);
+			// }
 			proof.push(pair[idx]);
 			tx = hash;
 		}

@@ -5,6 +5,11 @@
 	 */
 	export async function load({ page, fetch, session, context }) {
 		const collab = await getCollab(fetch, variables.THEGRAPH_URL, page.params.id);
+		if (!collab) {
+			return {
+				status: 404
+			};
+		}
 		return {
 			props: {
 				collab
