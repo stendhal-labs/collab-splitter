@@ -22,6 +22,9 @@ beforeAll(() => {
 		FACTORY_ADDRESS: '0x254dffcd3277C0b1660F6d42EFbB754edaBAbC2B'
 	};
 });
+afterAll(() => {
+	resetMocks();
+});
 
 let blockchain = 'ethereum';
 let accounts = [

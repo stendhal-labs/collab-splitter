@@ -7,11 +7,11 @@ executors:
   contracts:
     docker:
       - image: cimg/node:lts
-      
+
 jobs:
   build-and-test:
     environment:
-      ENABLE_GAS_REPORT: 'true'
+      ENABLE_GAS_REPORT: "true"
     executor: contracts
     steps:
       - checkout
@@ -24,11 +24,12 @@ jobs:
             - v1-contracts-deps-{{ checksum "contracts/package-lock.json" }}
             - v1-contracts-deps-
       - run:
-          name: Build SDK
+          name: Build & test SDK
           command: |
             cd sdk
             npm install
             npm run build
+            npm run coverage
       - run:
           name: Test sol contracts
           command: |
@@ -45,8 +46,14 @@ jobs:
             - contracts/node_modules
       - store_test_results:
           path: ./contracts/coverage.json
+      - store_test_results:
+          path: ./sdk/coverage.json
       - codecov/upload:
-          file: './contracts/coverage.json'
+          file: "./contracts/coverage.json"
+          flags: "contracts"
+      - codecov/upload:
+          file: "./sdk/coverage.json"
+          flags: "sdk"
 workflows:
   contracts:
     jobs:
