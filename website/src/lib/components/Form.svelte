@@ -1,17 +1,16 @@
-<script lang="ts">
+<script>
 	import { createEventDispatcher } from 'svelte';
-	import sdk from '../../../../sdk/';
+	import { create, convertPercentageToUint } from '../../../../sdk/';
 	import { variables } from '$lib/modules/variables';
-	import { Recipient } from '$lib/modules/Recipient';
-	import { connected, getSigner } from '$lib/modules/wallet';
-	import { convertPercentageToSolidityUint } from '$lib/utils/utils';
-	import factoryABI from '$lib/data/abis/factory';
+	import { connected, getAccount, getSigner } from '$lib/modules/wallet';
 	import OnlyConnected from './OnlyConnected.svelte';
+	import Loading from './Loading.svelte';
 
 	const dispatch = createEventDispatcher();
 
 	let name = '';
-	let recipients: Recipient[] = [];
+	let recipients = [];
+	let loading = false;
 
 	let mustReset = false;
 
@@ -37,16 +36,16 @@
 	function initRecipients() {
 		//  recipients = [new Recipient(undefined, 0)];
 		recipients = [
-			new Recipient('0xf4274229Bee63d4A6D1Edde6919afA815F6E1a25', 10),
-			new Recipient('0xF4274229bEe63d4A6D1edDE6919aFa815f6e1a24', 80)
-			// new Recipient(getAccount(), 10)
+			{ account: '0xf4274229Bee63d4A6D1Edde6919afA815F6E1a25', percent: 10 },
+			{ account: '0xF4274229bEe63d4A6D1edDE6919aFa815f6e1a24', percent: 80 },
+			{ account: getAccount(), percent: 10 }
 		];
 	}
 
 	async function onSubmit() {
 		const withAllocation = recipients
 			.filter((r) => r.percent !== 0)
-			.map((r) => new Recipient(r.account, convertPercentageToSolidityUint(r.percent)));
+			.map((r) => ({ account: r.account, percent: convertPercentageToUint(r.percent) }));
 		const diff = withAllocation.length - recipients.length;
 
 		console.log(withAllocation);
@@ -55,27 +54,13 @@
 			diff == 0 ||
 			confirm('Some recipients do not have any allocation and will be removed. Are you sure?')
 		) {
-			// calculate tree root
-			const root = sdk.getRoot(withAllocation);
-
-			console.log(variables.FACTORY_ADDRESS, factoryABI, await getSigner());
-			// create contract
-			const contract = new ethers.Contract(
-				variables.FACTORY_ADDRESS,
-				factoryABI,
-				await getSigner()
-			);
-
-			console.log(convertPercentageToSolidityUint(50.5));
-
-			// create collab splitter
-			const events = await contract
-				.createSplitter(
-					name,
-					root,
-					withAllocation.map((a) => a.account),
-					withAllocation.map((a) => a.percent)
-				)
+			loading = true;
+			const events = await create(
+				name,
+				withAllocation,
+				await getSigner(),
+				variables.FACTORY_ADDRESS
+			)
 				.then((tx) => tx.wait())
 				.then((receipt) => {
 					console.log(receipt);
@@ -87,6 +72,7 @@
 					alert(`Failed to create Splitter contract: \n ${err.message}`);
 				});
 
+			loading = false;
 			mustReset = true;
 			dispatch('splitter', {
 				address: events[0].args[0]
@@ -100,10 +86,10 @@
 	}
 
 	function addLine() {
-		recipients = [...recipients, new Recipient(undefined, 0)];
+		recipients = [...recipients, { account: undefined, percent: 0 }];
 	}
 
-	function removeLine(index: number) {
+	function removeLine(index) {
 		recipients.splice(index, 1);
 		recipients = [...recipients];
 	}
@@ -190,7 +176,15 @@
 
 	<OnlyConnected>
 		{#if !mustReset}
-			<button on:click={onSubmit} disabled={!canSubmit} class="form__create">Create</button>
+			<button on:click={onSubmit} disabled={!canSubmit} class="form__create">
+				{#if loading}
+					<Loading>
+						<p>Creating...</p>
+					</Loading>
+				{:else}
+					Create
+				{/if}
+			</button>
 		{:else}
 			<button on:click={onReset} class="form__create">Reset</button>
 		{/if}
@@ -258,7 +252,7 @@
 	}
 
 	.form__create {
-		@apply w-full mt-4;
+		@apply w-full mt-4 flex justify-center;
 	}
 
 	input {

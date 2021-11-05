@@ -1,13 +1,11 @@
-<script lang="ts">
+<script>
+	import { convertUIntToPercentage, getAllocationsByAccount } from '../../../sdk';
+	import { account, getAccount, getSigner } from '$lib/modules/wallet';
+	import { getTokenAddresses, isThereSomethingToClaimForAccount, claimBatch } from '../../../sdk';
+	import { variables } from '$lib/modules/variables';
+
 	import OnlyConnected from '$lib/components/OnlyConnected.svelte';
-	import { convertBigIntToPercentage } from '$lib/utils/utils';
-	import { geAllocationsByAccount } from '$lib/modules/graph';
-	import { account, getAccount } from '$lib/modules/wallet';
-	import {
-		claimBatch,
-		getTokenAddresses,
-		isThereSomethingToClaimForAccount
-	} from '$lib/modules/splitter';
+	import Loading from '$lib/components/Loading.svelte';
 
 	let getAllocationsByAccountPromise;
 	let allocations;
@@ -19,7 +17,11 @@
 	}
 
 	async function updateData() {
-		getAllocationsByAccountPromise = geAllocationsByAccount(fetch, getAccount());
+		getAllocationsByAccountPromise = getAllocationsByAccount(
+			fetch,
+			variables.THEGRAPH_URL,
+			getAccount()
+		);
 		allocations = await getAllocationsByAccountPromise;
 		let allocationsInfoFromContract = [];
 
@@ -29,7 +31,8 @@
 				alloc.splitter.id,
 				$account,
 				alloc.allocation,
-				tokenAddresses
+				tokenAddresses,
+				await getSigner()
 			);
 
 			allocationsInfoFromContract.push({
@@ -42,7 +45,7 @@
 
 	async function onClaimAll(allocation) {
 		try {
-			await claimBatch($account, allocation.splitter);
+			await claimBatch($account, allocation.splitter, await getSigner());
 		} catch (err) {
 			console.error(err);
 			if (err?.data?.message) {
@@ -61,41 +64,46 @@
 
 		<OnlyConnected>
 			{#await getAllocationsByAccountPromise}
-				<p>Loading...</p>
+				<div class="loading">
+					<Loading>
+						<p>Loading...</p>
+					</Loading>
+				</div>
+			{:then}
+				{#if allocations?.length > 0 && allocationsAdditionalInfo.length > 0}
+					<table>
+						<thead>
+							<tr>
+								<th>Splitter Name</th>
+								<th>My Percentage</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each allocations as allocation, index}
+								<tr>
+									<td>{allocation.splitter.name}</td>
+									<td>{convertUIntToPercentage(allocation.allocation)}%</td>
+
+									<td class="actions">
+										<a href="/collab/{allocation.splitter.id}">See details</a>
+										<button
+											on:click={onClaimAll(allocation)}
+											class="actions__claim"
+											disabled={!allocationsAdditionalInfo[index]?.isThereSomethingToClaim}
+											>Claim</button
+										>
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				{:else}
+					No collaboration yet !
+				{/if}
 			{:catch error}
 				<p>Something went wrong: {error.message}</p>
 			{/await}
-			{#if allocations?.length > 0 && allocationsAdditionalInfo.length > 0}
-				<table>
-					<thead>
-						<tr>
-							<th>Splitter Name</th>
-							<th>My Percentage</th>
-							<th>Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						{#each allocations as allocation, index}
-							<tr>
-								<td>{allocation.splitter.name}</td>
-								<td>{convertBigIntToPercentage(allocation.allocation)}%</td>
-
-								<td class="actions">
-									<a href="/collab/{allocation.splitter.id}">See details</a>
-									<button
-										on:click={onClaimAll(allocation)}
-										class="actions__claim"
-										disabled={!allocationsAdditionalInfo[index]?.isThereSomethingToClaim}
-										>Claim</button
-									>
-								</td>
-							</tr>
-						{/each}
-					</tbody>
-				</table>
-			{:else}
-				No collaboration yet !
-			{/if}
 		</OnlyConnected>
 	</div>
 </main>

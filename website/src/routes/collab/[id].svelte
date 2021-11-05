@@ -1,10 +1,15 @@
-<script context="module" lang="ts">
-	import { getCollab } from '$lib/modules/graph';
+<script context="module">
+	import { convertUIntToPercentage, getCollab } from '../../../../sdk/';
 	/**
 	 * @type {import('@sveltejs/kit').Load}
 	 */
 	export async function load({ page, fetch, session, context }) {
-		const collab = await getCollab(fetch, page.params.id);
+		const collab = await getCollab(fetch, variables.THEGRAPH_URL, page.params.id);
+		if (!collab) {
+			return {
+				status: 404
+			};
+		}
 		return {
 			props: {
 				collab
@@ -13,30 +18,30 @@
 	}
 </script>
 
-<script lang="ts">
+<script>
 	import { variables } from '$lib/modules/variables';
 	import { account, getSigner, provider } from '$lib/modules/wallet';
-	import { convertBigIntToPercentage } from '$lib/utils/utils';
 
-	import splitterABI from '$lib/data/abis/splitter';
-
-	import OnlyConnected from '$lib/components/OnlyConnected.svelte';
-	import { Recipient } from '$lib/modules/Recipient';
 	import {
-		claimBatch,
-		claimERC20,
-		claimETH,
-		getAlreadyClaimed,
-		getClaimable,
 		getTokenAddresses,
+		getTotalReceived,
+		getClaimable,
+		getAlreadyClaimed,
+		claimETH,
+		claimERC20,
+		claimBatch,
 		isThereSomethingToClaim
-	} from '$lib/modules/splitter';
+	} from '../../../../sdk/';
+	import OnlyConnected from '$lib/components/OnlyConnected.svelte';
 
 	export let collab;
 
 	$: myAllocation = collab?.allocations.find((a) => $account === a.recipient.id);
 
-	const recipients = collab.allocations.map((a) => new Recipient(a.recipient.id, a.allocation));
+	const recipients = collab.allocations.map((a) => ({
+		account: a.recipient.id,
+		percent: a.allocation
+	}));
 
 	let contractBalance;
 	let accountClaimable;
@@ -53,17 +58,21 @@
 
 	async function updateDataFromContract() {
 		contractBalance = await $provider.getBalance(collab.id);
-
-		const contract = new ethers.Contract(collab.id, splitterABI, await getSigner());
-		totalReceived = await contract.totalReceived();
+		totalReceived = await getTotalReceived(collab.id, await getSigner());
 
 		accountClaimable = await getClaimable(
 			collab.id,
 			$account,
 			myAllocation.allocation,
-			tokenAddresses
+			tokenAddresses,
+			await getSigner()
 		);
-		alreadyClaimed = await getAlreadyClaimed(collab.id, $account, tokenAddresses);
+		alreadyClaimed = await getAlreadyClaimed(
+			collab.id,
+			$account,
+			tokenAddresses,
+			await getSigner()
+		);
 
 		// ethToClaim = await contract.getBatchClaimableETH(
 		// 	recipients.map((r) => r.account),
@@ -73,7 +82,7 @@
 
 	async function onClaim() {
 		try {
-			await claimETH($account, collab);
+			await claimETH($account, collab, await getSigner());
 		} catch (err) {
 			console.error(err);
 			if (err?.data?.message) {
@@ -85,7 +94,7 @@
 	}
 	async function onClaimERC20(tokenAddress) {
 		try {
-			await claimERC20($account, collab, tokenAddress);
+			await claimERC20($account, collab, tokenAddress, await getSigner());
 		} catch (err) {
 			console.error(err);
 			if (err?.data?.message) {
@@ -98,7 +107,7 @@
 
 	async function onClaimBatch() {
 		try {
-			await claimBatch($account, collab);
+			await claimBatch($account, collab, await getSigner());
 		} catch (err) {
 			console.error(err);
 			if (err?.data?.message) {
@@ -144,7 +153,7 @@
 						<b>{ethers.utils.formatEther(totalReceived)}</b> ETH
 					</p>
 				{/if}
-				<h3>My allocation ({convertBigIntToPercentage(myAllocation.allocation)}%)</h3>
+				<h3>My allocation ({convertUIntToPercentage(myAllocation.allocation)}%)</h3>
 
 				<div class="claim-wrapper">
 					<p>Ethereum</p>
@@ -216,7 +225,7 @@
 							<td>
 								{allocation.recipient.id}
 							</td>
-							<td class="td--right">{convertBigIntToPercentage(allocation.allocation)}%</td>
+							<td class="td--right">{convertUIntToPercentage(allocation.allocation)}%</td>
 						</tr>
 					{/each}
 				</tbody>
