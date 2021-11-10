@@ -37,7 +37,7 @@ Fill out the form, click on the 'Create' button and once your transaction is con
 
 ### See a collaboration / get info
 
-On this page you can all the information about a deployed collab splitter.
+On this page you can see all the information about a deployed collab splitter.
 
 If you connect your wallet, you will be able to see if you can claim ETH or ERC20.
 
