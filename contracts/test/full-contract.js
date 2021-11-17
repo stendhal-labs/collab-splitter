@@ -33,8 +33,7 @@ describe('CollabSplitter', () => {
             CollabSplitterFactory.address,
             deployer,
         );
-        //laverieprivee.com/2018/02/08/regles-dor-du-lavage/
-        https: CollabSplitter = await deployments.get('CollabSplitter');
+        CollabSplitter = await deployments.get('CollabSplitter');
         splitterImplementation = await ethers.getContractAt(
             'CollabSplitter',
             CollabSplitter.address,
@@ -73,6 +72,19 @@ describe('CollabSplitter', () => {
         expect(
             await deployer.provider.getBalance(collabAccount.account),
         ).to.be.equal(due);
+
+        expect(
+            await splitter.getBatchClaimableETH(
+                [collabAccount.account],
+                [collabAccount.percent],
+            ),
+        ).to.be.deep.equal([ethers.utils.parseEther('0')]);
+
+        expect(
+            await splitter.getBatchClaimed(collabAccount.account, [
+                ethers.constants.AddressZero,
+            ]),
+        ).to.be.deep.equal([due]);
 
         return due;
     }
