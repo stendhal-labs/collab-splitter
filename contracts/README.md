@@ -34,7 +34,7 @@ If you want to know more about gas usage, you can run `npm run gas-report`
 
 The `CollabSplitterFactory` has been deployed to the following network.
 
-| Network | Address |
-| ------- | ------- |
-| Rinbeky | 0x      |
-| Mainnet | 0x      |
+| Network | Address                                                                                                                       |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Rinbeky | [0x916Edd1cbf7A77924168409a24c343Aff22Ac7f6](https://rinkeby.etherscan.io/address/0x916Edd1cbf7A77924168409a24c343Aff22Ac7f6) |
+| Mainnet | 0x                                                                                                                            |

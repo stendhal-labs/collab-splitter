@@ -49,6 +49,23 @@ You can claim **ETH** or the listed **ERC20** from incoming transactions.
 
 You can also claim **individually** or **for all** the contract recipients.
 
+## Gas costs
+
+A full gas report can be obtained in `./contracts` by running `npm run gas-report`.
+At the current time November 2021, and at 3682.73 eur/eth, all operations in average costs **around or less than 10 Euro**.
+But here are some useful info extracted from it:
+
+| Operation                                    | Average gas cost @21gwei/gas |
+| -------------------------------------------- | ---------------------------- |
+| Collab Splitter Contract Creation (one time) | 146042                       |
+| Claim all ETH and all ERC20 tokens           | 130923                       |
+| Claim ETH                                    | 78647                        |
+| Claim tokens of an ERC20 e.g. DAI            | 137960                       |
+
+Please note that gas costs for claiming ERC20 tokens can increase depending on their contract and implementation.
+
+If you want to help us reduce the gas costs, all suggestions/PR are more than welcomed !
+
 ## Installation
 
 Simply run `npm run install:all` or ` npm run install:all:pnpm` if you are using [pnpm](https://pnpm.io/).
