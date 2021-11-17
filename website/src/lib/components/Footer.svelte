@@ -8,14 +8,15 @@
 				Made by <a href="https://stendhal.ai" rel="external noopener" target="_blank">Stendhal</a>
 				for street-artists on
 				<a href="https://wallkanda.art" rel="external noopener" target="_blank">Wallkanda</a>
-			</p>
+				</p>
 		</div>
 		<div class="footer__socials">
 			<a
 				href="https://github.com/stendhal-labs/collab-splitter"
 				rel="external noopener"
 				target="_blank">Github</a
-			>, <a href="https://wallkanda.art/legal" rel="external noopener" target="_blank">Terms</a>
+			>, 
+			<a href="https://github.com/stendhal-labs/collab-splitter/blob/main/LICENSE" rel="external noopener" target="_blank">License</a>
 		</div>
 	</footer>
 </div>
@@ -37,8 +38,5 @@
 	.footer__brand {
 		@apply flex flex-col justify-between col-span-2;
 		@apply lg:mr-auto lg:ml-0 mx-auto lg:text-left text-center;
-	}
-	.footer__socials {
-		@apply flex flex-row space-x-2 mt-3;
 	}
 </style>
