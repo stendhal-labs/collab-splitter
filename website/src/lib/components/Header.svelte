@@ -13,7 +13,15 @@
 				><b>Collab splitter</b>
 			</a>
 			<nav>
-				<ul class="menu__primary" />
+				<ul class="menu__primary">
+					<li>
+						<a
+							href="https://github.com/stendhal-labs/collab-splitter#readme"
+							rel="external noopener"
+							target="_blank">Docs</a
+						>
+					</li>
+				</ul>
 			</nav>
 		</div>
 		{#if !$connected}
@@ -58,12 +66,17 @@
 		margin-left: 70px;
 	}
 
-	.menu__primary [aria-current] {
-		font-family: silkabold;
+	@screen sm {
+		li + li {
+			margin-left: 48px;
+		}
+	}
+
+	li a {
 		position: relative;
 	}
 
-	.menu__primary [aria-current]::after {
+	li a:hover::after {
 		content: '';
 		position: absolute;
 		top: calc(100% + 5px);

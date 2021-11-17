@@ -15,7 +15,7 @@
 				href="https://github.com/stendhal-labs/collab-splitter"
 				rel="external noopener"
 				target="_blank">Github</a
-			>
+			>, <a href="https://wallkanda.art/legal" rel="external noopener" target="_blank">Terms</a>
 		</div>
 	</footer>
 </div>
@@ -38,7 +38,7 @@
 		@apply flex flex-col justify-between col-span-2;
 		@apply lg:mr-auto lg:ml-0 mx-auto lg:text-left text-center;
 	}
-	.footer__info__socials {
+	.footer__socials {
 		@apply flex flex-row space-x-2 mt-3;
 	}
 </style>
