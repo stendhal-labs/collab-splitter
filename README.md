@@ -66,6 +66,25 @@ Please note that gas costs for claiming ERC20 tokens can increase depending on t
 
 If you want to help us reduce the gas costs, all suggestions/PR are more than welcomed !
 
+## FAQ
+
+> Is there a limit on the number of recipients ?
+
+Simple answer: **No**
+
+> How are gas fees handled?
+
+There are 2 potential sources of gas fees as a collaborator:
+
+- Gas fees related to the creation of the collab splitter contract that are paid only once by one of the artists (or even someone else)
+- Gas fees related to claims done by every collaborator when they want to transfert their funds
+
+Receiving ETH or ERC20 as sales revenues or royalties will always be paid by sender so 0 gas fees for a collaborator !
+
+> How much decimals can I set for each split ?
+
+You can go down to 0.01%. We chose the .00 precision to make it easy to use as a percentage and various technical reasons.
+
 ## Installation
 
 Simply run `npm run install:all` or ` npm run install:all:pnpm` if you are using [pnpm](https://pnpm.io/).
