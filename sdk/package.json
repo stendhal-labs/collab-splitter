@@ -12,6 +12,17 @@
     "url": "https://github.com/stendhal-labs/collab-splitter.git",
     "directory": "sdk"
   },
+  "bugs": {
+    "url": "https://github.com/stendhal-labs/collab-splitter/issues"
+  },
+  "license": "MIT",
+  "keywords": [
+    "ethereum",
+    "smartcontract",
+    "collaboration",
+    "splitter",
+    "eip-2981"
+  ],
   "dependencies": {
     "ethers": "^5.4.7"
   },
