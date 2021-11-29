@@ -1,6 +1,6 @@
 {
   "name": "collab-splitter-sdk",
-  "version": "1.0.0",
+  "version": "0.0.1-alpha",
   "main": "dist/collab-splitter.cjs.js",
   "module": "dist/collab-splitter.esm.js",
   "browser": "dist/collab-splitter.umd.js",
