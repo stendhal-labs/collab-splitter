@@ -19,7 +19,7 @@ import { FACTORY_ADDRESS_RINKEBY } from '../../src/main';
 
 beforeAll(() => {
 	process.env = {
-		FACTORY_ADDRESS: '0x254dffcd3277C0b1660F6d42EFbB754edaBAbC2B'
+		FACTORY_ADDRESS: '0x916Edd1cbf7A77924168409a24c343Aff22Ac7f6'
 	};
 });
 afterAll(() => {
