@@ -17,6 +17,6 @@
 
 <style lang="postcss">
 	.loading {
-		@apply flex flex-row items-center;
+		@apply flex flex-row items-center py-8 mx-auto;
 	}
 </style>
