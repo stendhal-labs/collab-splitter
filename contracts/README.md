@@ -37,4 +37,4 @@ The `CollabSplitterFactory` has been deployed to the following network.
 | Network | Address                                                                                                                       |
 | ------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | Rinbeky | [0x916Edd1cbf7A77924168409a24c343Aff22Ac7f6](https://rinkeby.etherscan.io/address/0x916Edd1cbf7A77924168409a24c343Aff22Ac7f6) |
-| Mainnet | 0x                                                                                                                            |
+| Mainnet | [0x486E4CCd2970C1971f41AA16EEFf078f821F3E9a](https://etherscan.io/address/0x486e4ccd2970c1971f41aa16eeff078f821f3e9a)         |

@@ -10,7 +10,7 @@ receiving and splitting Ethereum and ERC20 payments. It can be used to
 split earnings from artworks sales if multiple artists were involved or as
 the recipient of royalties compatible with the new [EIP-2981: NFT Royalty Standard](https://eips.ethereum.org/EIPS/eip-2981)
 
-Available on [https://purple-disk-1468.on.fleek.co/](https://purple-disk-1468.on.fleek.co/)
+Available on https://www.collab-splitter.org/
 
 The project has several components:
 
@@ -21,7 +21,7 @@ The project has several components:
 
 ## Usage
 
-Use the SDK or create your contract directly [on the website](https://purple-disk-1468.on.fleek.co/)
+Use the SDK or create your contract directly [on the website](https://www.collab-splitter.org/)
 
 ![Use cases](doc/collab-splitter-use-cases.png)
 
@@ -84,6 +84,12 @@ Receiving ETH or ERC20 as sales revenues or royalties will always be paid by sen
 > How much decimals can I set for each split ?
 
 You can go down to 0.01%. We chose the .00 precision to make it easy to use as a percentage and various technical reasons.
+
+> Can I try it ?
+
+Yes of course, you can test all the features on the **Rinkeby** test network on https://rinkeby.collab-splitter.org/
+
+Don't forget to get some Rinkeby ETH from the faucet https://faucet.rinkeby.io/
 
 ## Installation
 
