@@ -11,6 +11,7 @@
 	import OnlyKnownNetwork from './Network/OnlyKnownNetwork.svelte';
 	import { isAddressValid, shortenAddress } from '$lib/utils/utils';
 	import OnlyConnected from './OnlyConnected.svelte';
+	import Loading from './Loading.svelte';
 
 	const dispatch = createEventDispatcher();
 

@@ -9,7 +9,7 @@ export default {
 	'4': {
 		name: 'Rinkeby',
 		private: true, // this network only shows up if it's selected; because test network
-		factory_address:'0x254dffcd3277C0b1660F6d42EFbB754edaBAbC2B',
+		factory_address:'0x916Edd1cbf7A77924168409a24c343Aff22Ac7f6',
 		graph_url: 'https://api.thegraph.com/subgraphs/name/stendhal-labs/collab-splitter-rinkeby',
 		explorer_url: 'https://rinkeby.etherscan.io',
 	}
