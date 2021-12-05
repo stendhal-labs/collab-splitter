@@ -1,10 +1,16 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
+	import { openModal } from 'yasp-modals';
+
 	import { create, convertPercentageToUint } from '../../../../sdk/';
-	import { variables } from '$lib/modules/variables';
+
+	import { currentNetwork } from '$lib/modules/network';
 	import { connected, getAccount, getSigner } from '$lib/modules/wallet';
+
+	import AddRecipientModal from './Modals/AddRecipientModal.svelte';
+	import OnlyKnownNetwork from './Network/OnlyKnownNetwork.svelte';
+	import { isAddressValid, shortenAddress } from '$lib/utils/utils';
 	import OnlyConnected from './OnlyConnected.svelte';
-	import Loading from './Loading.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -25,21 +31,8 @@
 		invalidRecipients.length == 0 &&
 		recipientsWithAllocation.length > 1;
 
-	function isAddressValid(address = '') {
-		try {
-			return ethers.utils.getAddress(address);
-		} catch (e) {
-			return false;
-		}
-	}
-
 	function initRecipients() {
-		//  recipients = [new Recipient(undefined, 0)];
-		recipients = [
-			{ account: '0xf4274229Bee63d4A6D1Edde6919afA815F6E1a25', percent: 10 },
-			{ account: '0xF4274229bEe63d4A6D1edDE6919aFa815f6e1a24', percent: 80 },
-			{ account: getAccount(), percent: 10 }
-		];
+		recipients = [];
 	}
 
 	async function onSubmit() {
@@ -59,7 +52,7 @@
 				name,
 				withAllocation,
 				await getSigner(),
-				variables.FACTORY_ADDRESS
+				$currentNetwork.factory_address
 			)
 				.then((tx) => tx.wait())
 				.then((receipt) => {
@@ -86,7 +79,12 @@
 	}
 
 	function addLine() {
-		recipients = [...recipients, { account: undefined, percent: 0 }];
+		openModal(AddRecipientModal, {
+			callback: (recipient) => {
+				recipients.push(recipient);
+				recipients = recipients;
+			}
+		});
 	}
 
 	function removeLine(index) {
@@ -99,61 +97,48 @@
 
 <form on:submit|preventDefault>
 	<div class="form__group form__name">
-		<label for="name"><strong>Splitter name</strong></label>
+		<label for="name"><strong>Splitter name *</strong></label>
 		<input
 			type="text"
 			bind:value={name}
 			id="name"
-			placeholder="Collab between dievardump, floshiii and agraignic"
+			placeholder="Choose a name to identify the collab splitter"
 		/>
 	</div>
 	<div class="form__group form__recipients">
-		<strong>Recipients</strong>
-		<table>
-			<thead>
-				<tr>
-					<th scope="col" />
-					<th scope="col">Address</th>
-					<th scope="col">Allocation</th>
-					<th scope="col" />
-				</tr>
-			</thead>
-			<tbody>
-				{#each recipients as recipient, index}
-					<tr class="form__recipients__row">
-						<td><label for="recipient-{index}">#{index + 1}</label></td>
-						<td class="form__recipients__row__address">
-							<input
-								type="text"
-								id="recipient-{index}"
-								placeholder="0x123456789"
-								title="Must be an ETH address"
-								bind:value={recipient.account}
-							/>
-						</td>
-						<td class="form__recipients__row__allocation">
-							<input
-								type="number"
-								name="Percent"
-								id="split-{index}"
-								min="0"
-								max="100"
-								step="0.01"
-								placeholder="3.14"
-								bind:value={recipient.percent}
-							/> %
-						</td>
-						<td>
-							<button
-								type="button"
-								on:click={() => removeLine(index)}
-								class="form__recipient__remove">Remove</button
-							>
-						</td>
+		<strong>Recipients *</strong>
+		{#if recipients.length}
+			<table>
+				<thead>
+					<tr>
+						<th scope="col" />
+						<th scope="col">Address</th>
+						<th scope="col">Allocation</th>
+						<th scope="col" />
 					</tr>
-				{/each}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					{#each recipients as recipient, index}
+						<tr class="form__recipients__row">
+							<td><label for="recipient-{index}">#{index + 1}</label></td>
+							<td class="form__recipients__row__address">
+								{shortenAddress(recipient.account)}
+							</td>
+							<td class="form__recipients__row__allocation">
+								{recipient.percent}%
+							</td>
+							<td>
+								<button on:click={() => removeLine(index)} class="form__recipient__remove light"
+									>Remove</button
+								>
+							</td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		{:else}
+			<p class="empty">No recipient yet!</p>
+		{/if}
 	</div>
 	<div class="form__group form__add">
 		<button type="button" on:click={addLine}>Add recipient</button>
@@ -175,19 +160,21 @@
 	</p>
 
 	<OnlyConnected>
-		{#if !mustReset}
-			<button on:click={onSubmit} disabled={!canSubmit} class="form__create">
-				{#if loading}
-					<Loading>
-						<p>Creating...</p>
-					</Loading>
-				{:else}
-					Create
-				{/if}
-			</button>
-		{:else}
-			<button on:click={onReset} class="form__create">Reset</button>
-		{/if}
+		<OnlyKnownNetwork>
+			{#if !mustReset}
+				<button on:click={onSubmit} disabled={!canSubmit} class="form__create">
+					{#if loading}
+						<Loading>
+							<p>Creating...</p>
+						</Loading>
+					{:else}
+						Create
+					{/if}
+				</button>
+			{:else}
+				<button on:click={onReset} class="form__create">Reset</button>
+			{/if}
+		</OnlyKnownNetwork>
 	</OnlyConnected>
 </form>
 
@@ -204,6 +191,7 @@
 		border-collapse: separate;
 		border-spacing: 0 0.5em;
 		width: 100%;
+		text-align: center;
 	}
 
 	th,
@@ -224,15 +212,6 @@
 	}
 
 	.form__recipients__row {
-	}
-
-	.form__recipients__row__address input {
-		width: 100%;
-	}
-
-	.form__recipients__row__allocation input {
-		text-align: right;
-		width: 100px;
 	}
 
 	.form__recipient__remove {
@@ -258,5 +237,9 @@
 	input {
 		@apply px-1 py-1;
 		color: var(--secondary);
+	}
+
+	.empty {
+		@apply py-6 text-center font-medium;
 	}
 </style>

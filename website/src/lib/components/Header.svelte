@@ -1,5 +1,6 @@
 <script>
 	import { page } from '$app/stores';
+	import { currentNetwork } from '$lib/modules/network';
 	import { connect, connected, signer } from '$lib/modules/wallet';
 	import { shortenAddress } from '$lib/utils/utils';
 
@@ -8,7 +9,7 @@
 
 <div class="header__container">
 	<header>
-		<div>
+		<div class="left-side">
 			<a sveltekit:prefetch href="/" aria-current={segment === '/' ? true : undefined}
 				><b>Collab splitter</b>
 			</a>
@@ -29,8 +30,13 @@
 		{:else}
 			{#await $signer.getAddress() then address}
 				<div class="menu__secondary">
-					<a href="/dashboard/">
-						{shortenAddress(address)}
+					<a class="user__wrapper" href="/dashboard/">
+						<div class="icon__wrapper">
+							<svg class="icon"><use xlink:href="#{$currentNetwork.name.toLowerCase()}" /></svg>
+						</div>
+						<span>
+							{shortenAddress(address)}
+						</span>
 					</a>
 					<ul class="menu__sub">
 						<li><a href="/dashboard">Dashboard</a></li>
@@ -55,28 +61,18 @@
 	}
 
 	div {
-		@apply flex flex-row;
+		@apply flex flex-row gap-6;
 	}
 
 	ul {
-		@apply flex flex-col sm:flex-row;
+		@apply flex flex-col sm:flex-row gap-3;
 	}
 
-	nav {
-		margin-left: 70px;
-	}
-
-	@screen sm {
-		li + li {
-			margin-left: 48px;
-		}
-	}
-
-	li a {
+	nav li a {
 		position: relative;
 	}
 
-	li a:hover::after {
+	nav li a:hover::after {
 		content: '';
 		position: absolute;
 		top: calc(100% + 5px);
@@ -102,6 +98,7 @@
 		display: none;
 		position: absolute;
 		top: 100%;
+		width: 100%;
 		right: 0;
 		background-color: var(--primary);
 		color: var(--secondary);
@@ -126,5 +123,26 @@
 
 	a {
 		text-decoration: none;
+	}
+
+	.user__wrapper {
+		@apply flex flex-row items-center justify-end gap-4;
+		@apply py-2 px-4;
+		border-radius: 8px;
+		background-color: var(--primary);
+		color: var(--secondary);
+	}
+
+	.icon__wrapper {
+		@apply flex flex-row items-center justify-center;
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		background: linear-gradient(to bottom right, var(--secondary-25) 0%, var(--primary) 100%);
+	}
+
+	svg.icon {
+		width: 24px;
+		height: 24px;
 	}
 </style>

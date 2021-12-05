@@ -1,10 +1,22 @@
-hr {
-	border: 1px solid var(--secondary);
-}
-
 html {
 	color: var(--primary);
 	background-color: var(--secondary);
+
+	--current-color: var(--primary);
+	--current-bg: var(--secondary);
+}
+
+#svelte {
+	@apply flex flex-col;
+	min-height: 100vh;
+}
+
+main {
+	flex: 1 1 0;
+}
+
+hr {
+	border: 1px solid var(--secondary);
 }
 
 input {
@@ -16,9 +28,14 @@ button {
 	@apply bg-blue-600 rounded px-2 py-2 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50 font-bold;
 }
 
+button.light {
+	@apply bg-transparent border-solid border border-blue-600;
+	@apply !text-blue-600;
+}
+
 a {
 	text-decoration: underline;
-	text-decoration-color: var(--whitey);
+	text-decoration-color: var(--current-color);
 }
 
 button:disabled {
@@ -32,14 +49,38 @@ main {
 
 h1 {
 	@apply text-center text-2xl my-8;
+	@apply font-light uppercase;
+	position: relative;
 }
+
+h1::after,
+h2::after,
+h3::after {
+	content: '';
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	height: 2px;
+	width: 40px;
+	background-color: var(--current-color);
+}
+
 h2 {
-	@apply text-xl my-4;
+	@apply text-center text-xl my-4;
+	@apply font-light uppercase;
+	position: relative;
 }
 h3 {
-	@apply text-lg my-3;
+	@apply text-center text-lg my-3;
+	@apply font-light uppercase;
+	position: relative;
 }
 
 .error {
 	@apply text-center mt-8 text-red-500;
+}
+
+.modals__close {
+	display: none;
 }

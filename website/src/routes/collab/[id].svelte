@@ -1,26 +1,7 @@
-<script context="module">
-	import { convertUIntToPercentage, getCollab } from '../../../../sdk/';
-	/**
-	 * @type {import('@sveltejs/kit').Load}
-	 */
-	export async function load({ page, fetch, session, context }) {
-		const collab = await getCollab(fetch, variables.THEGRAPH_URL, page.params.id);
-		if (!collab) {
-			return {
-				status: 404
-			};
-		}
-		return {
-			props: {
-				collab
-			}
-		};
-	}
-</script>
-
 <script>
-	import { variables } from '$lib/modules/variables';
 	import { account, getSigner, provider } from '$lib/modules/wallet';
+	import { convertUIntToPercentage, getCollab } from '../../../../sdk/';
+	import { currentNetwork } from '$lib/modules/network';
 
 	import {
 		getTokenAddresses,
@@ -33,8 +14,9 @@
 		isThereSomethingToClaim
 	} from '../../../../sdk/';
 	import OnlyConnected from '$lib/components/OnlyConnected.svelte';
+	import { onMount } from 'svelte';
 
-	export let collab;
+	let collab;
 
 	$: myAllocation = collab?.allocations.find((a) => $account === a.recipient.id);
 
@@ -117,6 +99,10 @@
 			}
 		}
 	}
+
+	onMount(async () => {
+		collab = await getCollab(fetch, $currentNetwork.graph_url, page.params.id);
+	});
 </script>
 
 <main>
@@ -170,7 +156,7 @@
 						{#each collab.tokens as token, index}
 							<p>
 								{token.token.name}
-								(<a href="{variables.EXPLORER_URL}/token/{token.token.id}"
+								(<a href="{$currentNetwork.explorer_url}/token/{token.token.id}"
 									>{token.token.symbol.toUpperCase()}</a
 								>)
 							</p>
@@ -207,7 +193,7 @@
 		</OnlyConnected>
 
 		<h2>Contract:</h2>
-		<a href="{variables.EXPLORER_URL}/address/{collab.id}">{collab.id || ''}</a>
+		<a href="{$currentNetwork.explorer_url}/address/{collab.id}">{collab.id || ''}</a>
 
 		<h2>Allocations (<b>{collab.allocationsCount}</b>):</h2>
 

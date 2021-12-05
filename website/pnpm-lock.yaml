@@ -21,9 +21,13 @@ specifiers:
   tailwindcss: ^2.2.17
   tslib: ^2.3.1
   typescript: ^4.4.4
+  yasp-modals: ^1.0.7
+
+dependencies:
+  yasp-modals: 1.0.7
 
 devDependencies:
-  '@sveltejs/kit': 1.0.0-next.191_svelte@3.44.0
+  '@sveltejs/kit': 1.0.0-next.201_svelte@3.44.0
   '@types/jest': 27.0.2
   '@typescript-eslint/eslint-plugin': 4.33.0_cc617358c89d3f38c52462f6d809db4c
   '@typescript-eslint/parser': 4.33.0_eslint@7.32.0+typescript@4.4.4
@@ -145,8 +149,8 @@ packages:
       picomatch: 2.3.0
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.191_svelte@3.44.0:
-    resolution: {integrity: sha512-ikFKdgr0vcQB5lYqRtj6MUH4yu65le+qNVKxjJOK/Qj7Ev8IjaFKwiX1ppO48X5vJPsW+qAwvk/TqJwSM6VPDA==}
+  /@sveltejs/kit/1.0.0-next.201_svelte@3.44.0:
+    resolution: {integrity: sha512-WcYexOEPWgDWOk0oOteTU5QwWykdIcOFJig+akeHqwE/jVtPURLZFtTNx0ymUWXN4S+dUXf60KF6HEMv74FHpA==}
     engines: {node: '>=14.13'}
     hasBin: true
     peerDependencies:
@@ -2754,3 +2758,7 @@ packages:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}
     engines: {node: '>= 6'}
     dev: true
+
+  /yasp-modals/1.0.7:
+    resolution: {integrity: sha512-l1edX+52o10Y6q9O/ErxEoi42/zlXddw8zJPQ6rbyAiWf3nBKVFhsx/9pN5nJdcjMIvSS76xWO/A+knym0yMcA==}
+    dev: false

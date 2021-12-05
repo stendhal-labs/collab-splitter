@@ -39,7 +39,7 @@ if (argv.network && ['rinkeby', 'mainnet'].indexOf(argv.network) !== -1) {
     } else if (argv.network == 'mainnet') {
         networks.mainnet = {
             url: process.env.PROVIDER,
-            gasPrice: 8000000000,
+            gasPrice: 58000000000,
             accounts: [process.env.DEPLOYER_PKEY],
         };
     }

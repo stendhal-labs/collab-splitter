@@ -1,35 +1,32 @@
 <script>
 	import { convertUIntToPercentage, getAllocationsByAccount } from '../../../sdk';
-	import { account, getAccount, getSigner } from '$lib/modules/wallet';
+	import { account, getSigner } from '$lib/modules/wallet';
 	import { getTokenAddresses, isThereSomethingToClaimForAccount, claimBatch } from '../../../sdk';
-	import { variables } from '$lib/modules/variables';
 
 	import OnlyConnected from '$lib/components/OnlyConnected.svelte';
 	import Loading from '$lib/components/Loading.svelte';
+	import { currentNetwork } from '$lib/modules/network';
 
 	let getAllocationsByAccountPromise;
 	let allocations;
 	let allocationsAdditionalInfo = [];
-	$: {
-		if ($account) {
-			updateData();
-		}
-	}
+	let loading;
 
-	async function updateData() {
-		getAllocationsByAccountPromise = getAllocationsByAccount(
-			fetch,
-			variables.THEGRAPH_URL,
-			getAccount()
-		);
-		allocations = await getAllocationsByAccountPromise;
+	$: updateData($account);
+
+	async function updateData(account) {
+		if (!account) return;
+
+		loading = true;
+		allocations = await getAllocationsByAccount(fetch, $currentNetwork.graph_url, account);
+
 		let allocationsInfoFromContract = [];
 
 		for (let alloc of allocations) {
 			const tokenAddresses = getTokenAddresses(alloc.splitter);
 			const isThereSomethingToClaim = await isThereSomethingToClaimForAccount(
 				alloc.splitter.id,
-				$account,
+				account,
 				alloc.allocation,
 				tokenAddresses,
 				await getSigner()
@@ -41,6 +38,7 @@
 			});
 		}
 		allocationsAdditionalInfo = [...allocationsInfoFromContract];
+		loading = false;
 	}
 
 	async function onClaimAll(allocation) {
@@ -63,47 +61,43 @@
 		<h1>Dashboard</h1>
 
 		<OnlyConnected>
-			{#await getAllocationsByAccountPromise}
+			{#if loading}
 				<div class="loading">
 					<Loading>
 						<p>Loading...</p>
 					</Loading>
 				</div>
-			{:then}
-				{#if allocations?.length > 0 && allocationsAdditionalInfo.length > 0}
-					<table>
-						<thead>
+			{:else if allocations?.length > 0 && allocationsAdditionalInfo.length > 0}
+				<table>
+					<thead>
+						<tr>
+							<th>Splitter Name</th>
+							<th>My Percentage</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each allocations as allocation, index}
 							<tr>
-								<th>Splitter Name</th>
-								<th>My Percentage</th>
-								<th>Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							{#each allocations as allocation, index}
-								<tr>
-									<td>{allocation.splitter.name}</td>
-									<td>{convertUIntToPercentage(allocation.allocation)}%</td>
+								<td>{allocation.splitter.name}</td>
+								<td>{convertUIntToPercentage(allocation.allocation)}%</td>
 
-									<td class="actions">
-										<a href="/collab/{allocation.splitter.id}">See details</a>
-										<button
-											on:click={onClaimAll(allocation)}
-											class="actions__claim"
-											disabled={!allocationsAdditionalInfo[index]?.isThereSomethingToClaim}
-											>Claim</button
-										>
-									</td>
-								</tr>
-							{/each}
-						</tbody>
-					</table>
-				{:else}
-					No collaboration yet !
-				{/if}
-			{:catch error}
-				<p>Something went wrong: {error.message}</p>
-			{/await}
+								<td class="actions">
+									<a href="/collab/{allocation.splitter.id}">See details</a>
+									<button
+										on:click={onClaimAll(allocation)}
+										class="actions__claim"
+										disabled={!allocationsAdditionalInfo[index]?.isThereSomethingToClaim}
+										>Claim</button
+									>
+								</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			{:else}
+				No collaboration yet !
+			{/if}
 		</OnlyConnected>
 	</div>
 </main>

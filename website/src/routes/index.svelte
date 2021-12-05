@@ -21,14 +21,18 @@
 <main>
 	<div class="wrapper">
 		<h1>Collaboration Splitter</h1>
-		<p>
-			Collaboration Splitter allows to cheaply create a contract in charge of receiving and
-			splitting Ethereum and ERC20 payments. It can be used to split earnings from artworks sales if
-			multiple artists were involved or as the recipient of royalties compatible with the new <a
-				target="_blank"
-				href="https://eips.ethereum.org/EIPS/eip-2981">EIP-2981: NFT Royalty Standard</a
-			>.
-		</p>
+		<header>
+			<p class="headline">Cheaply and efficiently split revenues from sales and secondary sales.</p>
+			<p class="small-info">
+				Collaboration Splitter allows to cheaply create a contract in charge of receiving and
+				splitting Ethereum and ERC20 payments.<br />It can be used to split earnings from artworks
+				sales if multiple artists were involved or as the recipient of royalties compatible with the
+				new
+				<a target="_blank" href="https://eips.ethereum.org/EIPS/eip-2981"
+					>EIP-2981: NFT Royalty Standard</a
+				>.
+			</p>
+		</header>
 
 		<div class="create">
 			<h2>Create your collaboration splitter:</h2>
@@ -49,9 +53,23 @@
 		@apply flex flex-col justify-center;
 	}
 
+	header {
+		@apply text-center;
+	}
+
+	.headline {
+		@apply py-6 font-medium text-center;
+		font-size: 120%;
+	}
+
+	.small-info {
+		font-size: 75%;
+	}
+
 	.create {
 		@apply flex flex-col items-center mt-16;
 	}
+
 	.generated {
 		@apply flex md:flex-row flex-col space-x-4 mt-8;
 	}

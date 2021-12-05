@@ -1,9 +1,15 @@
 :root {
-  --black: rgba(20, 20, 20, 1);
-  --whitey: rgba(245, 245, 245, 1);
+	--black: rgba(20, 20, 20, 1);
+	--black-25: rgba(20, 20, 20, 0.25);
+	--black-10: rgba(20, 20, 20, 0.1);
+	--whitey: rgba(245, 245, 245, 1);
+	--whitey-25: rgba(245, 245, 245, 0.25);
+	--whitey-10: rgba(245, 245, 245, 0.1);
 
-
-  --primary: var(--whitey);
-  --secondary: var(--black);
-
+	--primary: var(--whitey);
+	--primary-25: var(--whitey-25);
+	--primary-10: var(--whitey-10);
+	--secondary: var(--black);
+	--secondary-25: var(--black-25);
+	--secondary-10: var(--black-10);
 }

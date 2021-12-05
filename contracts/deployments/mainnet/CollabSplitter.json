@@ -1,0 +1,561 @@
+{
+  "address": "0xf2262ee96F2914BCeBc8DDDE1c7cf68e1C5D0424",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "operator",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        }
+      ],
+      "name": "ERC20Claimed",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "operator",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "ETHClaimed",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "alreadyClaimed",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "percent",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes32[]",
+          "name": "merkleProof",
+          "type": "bytes32[]"
+        },
+        {
+          "internalType": "address[]",
+          "name": "erc20s",
+          "type": "address[]"
+        }
+      ],
+      "name": "claimBatch",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "percent",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes32[]",
+          "name": "merkleProof",
+          "type": "bytes32[]"
+        },
+        {
+          "internalType": "address[]",
+          "name": "erc20s",
+          "type": "address[]"
+        }
+      ],
+      "name": "claimERC20",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "percent",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes32[]",
+          "name": "merkleProof",
+          "type": "bytes32[]"
+        }
+      ],
+      "name": "claimETH",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "erc20Data",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "totalReceived",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "lastBalance",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "accounts",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "percents",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        }
+      ],
+      "name": "getBatchClaimableERC20",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "accounts",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "percents",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "getBatchClaimableETH",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "internalType": "address[]",
+          "name": "tokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "getBatchClaimed",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "percent",
+          "type": "uint256"
+        }
+      ],
+      "name": "getNode",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "merkleRoot_",
+          "type": "bytes32"
+        }
+      ],
+      "name": "initialize",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "merkleRoot",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "totalReceived",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    }
+  ],
+  "transactionHash": "0xd0bed9012548e78846b48d685bbded6d5913f12e2a1ee88c2e1e96ad323f90fb",
+  "receipt": {
+    "to": null,
+    "from": "0x7C2fd19ae183407230f929794ce4d50ce6569b0c",
+    "contractAddress": "0xf2262ee96F2914BCeBc8DDDE1c7cf68e1C5D0424",
+    "transactionIndex": 202,
+    "gasUsed": "1115921",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0xbf6ebabe43d0ea203bb5dea95b2ef95dbb767837d8f8f697ba9608afb65235df",
+    "transactionHash": "0xd0bed9012548e78846b48d685bbded6d5913f12e2a1ee88c2e1e96ad323f90fb",
+    "logs": [],
+    "blockNumber": 13745654,
+    "cumulativeGasUsed": "15493722",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "solcInputHash": "60f67688df512955030de0b2c492b991",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.9+commit.e5eed63a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"}],\"name\":\"ERC20Claimed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"ETHClaimed\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"alreadyClaimed\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"percent\",\"type\":\"uint256\"},{\"internalType\":\"bytes32[]\",\"name\":\"merkleProof\",\"type\":\"bytes32[]\"},{\"internalType\":\"address[]\",\"name\":\"erc20s\",\"type\":\"address[]\"}],\"name\":\"claimBatch\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"percent\",\"type\":\"uint256\"},{\"internalType\":\"bytes32[]\",\"name\":\"merkleProof\",\"type\":\"bytes32[]\"},{\"internalType\":\"address[]\",\"name\":\"erc20s\",\"type\":\"address[]\"}],\"name\":\"claimERC20\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"percent\",\"type\":\"uint256\"},{\"internalType\":\"bytes32[]\",\"name\":\"merkleProof\",\"type\":\"bytes32[]\"}],\"name\":\"claimETH\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"erc20Data\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"totalReceived\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"lastBalance\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"accounts\",\"type\":\"address[]\"},{\"internalType\":\"uint256[]\",\"name\":\"percents\",\"type\":\"uint256[]\"},{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"}],\"name\":\"getBatchClaimableERC20\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"accounts\",\"type\":\"address[]\"},{\"internalType\":\"uint256[]\",\"name\":\"percents\",\"type\":\"uint256[]\"}],\"name\":\"getBatchClaimableETH\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"address[]\",\"name\":\"tokens\",\"type\":\"address[]\"}],\"name\":\"getBatchClaimed\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"percent\",\"type\":\"uint256\"}],\"name\":\"getNode\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"merkleRoot_\",\"type\":\"bytes32\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"merkleRoot\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalReceived\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"stateMutability\":\"payable\",\"type\":\"receive\"}],\"devdoc\":{\"author\":\"Simon Fremaux (@dievardump)\",\"kind\":\"dev\",\"methods\":{\"claimBatch(address,uint256,bytes32[],address[])\":{\"params\":{\"account\":\"the account we want to claim for\",\"erc20s\":\"the ERC20 contracts addresses to claim from\",\"merkleProof\":\"the merkle proof used to ensure this claim is legit\",\"percent\":\"the allocation for this account | 2 decimal basis, meaning 1 = 100, 2.5 = 250 etc...\"}},\"claimERC20(address,uint256,bytes32[],address[])\":{\"details\":\"To be able to do so, every time a claim is asked, we will compare both current and last known      balance for this contract, allowing to keep up to date on how much it has ever received      then we can calculate the full amount due to the account, and substract the amount already claimed\",\"params\":{\"account\":\"the account we want to claim for\",\"erc20s\":\"the ERC20 contracts addresses to claim from\",\"merkleProof\":\"the merkle proof used to ensure this claim is legit\",\"percent\":\"the allocation for this account | 2 decimal basis, meaning 1% = 100, 2.5% = 250 etc...\"}},\"claimETH(address,uint256,bytes32[])\":{\"params\":{\"account\":\"the account we want to claim for\",\"merkleProof\":\"the merkle proof used to ensure this claim is legit\",\"percent\":\"the allocation for this account | 2 decimal basis, meaning 1 = 100, 2.5 = 250 etc...\"}},\"getBatchClaimableERC20(address[],uint256[],address)\":{\"params\":{\"accounts\":\"the account to check for\",\"percents\":\"the allocation for this account\",\"token\":\"the token (ERC20 contract) to check on\"}},\"getBatchClaimableETH(address[],uint256[])\":{\"params\":{\"accounts\":\"the account to check for\",\"percents\":\"the allocation for this account\"}},\"getBatchClaimed(address,address[])\":{\"params\":{\"account\":\"the account to check for\",\"tokens\":\"the tokens addresses        use address(0) to query for nativ chain token\"}},\"getNode(address,uint256)\":{\"params\":{\"account\":\"the account\",\"percent\":\"the allocation\"},\"returns\":{\"_0\":\"the bytes32 representing the node / leaf\"}}},\"title\":\"CollabSplitterFactory\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"claimBatch(address,uint256,bytes32[],address[])\":{\"notice\":\"Does claimETH and claimERC20 in one call\"},\"claimERC20(address,uint256,bytes32[],address[])\":{\"notice\":\"Allows to claim an ERC20 for an account\"},\"claimETH(address,uint256,bytes32[])\":{\"notice\":\"Allows to claim the ETH for an account\"},\"getBatchClaimableERC20(address[],uint256[],address)\":{\"notice\":\"Helper allowing to know how much of an ERC20 is still claimable for a list of accounts\"},\"getBatchClaimableETH(address[],uint256[])\":{\"notice\":\"Helper allowing to know how much ETH is still claimable for a list of accounts\"},\"getBatchClaimed(address,address[])\":{\"notice\":\"Helper to query how much an account already claimed for a list of tokens\"},\"getNode(address,uint256)\":{\"notice\":\"Function to create the \\\"node\\\" in the merkle tree, given account and allocation\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/CollabSplitter.sol\":\"CollabSplitter\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n\\npragma solidity ^0.8.0;\\n\\n/**\\n * @dev This is a base contract to aid in writing upgradeable contracts, or any kind of contract that will be deployed\\n * behind a proxy. Since a proxied contract can't have a constructor, it's common to move constructor logic to an\\n * external initializer function, usually called `initialize`. It then becomes necessary to protect this initializer\\n * function so it can only be called once. The {initializer} modifier provided by this contract will have this effect.\\n *\\n * TIP: To avoid leaving the proxy in an uninitialized state, the initializer function should be called as early as\\n * possible by providing the encoded function call as the `_data` argument to {ERC1967Proxy-constructor}.\\n *\\n * CAUTION: When used with inheritance, manual care must be taken to not invoke a parent initializer twice, or to ensure\\n * that all initializers are idempotent. This is not verified automatically as constructors are by Solidity.\\n */\\nabstract contract Initializable {\\n    /**\\n     * @dev Indicates that the contract has been initialized.\\n     */\\n    bool private _initialized;\\n\\n    /**\\n     * @dev Indicates that the contract is in the process of being initialized.\\n     */\\n    bool private _initializing;\\n\\n    /**\\n     * @dev Modifier to protect an initializer function from being invoked twice.\\n     */\\n    modifier initializer() {\\n        require(_initializing || !_initialized, \\\"Initializable: contract is already initialized\\\");\\n\\n        bool isTopLevelCall = !_initializing;\\n        if (isTopLevelCall) {\\n            _initializing = true;\\n            _initialized = true;\\n        }\\n\\n        _;\\n\\n        if (isTopLevelCall) {\\n            _initializing = false;\\n        }\\n    }\\n}\\n\",\"keccak256\":\"0x8b2abd85d0ece7e866e100e9d47ca9cbec93c87cf71a8d267b2b93eb81f7d5e9\",\"license\":\"MIT\"},\"@openzeppelin/contracts-upgradeable/utils/cryptography/MerkleProofUpgradeable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n\\npragma solidity ^0.8.0;\\n\\n/**\\n * @dev These functions deal with verification of Merkle Trees proofs.\\n *\\n * The proofs can be generated using the JavaScript library\\n * https://github.com/miguelmota/merkletreejs[merkletreejs].\\n * Note: the hashing algorithm should be keccak256 and pair sorting should be enabled.\\n *\\n * See `test/utils/cryptography/MerkleProof.test.js` for some examples.\\n */\\nlibrary MerkleProofUpgradeable {\\n    /**\\n     * @dev Returns true if a `leaf` can be proved to be a part of a Merkle tree\\n     * defined by `root`. For this, a `proof` must be provided, containing\\n     * sibling hashes on the branch from the leaf to the root of the tree. Each\\n     * pair of leaves and each pair of pre-images are assumed to be sorted.\\n     */\\n    function verify(\\n        bytes32[] memory proof,\\n        bytes32 root,\\n        bytes32 leaf\\n    ) internal pure returns (bool) {\\n        bytes32 computedHash = leaf;\\n\\n        for (uint256 i = 0; i < proof.length; i++) {\\n            bytes32 proofElement = proof[i];\\n\\n            if (computedHash <= proofElement) {\\n                // Hash(current computed hash + current element of the proof)\\n                computedHash = keccak256(abi.encodePacked(computedHash, proofElement));\\n            } else {\\n                // Hash(current element of the proof + current computed hash)\\n                computedHash = keccak256(abi.encodePacked(proofElement, computedHash));\\n            }\\n        }\\n\\n        // Check if the computed hash (root) is equal to the provided root\\n        return computedHash == root;\\n    }\\n}\\n\",\"keccak256\":\"0x3d82fc9292d8d34bc25d104ea743684ad7cc3997397b7284f8dcad0ae70155db\",\"license\":\"MIT\"},\"@openzeppelin/contracts/token/ERC20/IERC20.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n\\npragma solidity ^0.8.0;\\n\\n/**\\n * @dev Interface of the ERC20 standard as defined in the EIP.\\n */\\ninterface IERC20 {\\n    /**\\n     * @dev Returns the amount of tokens in existence.\\n     */\\n    function totalSupply() external view returns (uint256);\\n\\n    /**\\n     * @dev Returns the amount of tokens owned by `account`.\\n     */\\n    function balanceOf(address account) external view returns (uint256);\\n\\n    /**\\n     * @dev Moves `amount` tokens from the caller's account to `recipient`.\\n     *\\n     * Returns a boolean value indicating whether the operation succeeded.\\n     *\\n     * Emits a {Transfer} event.\\n     */\\n    function transfer(address recipient, uint256 amount) external returns (bool);\\n\\n    /**\\n     * @dev Returns the remaining number of tokens that `spender` will be\\n     * allowed to spend on behalf of `owner` through {transferFrom}. This is\\n     * zero by default.\\n     *\\n     * This value changes when {approve} or {transferFrom} are called.\\n     */\\n    function allowance(address owner, address spender) external view returns (uint256);\\n\\n    /**\\n     * @dev Sets `amount` as the allowance of `spender` over the caller's tokens.\\n     *\\n     * Returns a boolean value indicating whether the operation succeeded.\\n     *\\n     * IMPORTANT: Beware that changing an allowance with this method brings the risk\\n     * that someone may use both the old and the new allowance by unfortunate\\n     * transaction ordering. One possible solution to mitigate this race\\n     * condition is to first reduce the spender's allowance to 0 and set the\\n     * desired value afterwards:\\n     * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729\\n     *\\n     * Emits an {Approval} event.\\n     */\\n    function approve(address spender, uint256 amount) external returns (bool);\\n\\n    /**\\n     * @dev Moves `amount` tokens from `sender` to `recipient` using the\\n     * allowance mechanism. `amount` is then deducted from the caller's\\n     * allowance.\\n     *\\n     * Returns a boolean value indicating whether the operation succeeded.\\n     *\\n     * Emits a {Transfer} event.\\n     */\\n    function transferFrom(\\n        address sender,\\n        address recipient,\\n        uint256 amount\\n    ) external returns (bool);\\n\\n    /**\\n     * @dev Emitted when `value` tokens are moved from one account (`from`) to\\n     * another (`to`).\\n     *\\n     * Note that `value` may be zero.\\n     */\\n    event Transfer(address indexed from, address indexed to, uint256 value);\\n\\n    /**\\n     * @dev Emitted when the allowance of a `spender` for an `owner` is set by\\n     * a call to {approve}. `value` is the new allowance.\\n     */\\n    event Approval(address indexed owner, address indexed spender, uint256 value);\\n}\\n\",\"keccak256\":\"0x027b891937d20ccf213fdb9c31531574256de774bda99d3a70ecef6e1913ed2a\",\"license\":\"MIT\"},\"contracts/CollabSplitter.sol\":{\"content\":\"//SPDX-License-Identifier: MIT\\npragma solidity ^0.8.9;\\n\\nimport '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';\\nimport '@openzeppelin/contracts-upgradeable/utils/cryptography/MerkleProofUpgradeable.sol';\\nimport '@openzeppelin/contracts/token/ERC20/IERC20.sol';\\n\\n/// @title CollabSplitterFactory\\n/// @author Simon Fremaux (@dievardump)\\ncontract CollabSplitter is Initializable {\\n    event ETHClaimed(address operator, address account, uint256 amount);\\n    event ERC20Claimed(\\n        address operator,\\n        address account,\\n        uint256 amount,\\n        address token\\n    );\\n\\n    struct ERC20Data {\\n        uint256 totalReceived;\\n        uint256 lastBalance;\\n    }\\n\\n    // string public name;\\n    bytes32 public merkleRoot;\\n\\n    // keeps track of how much was received in ETH since the start\\n    uint256 public totalReceived;\\n\\n    // keeps track of how much an account already claimed ETH\\n    mapping(address => uint256) public alreadyClaimed;\\n\\n    // keeps track of ERC20 data\\n    mapping(address => ERC20Data) public erc20Data;\\n    // keeps track of how much an account already claimed for a given ERC20\\n    mapping(address => mapping(address => uint256)) private erc20AlreadyClaimed;\\n\\n    function initialize(bytes32 merkleRoot_) external initializer {\\n        merkleRoot = merkleRoot_;\\n    }\\n\\n    receive() external payable {\\n        totalReceived += msg.value;\\n    }\\n\\n    /// @notice Does claimETH and claimERC20 in one call\\n    /// @param account the account we want to claim for\\n    /// @param percent the allocation for this account | 2 decimal basis, meaning 1 = 100, 2.5 = 250 etc...\\n    /// @param merkleProof the merkle proof used to ensure this claim is legit\\n    /// @param erc20s the ERC20 contracts addresses to claim from\\n    function claimBatch(\\n        address account,\\n        uint256 percent,\\n        bytes32[] memory merkleProof,\\n        address[] memory erc20s\\n    ) public {\\n        require(\\n            MerkleProofUpgradeable.verify(\\n                merkleProof,\\n                merkleRoot,\\n                getNode(account, percent)\\n            ),\\n            'Invalid proof.'\\n        );\\n\\n        _claimETH(account, percent);\\n\\n        for (uint256 i; i < erc20s.length; i++) {\\n            _claimERC20(account, percent, erc20s[i]);\\n        }\\n    }\\n\\n    /// @notice Allows to claim the ETH for an account\\n    /// @param account the account we want to claim for\\n    /// @param percent the allocation for this account | 2 decimal basis, meaning 1 = 100, 2.5 = 250 etc...\\n    /// @param merkleProof the merkle proof used to ensure this claim is legit\\n    function claimETH(\\n        address account,\\n        uint256 percent,\\n        bytes32[] memory merkleProof\\n    ) public {\\n        require(\\n            MerkleProofUpgradeable.verify(\\n                merkleProof,\\n                merkleRoot,\\n                getNode(account, percent)\\n            ),\\n            'Invalid proof.'\\n        );\\n\\n        _claimETH(account, percent);\\n    }\\n\\n    /// @notice Allows to claim an ERC20 for an account\\n    /// @dev To be able to do so, every time a claim is asked, we will compare both current and last known\\n    ///      balance for this contract, allowing to keep up to date on how much it has ever received\\n    ///      then we can calculate the full amount due to the account, and substract the amount already claimed\\n    /// @param account the account we want to claim for\\n    /// @param percent the allocation for this account | 2 decimal basis, meaning 1% = 100, 2.5% = 250 etc...\\n    /// @param merkleProof the merkle proof used to ensure this claim is legit\\n    /// @param erc20s the ERC20 contracts addresses to claim from\\n    function claimERC20(\\n        address account,\\n        uint256 percent,\\n        bytes32[] memory merkleProof,\\n        address[] memory erc20s\\n    ) public {\\n        require(\\n            MerkleProofUpgradeable.verify(\\n                merkleProof,\\n                merkleRoot,\\n                getNode(account, percent)\\n            ),\\n            'Invalid proof.'\\n        );\\n\\n        for (uint256 i; i < erc20s.length; i++) {\\n            _claimERC20(account, percent, erc20s[i]);\\n        }\\n    }\\n\\n    /// @notice Function to create the \\\"node\\\" in the merkle tree, given account and allocation\\n    /// @param account the account\\n    /// @param percent the allocation\\n    /// @return the bytes32 representing the node / leaf\\n    function getNode(address account, uint256 percent)\\n        public\\n        pure\\n        returns (bytes32)\\n    {\\n        return keccak256(abi.encode(account, percent));\\n    }\\n\\n    /// @notice Helper allowing to know how much ETH is still claimable for a list of accounts\\n    /// @param accounts the account to check for\\n    /// @param percents the allocation for this account\\n    function getBatchClaimableETH(\\n        address[] memory accounts,\\n        uint256[] memory percents\\n    ) public view returns (uint256[] memory) {\\n        uint256[] memory claimable = new uint256[](accounts.length);\\n        for (uint256 i; i < accounts.length; i++) {\\n            claimable[i] = _calculateDue(\\n                totalReceived,\\n                percents[i],\\n                alreadyClaimed[accounts[i]]\\n            );\\n        }\\n        return claimable;\\n    }\\n\\n    /// @notice Helper allowing to know how much of an ERC20 is still claimable for a list of accounts\\n    /// @param accounts the account to check for\\n    /// @param percents the allocation for this account\\n    /// @param token the token (ERC20 contract) to check on\\n    function getBatchClaimableERC20(\\n        address[] memory accounts,\\n        uint256[] memory percents,\\n        address token\\n    ) public view returns (uint256[] memory) {\\n        ERC20Data memory data = erc20Data[token];\\n        uint256 balance = IERC20(token).balanceOf(address(this));\\n        uint256 sinceLast = balance - data.lastBalance;\\n\\n        // the difference between last claim and today's balance is what has been received as royalties\\n        // so we can add it to the total received\\n        data.totalReceived += sinceLast;\\n\\n        uint256[] memory claimable = new uint256[](accounts.length);\\n        for (uint256 i; i < accounts.length; i++) {\\n            claimable[i] = _calculateDue(\\n                data.totalReceived,\\n                percents[i],\\n                erc20AlreadyClaimed[accounts[i]][token]\\n            );\\n        }\\n\\n        return claimable;\\n    }\\n\\n    /// @notice Helper to query how much an account already claimed for a list of tokens\\n    /// @param account the account to check for\\n    /// @param tokens the tokens addresses\\n    ///        use address(0) to query for nativ chain token\\n    function getBatchClaimed(address account, address[] memory tokens)\\n        public\\n        view\\n        returns (uint256[] memory)\\n    {\\n        uint256[] memory claimed = new uint256[](tokens.length);\\n        for (uint256 i; i < tokens.length; i++) {\\n            if (tokens[i] == address(0)) {\\n                claimed[i] = alreadyClaimed[account];\\n            } else {\\n                claimed[i] = erc20AlreadyClaimed[account][tokens[i]];\\n            }\\n        }\\n\\n        return claimed;\\n    }\\n\\n    /// @dev internal function to claim ETH\\n    /// @param account the account we want to claim for\\n    /// @param percent the allocation for this account | 2 decimal basis, meaning 1% = 100, 2.5% = 250 etc...\\n    function _claimETH(address account, uint256 percent) internal {\\n        if (totalReceived == 0) return;\\n\\n        uint256 dueNow = _calculateDue(\\n            totalReceived,\\n            percent,\\n            alreadyClaimed[account]\\n        );\\n\\n        if (dueNow == 0) return;\\n\\n        // update the already claimed first, blocking reEntrancy\\n        alreadyClaimed[account] += dueNow;\\n\\n        // send the due;\\n        // @TODO: .call{}() calls with all gas left in the tx\\n        // Question: Should we limit the gas used here?!\\n        // It has to be at least enough for contracts (Gnosis etc...) to proxy and store\\n        (bool success, ) = account.call{value: dueNow}('');\\n        require(success, 'Error when sending ETH');\\n\\n        emit ETHClaimed(msg.sender, account, dueNow);\\n    }\\n\\n    /// @dev internal function to claim an ERC20\\n    /// @param account the account we want to claim for\\n    /// @param percent the allocation for this account | 2 decimal basis, meaning 1% = 100, 2.5% = 250 etc...\\n    /// @param erc20 the ERC20 contract to claim from\\n    function _claimERC20(\\n        address account,\\n        uint256 percent,\\n        address erc20\\n    ) internal {\\n        ERC20Data storage data = erc20Data[erc20];\\n        uint256 balance = IERC20(erc20).balanceOf(address(this));\\n        uint256 sinceLast = balance - data.lastBalance;\\n\\n        // the difference between last known balance and today's balance is what has been received as royalties\\n        // so we can add it to the total received\\n        data.totalReceived += sinceLast;\\n\\n        // now we can calculate how much is due to current account the same way we do for ETH\\n        if (data.totalReceived == 0) return;\\n\\n        uint256 dueNow = _calculateDue(\\n            data.totalReceived,\\n            percent,\\n            erc20AlreadyClaimed[account][erc20]\\n        );\\n\\n        if (dueNow == 0) return;\\n\\n        // update the already claimed first\\n        erc20AlreadyClaimed[account][erc20] += dueNow;\\n\\n        // transfer the dueNow\\n        require(\\n            IERC20(erc20).transfer(account, dueNow),\\n            'Error when sending ERC20'\\n        );\\n\\n        // update the lastBalance, so we can recalculate next time\\n        // we could save this call by doing (balance - dueNow) but some ERC20 might have weird behavior\\n        // and actually make the balance different than this after the transfer\\n        // so for safety, reading the actual state again\\n        data.lastBalance = IERC20(erc20).balanceOf(address(this));\\n\\n        // emitting an event will allow to identify claimable ERC20 in TheGraph\\n        // to be able to display them in the UI and keep stats\\n        emit ERC20Claimed(msg.sender, account, dueNow, erc20);\\n    }\\n\\n    /// @dev Helpers that calculates how much is still left to claim\\n    /// @param total total received\\n    /// @param percent allocation\\n    /// @param claimed what was already claimed\\n    /// @return what is left to claim\\n    function _calculateDue(\\n        uint256 total,\\n        uint256 percent,\\n        uint256 claimed\\n    ) internal pure returns (uint256) {\\n        return (total * percent) / 10000 - claimed;\\n    }\\n}\\n\",\"keccak256\":\"0x5f51d0f71bbdbe1f398d771429a348510ef1f0f9aef283669477c8a92a04e847\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b5061133b806100206000396000f3fe6080604052600436106100ab5760003560e01c8063c04a926c11610064578063c04a926c1461019c578063e4d861e3146101e5578063ec31543814610205578063ee50600214610225578063f26a4d8614610245578063f54b893b1461026557600080fd5b80632eb4a7ab146100ce57806367e6bd33146100f75780639498bd711461011957806399c1c391146101395780639c38566a14610166578063a3c2c4621461018657600080fd5b366100c95734600260008282546100c29190610e13565b9091555050005b600080fd5b3480156100da57600080fd5b506100e460015481565b6040519081526020015b60405180910390f35b34801561010357600080fd5b50610117610112366004610f1d565b610292565b005b34801561012557600080fd5b50610117610134366004610f74565b6102dc565b34801561014557600080fd5b50610159610154366004610fef565b610395565b6040516100ee9190611053565b34801561017257600080fd5b50610117610181366004611097565b610486565b34801561019257600080fd5b506100e460025481565b3480156101a857600080fd5b506101d06101b7366004611115565b6004602052600090815260409020805460019091015482565b604080519283526020830191909152016100ee565b3480156101f157600080fd5b506100e4610200366004611137565b6104fc565b34801561021157600080fd5b50610159610220366004611161565b610539565b34801561023157600080fd5b506101596102403660046111d5565b610722565b34801561025157600080fd5b50610117610260366004611097565b610873565b34801561027157600080fd5b506100e4610280366004611115565b60036020526000908152604090205481565b6102a8816001546102a386866104fc565b6108df565b6102cd5760405162461bcd60e51b81526004016102c490611219565b60405180910390fd5b6102d7838361098e565b505050565b600054610100900460ff16806102f5575060005460ff16155b6103585760405162461bcd60e51b815260206004820152602e60248201527f496e697469616c697a61626c653a20636f6e747261637420697320616c72656160448201526d191e481a5b9a5d1a585b1a5e995960921b60648201526084016102c4565b600054610100900460ff1615801561037a576000805461ffff19166101011790555b60018290558015610391576000805461ff00191690555b5050565b60606000835167ffffffffffffffff8111156103b3576103b3610e47565b6040519080825280602002602001820160405280156103dc578160200160208202803683370190505b50905060005b845181101561047e5761044f60025485838151811061040357610403611241565b60200260200101516003600089868151811061042157610421611241565b60200260200101516001600160a01b03166001600160a01b0316815260200190815260200160002054610ae4565b82828151811061046157610461611241565b60209081029190910101528061047681611257565b9150506103e2565b509392505050565b610497826001546102a387876104fc565b6104b35760405162461bcd60e51b81526004016102c490611219565b60005b81518110156104f5576104e385858484815181106104d6576104d6611241565b6020026020010151610b10565b806104ed81611257565b9150506104b6565b5050505050565b604080516001600160a01b038416602082015290810182905260009060600160405160208183030381529060405280519060200120905092915050565b6001600160a01b0381166000818152600460208181526040808420815180830183528154815260019091015492810192909252516370a0823160e01b815230928101929092526060939092916370a082319060240160206040518083038186803b1580156105a657600080fd5b505afa1580156105ba573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105de9190611272565b905060008260200151826105f2919061128b565b905080836000018181516106069190610e13565b905250865160009067ffffffffffffffff81111561062657610626610e47565b60405190808252806020026020018201604052801561064f578160200160208202803683370190505b50905060005b8851811015610716576106e7856000015189838151811061067857610678611241565b6020026020010151600560008d868151811061069657610696611241565b60200260200101516001600160a01b03166001600160a01b0316815260200190815260200160002060008b6001600160a01b03166001600160a01b0316815260200190815260200160002054610ae4565b8282815181106106f9576106f9611241565b60209081029190910101528061070e81611257565b915050610655565b50979650505050505050565b60606000825167ffffffffffffffff81111561074057610740610e47565b604051908082528060200260200182016040528015610769578160200160208202803683370190505b50905060005b835181101561047e5760006001600160a01b031684828151811061079557610795611241565b60200260200101516001600160a01b031614156107ea576001600160a01b03851660009081526003602052604090205482518390839081106107d9576107d9611241565b602002602001018181525050610861565b6001600160a01b0385166000908152600560205260408120855190919086908490811061081957610819611241565b60200260200101516001600160a01b03166001600160a01b031681526020019081526020016000205482828151811061085457610854611241565b6020026020010181815250505b8061086b81611257565b91505061076f565b610884826001546102a387876104fc565b6108a05760405162461bcd60e51b81526004016102c490611219565b6108aa848461098e565b60005b81518110156104f5576108cd85858484815181106104d6576104d6611241565b806108d781611257565b9150506108ad565b600081815b855181101561098357600086828151811061090157610901611241565b60200260200101519050808311610943576040805160208101859052908101829052606001604051602081830303815290604052805190602001209250610970565b60408051602081018390529081018490526060016040516020818303038152906040528051906020012092505b508061097b81611257565b9150506108e4565b509092149392505050565b600254610999575050565b6002546001600160a01b03831660009081526003602052604081205490916109c2918490610ae4565b9050806109ce57505050565b6001600160a01b038316600090815260036020526040812080548392906109f6908490610e13565b90915550506040516000906001600160a01b0385169083908381818185875af1925050503d8060008114610a46576040519150601f19603f3d011682016040523d82523d6000602084013e610a4b565b606091505b5050905080610a955760405162461bcd60e51b815260206004820152601660248201527508ae4e4dee440eed0cadc40e6cadcc8d2dcce408aa8960531b60448201526064016102c4565b604080513381526001600160a01b03861660208201529081018390527f81bfb395a613b7b5eeaec6ac330051b8b723aa455649a52ecd5d0784b95c69d29060600160405180910390a150505050565b600081612710610af485876112a2565b610afe91906112c1565b610b08919061128b565b949350505050565b6001600160a01b038116600081815260046020819052604080832090516370a0823160e01b8152309281019290925292906370a082319060240160206040518083038186803b158015610b6257600080fd5b505afa158015610b76573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610b9a9190611272565b90506000826001015482610bae919061128b565b905080836000016000828254610bc49190610e13565b90915550508254610bd757505050505050565b82546001600160a01b0380881660009081526005602090815260408083209389168352929052908120549091610c0e918890610ae4565b905080610c1e5750505050505050565b6001600160a01b03808816600090815260056020908152604080832093891683529290529081208054839290610c55908490610e13565b909155505060405163a9059cbb60e01b81526001600160a01b0388811660048301526024820183905286169063a9059cbb90604401602060405180830381600087803b158015610ca457600080fd5b505af1158015610cb8573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610cdc91906112e3565b610d285760405162461bcd60e51b815260206004820152601860248201527f4572726f72207768656e2073656e64696e67204552433230000000000000000060448201526064016102c4565b6040516370a0823160e01b81523060048201526001600160a01b038616906370a082319060240160206040518083038186803b158015610d6757600080fd5b505afa158015610d7b573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610d9f9190611272565b6001850155604080513381526001600160a01b0389811660208301528183018490528716606082015290517f822b4e6114037904f67e04cff177cc3a751233291f67bc377196c46a5560fceb9181900360800190a150505050505050565b634e487b7160e01b600052601160045260246000fd5b60008219821115610e2657610e26610dfd565b500190565b80356001600160a01b0381168114610e4257600080fd5b919050565b634e487b7160e01b600052604160045260246000fd5b604051601f8201601f1916810167ffffffffffffffff81118282101715610e8657610e86610e47565b604052919050565b600067ffffffffffffffff821115610ea857610ea8610e47565b5060051b60200190565b600082601f830112610ec357600080fd5b81356020610ed8610ed383610e8e565b610e5d565b82815260059290921b84018101918181019086841115610ef757600080fd5b8286015b84811015610f125780358352918301918301610efb565b509695505050505050565b600080600060608486031215610f3257600080fd5b610f3b84610e2b565b925060208401359150604084013567ffffffffffffffff811115610f5e57600080fd5b610f6a86828701610eb2565b9150509250925092565b600060208284031215610f8657600080fd5b5035919050565b600082601f830112610f9e57600080fd5b81356020610fae610ed383610e8e565b82815260059290921b84018101918181019086841115610fcd57600080fd5b8286015b84811015610f1257610fe281610e2b565b8352918301918301610fd1565b6000806040838503121561100257600080fd5b823567ffffffffffffffff8082111561101a57600080fd5b61102686838701610f8d565b9350602085013591508082111561103c57600080fd5b5061104985828601610eb2565b9150509250929050565b6020808252825182820181905260009190848201906040850190845b8181101561108b5783518352928401929184019160010161106f565b50909695505050505050565b600080600080608085870312156110ad57600080fd5b6110b685610e2b565b935060208501359250604085013567ffffffffffffffff808211156110da57600080fd5b6110e688838901610eb2565b935060608701359150808211156110fc57600080fd5b5061110987828801610f8d565b91505092959194509250565b60006020828403121561112757600080fd5b61113082610e2b565b9392505050565b6000806040838503121561114a57600080fd5b61115383610e2b565b946020939093013593505050565b60008060006060848603121561117657600080fd5b833567ffffffffffffffff8082111561118e57600080fd5b61119a87838801610f8d565b945060208601359150808211156111b057600080fd5b506111bd86828701610eb2565b9250506111cc60408501610e2b565b90509250925092565b600080604083850312156111e857600080fd5b6111f183610e2b565b9150602083013567ffffffffffffffff81111561120d57600080fd5b61104985828601610f8d565b6020808252600e908201526d24b73b30b634b210383937b7b31760911b604082015260600190565b634e487b7160e01b600052603260045260246000fd5b600060001982141561126b5761126b610dfd565b5060010190565b60006020828403121561128457600080fd5b5051919050565b60008282101561129d5761129d610dfd565b500390565b60008160001904831182151516156112bc576112bc610dfd565b500290565b6000826112de57634e487b7160e01b600052601260045260246000fd5b500490565b6000602082840312156112f557600080fd5b8151801515811461113057600080fdfea2646970667358221220d6d6b7485ee37de6a742723c2995fc5ba9be4d963a1237ede4efa57aff57959364736f6c63430008090033",
+  "deployedBytecode": "0x6080604052600436106100ab5760003560e01c8063c04a926c11610064578063c04a926c1461019c578063e4d861e3146101e5578063ec31543814610205578063ee50600214610225578063f26a4d8614610245578063f54b893b1461026557600080fd5b80632eb4a7ab146100ce57806367e6bd33146100f75780639498bd711461011957806399c1c391146101395780639c38566a14610166578063a3c2c4621461018657600080fd5b366100c95734600260008282546100c29190610e13565b9091555050005b600080fd5b3480156100da57600080fd5b506100e460015481565b6040519081526020015b60405180910390f35b34801561010357600080fd5b50610117610112366004610f1d565b610292565b005b34801561012557600080fd5b50610117610134366004610f74565b6102dc565b34801561014557600080fd5b50610159610154366004610fef565b610395565b6040516100ee9190611053565b34801561017257600080fd5b50610117610181366004611097565b610486565b34801561019257600080fd5b506100e460025481565b3480156101a857600080fd5b506101d06101b7366004611115565b6004602052600090815260409020805460019091015482565b604080519283526020830191909152016100ee565b3480156101f157600080fd5b506100e4610200366004611137565b6104fc565b34801561021157600080fd5b50610159610220366004611161565b610539565b34801561023157600080fd5b506101596102403660046111d5565b610722565b34801561025157600080fd5b50610117610260366004611097565b610873565b34801561027157600080fd5b506100e4610280366004611115565b60036020526000908152604090205481565b6102a8816001546102a386866104fc565b6108df565b6102cd5760405162461bcd60e51b81526004016102c490611219565b60405180910390fd5b6102d7838361098e565b505050565b600054610100900460ff16806102f5575060005460ff16155b6103585760405162461bcd60e51b815260206004820152602e60248201527f496e697469616c697a61626c653a20636f6e747261637420697320616c72656160448201526d191e481a5b9a5d1a585b1a5e995960921b60648201526084016102c4565b600054610100900460ff1615801561037a576000805461ffff19166101011790555b60018290558015610391576000805461ff00191690555b5050565b60606000835167ffffffffffffffff8111156103b3576103b3610e47565b6040519080825280602002602001820160405280156103dc578160200160208202803683370190505b50905060005b845181101561047e5761044f60025485838151811061040357610403611241565b60200260200101516003600089868151811061042157610421611241565b60200260200101516001600160a01b03166001600160a01b0316815260200190815260200160002054610ae4565b82828151811061046157610461611241565b60209081029190910101528061047681611257565b9150506103e2565b509392505050565b610497826001546102a387876104fc565b6104b35760405162461bcd60e51b81526004016102c490611219565b60005b81518110156104f5576104e385858484815181106104d6576104d6611241565b6020026020010151610b10565b806104ed81611257565b9150506104b6565b5050505050565b604080516001600160a01b038416602082015290810182905260009060600160405160208183030381529060405280519060200120905092915050565b6001600160a01b0381166000818152600460208181526040808420815180830183528154815260019091015492810192909252516370a0823160e01b815230928101929092526060939092916370a082319060240160206040518083038186803b1580156105a657600080fd5b505afa1580156105ba573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105de9190611272565b905060008260200151826105f2919061128b565b905080836000018181516106069190610e13565b905250865160009067ffffffffffffffff81111561062657610626610e47565b60405190808252806020026020018201604052801561064f578160200160208202803683370190505b50905060005b8851811015610716576106e7856000015189838151811061067857610678611241565b6020026020010151600560008d868151811061069657610696611241565b60200260200101516001600160a01b03166001600160a01b0316815260200190815260200160002060008b6001600160a01b03166001600160a01b0316815260200190815260200160002054610ae4565b8282815181106106f9576106f9611241565b60209081029190910101528061070e81611257565b915050610655565b50979650505050505050565b60606000825167ffffffffffffffff81111561074057610740610e47565b604051908082528060200260200182016040528015610769578160200160208202803683370190505b50905060005b835181101561047e5760006001600160a01b031684828151811061079557610795611241565b60200260200101516001600160a01b031614156107ea576001600160a01b03851660009081526003602052604090205482518390839081106107d9576107d9611241565b602002602001018181525050610861565b6001600160a01b0385166000908152600560205260408120855190919086908490811061081957610819611241565b60200260200101516001600160a01b03166001600160a01b031681526020019081526020016000205482828151811061085457610854611241565b6020026020010181815250505b8061086b81611257565b91505061076f565b610884826001546102a387876104fc565b6108a05760405162461bcd60e51b81526004016102c490611219565b6108aa848461098e565b60005b81518110156104f5576108cd85858484815181106104d6576104d6611241565b806108d781611257565b9150506108ad565b600081815b855181101561098357600086828151811061090157610901611241565b60200260200101519050808311610943576040805160208101859052908101829052606001604051602081830303815290604052805190602001209250610970565b60408051602081018390529081018490526060016040516020818303038152906040528051906020012092505b508061097b81611257565b9150506108e4565b509092149392505050565b600254610999575050565b6002546001600160a01b03831660009081526003602052604081205490916109c2918490610ae4565b9050806109ce57505050565b6001600160a01b038316600090815260036020526040812080548392906109f6908490610e13565b90915550506040516000906001600160a01b0385169083908381818185875af1925050503d8060008114610a46576040519150601f19603f3d011682016040523d82523d6000602084013e610a4b565b606091505b5050905080610a955760405162461bcd60e51b815260206004820152601660248201527508ae4e4dee440eed0cadc40e6cadcc8d2dcce408aa8960531b60448201526064016102c4565b604080513381526001600160a01b03861660208201529081018390527f81bfb395a613b7b5eeaec6ac330051b8b723aa455649a52ecd5d0784b95c69d29060600160405180910390a150505050565b600081612710610af485876112a2565b610afe91906112c1565b610b08919061128b565b949350505050565b6001600160a01b038116600081815260046020819052604080832090516370a0823160e01b8152309281019290925292906370a082319060240160206040518083038186803b158015610b6257600080fd5b505afa158015610b76573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610b9a9190611272565b90506000826001015482610bae919061128b565b905080836000016000828254610bc49190610e13565b90915550508254610bd757505050505050565b82546001600160a01b0380881660009081526005602090815260408083209389168352929052908120549091610c0e918890610ae4565b905080610c1e5750505050505050565b6001600160a01b03808816600090815260056020908152604080832093891683529290529081208054839290610c55908490610e13565b909155505060405163a9059cbb60e01b81526001600160a01b0388811660048301526024820183905286169063a9059cbb90604401602060405180830381600087803b158015610ca457600080fd5b505af1158015610cb8573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610cdc91906112e3565b610d285760405162461bcd60e51b815260206004820152601860248201527f4572726f72207768656e2073656e64696e67204552433230000000000000000060448201526064016102c4565b6040516370a0823160e01b81523060048201526001600160a01b038616906370a082319060240160206040518083038186803b158015610d6757600080fd5b505afa158015610d7b573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610d9f9190611272565b6001850155604080513381526001600160a01b0389811660208301528183018490528716606082015290517f822b4e6114037904f67e04cff177cc3a751233291f67bc377196c46a5560fceb9181900360800190a150505050505050565b634e487b7160e01b600052601160045260246000fd5b60008219821115610e2657610e26610dfd565b500190565b80356001600160a01b0381168114610e4257600080fd5b919050565b634e487b7160e01b600052604160045260246000fd5b604051601f8201601f1916810167ffffffffffffffff81118282101715610e8657610e86610e47565b604052919050565b600067ffffffffffffffff821115610ea857610ea8610e47565b5060051b60200190565b600082601f830112610ec357600080fd5b81356020610ed8610ed383610e8e565b610e5d565b82815260059290921b84018101918181019086841115610ef757600080fd5b8286015b84811015610f125780358352918301918301610efb565b509695505050505050565b600080600060608486031215610f3257600080fd5b610f3b84610e2b565b925060208401359150604084013567ffffffffffffffff811115610f5e57600080fd5b610f6a86828701610eb2565b9150509250925092565b600060208284031215610f8657600080fd5b5035919050565b600082601f830112610f9e57600080fd5b81356020610fae610ed383610e8e565b82815260059290921b84018101918181019086841115610fcd57600080fd5b8286015b84811015610f1257610fe281610e2b565b8352918301918301610fd1565b6000806040838503121561100257600080fd5b823567ffffffffffffffff8082111561101a57600080fd5b61102686838701610f8d565b9350602085013591508082111561103c57600080fd5b5061104985828601610eb2565b9150509250929050565b6020808252825182820181905260009190848201906040850190845b8181101561108b5783518352928401929184019160010161106f565b50909695505050505050565b600080600080608085870312156110ad57600080fd5b6110b685610e2b565b935060208501359250604085013567ffffffffffffffff808211156110da57600080fd5b6110e688838901610eb2565b935060608701359150808211156110fc57600080fd5b5061110987828801610f8d565b91505092959194509250565b60006020828403121561112757600080fd5b61113082610e2b565b9392505050565b6000806040838503121561114a57600080fd5b61115383610e2b565b946020939093013593505050565b60008060006060848603121561117657600080fd5b833567ffffffffffffffff8082111561118e57600080fd5b61119a87838801610f8d565b945060208601359150808211156111b057600080fd5b506111bd86828701610eb2565b9250506111cc60408501610e2b565b90509250925092565b600080604083850312156111e857600080fd5b6111f183610e2b565b9150602083013567ffffffffffffffff81111561120d57600080fd5b61104985828601610f8d565b6020808252600e908201526d24b73b30b634b210383937b7b31760911b604082015260600190565b634e487b7160e01b600052603260045260246000fd5b600060001982141561126b5761126b610dfd565b5060010190565b60006020828403121561128457600080fd5b5051919050565b60008282101561129d5761129d610dfd565b500390565b60008160001904831182151516156112bc576112bc610dfd565b500290565b6000826112de57634e487b7160e01b600052601260045260246000fd5b500490565b6000602082840312156112f557600080fd5b8151801515811461113057600080fdfea2646970667358221220d6d6b7485ee37de6a742723c2995fc5ba9be4d963a1237ede4efa57aff57959364736f6c63430008090033",
+  "devdoc": {
+    "author": "Simon Fremaux (@dievardump)",
+    "kind": "dev",
+    "methods": {
+      "claimBatch(address,uint256,bytes32[],address[])": {
+        "params": {
+          "account": "the account we want to claim for",
+          "erc20s": "the ERC20 contracts addresses to claim from",
+          "merkleProof": "the merkle proof used to ensure this claim is legit",
+          "percent": "the allocation for this account | 2 decimal basis, meaning 1 = 100, 2.5 = 250 etc..."
+        }
+      },
+      "claimERC20(address,uint256,bytes32[],address[])": {
+        "details": "To be able to do so, every time a claim is asked, we will compare both current and last known      balance for this contract, allowing to keep up to date on how much it has ever received      then we can calculate the full amount due to the account, and substract the amount already claimed",
+        "params": {
+          "account": "the account we want to claim for",
+          "erc20s": "the ERC20 contracts addresses to claim from",
+          "merkleProof": "the merkle proof used to ensure this claim is legit",
+          "percent": "the allocation for this account | 2 decimal basis, meaning 1% = 100, 2.5% = 250 etc..."
+        }
+      },
+      "claimETH(address,uint256,bytes32[])": {
+        "params": {
+          "account": "the account we want to claim for",
+          "merkleProof": "the merkle proof used to ensure this claim is legit",
+          "percent": "the allocation for this account | 2 decimal basis, meaning 1 = 100, 2.5 = 250 etc..."
+        }
+      },
+      "getBatchClaimableERC20(address[],uint256[],address)": {
+        "params": {
+          "accounts": "the account to check for",
+          "percents": "the allocation for this account",
+          "token": "the token (ERC20 contract) to check on"
+        }
+      },
+      "getBatchClaimableETH(address[],uint256[])": {
+        "params": {
+          "accounts": "the account to check for",
+          "percents": "the allocation for this account"
+        }
+      },
+      "getBatchClaimed(address,address[])": {
+        "params": {
+          "account": "the account to check for",
+          "tokens": "the tokens addresses        use address(0) to query for nativ chain token"
+        }
+      },
+      "getNode(address,uint256)": {
+        "params": {
+          "account": "the account",
+          "percent": "the allocation"
+        },
+        "returns": {
+          "_0": "the bytes32 representing the node / leaf"
+        }
+      }
+    },
+    "title": "CollabSplitterFactory",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "claimBatch(address,uint256,bytes32[],address[])": {
+        "notice": "Does claimETH and claimERC20 in one call"
+      },
+      "claimERC20(address,uint256,bytes32[],address[])": {
+        "notice": "Allows to claim an ERC20 for an account"
+      },
+      "claimETH(address,uint256,bytes32[])": {
+        "notice": "Allows to claim the ETH for an account"
+      },
+      "getBatchClaimableERC20(address[],uint256[],address)": {
+        "notice": "Helper allowing to know how much of an ERC20 is still claimable for a list of accounts"
+      },
+      "getBatchClaimableETH(address[],uint256[])": {
+        "notice": "Helper allowing to know how much ETH is still claimable for a list of accounts"
+      },
+      "getBatchClaimed(address,address[])": {
+        "notice": "Helper to query how much an account already claimed for a list of tokens"
+      },
+      "getNode(address,uint256)": {
+        "notice": "Function to create the \"node\" in the merkle tree, given account and allocation"
+      }
+    },
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 210,
+        "contract": "contracts/CollabSplitter.sol:CollabSplitter",
+        "label": "_initialized",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_bool"
+      },
+      {
+        "astId": 213,
+        "contract": "contracts/CollabSplitter.sol:CollabSplitter",
+        "label": "_initializing",
+        "offset": 1,
+        "slot": "0",
+        "type": "t_bool"
+      },
+      {
+        "astId": 1576,
+        "contract": "contracts/CollabSplitter.sol:CollabSplitter",
+        "label": "merkleRoot",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_bytes32"
+      },
+      {
+        "astId": 1578,
+        "contract": "contracts/CollabSplitter.sol:CollabSplitter",
+        "label": "totalReceived",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 1582,
+        "contract": "contracts/CollabSplitter.sol:CollabSplitter",
+        "label": "alreadyClaimed",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_mapping(t_address,t_uint256)"
+      },
+      {
+        "astId": 1587,
+        "contract": "contracts/CollabSplitter.sol:CollabSplitter",
+        "label": "erc20Data",
+        "offset": 0,
+        "slot": "4",
+        "type": "t_mapping(t_address,t_struct(ERC20Data)1574_storage)"
+      },
+      {
+        "astId": 1593,
+        "contract": "contracts/CollabSplitter.sol:CollabSplitter",
+        "label": "erc20AlreadyClaimed",
+        "offset": 0,
+        "slot": "5",
+        "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_bytes32": {
+        "encoding": "inplace",
+        "label": "bytes32",
+        "numberOfBytes": "32"
+      },
+      "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => mapping(address => uint256))",
+        "numberOfBytes": "32",
+        "value": "t_mapping(t_address,t_uint256)"
+      },
+      "t_mapping(t_address,t_struct(ERC20Data)1574_storage)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => struct CollabSplitter.ERC20Data)",
+        "numberOfBytes": "32",
+        "value": "t_struct(ERC20Data)1574_storage"
+      },
+      "t_mapping(t_address,t_uint256)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => uint256)",
+        "numberOfBytes": "32",
+        "value": "t_uint256"
+      },
+      "t_struct(ERC20Data)1574_storage": {
+        "encoding": "inplace",
+        "label": "struct CollabSplitter.ERC20Data",
+        "members": [
+          {
+            "astId": 1571,
+            "contract": "contracts/CollabSplitter.sol:CollabSplitter",
+            "label": "totalReceived",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 1573,
+            "contract": "contracts/CollabSplitter.sol:CollabSplitter",
+            "label": "lastBalance",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256"
+          }
+        ],
+        "numberOfBytes": "64"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}
