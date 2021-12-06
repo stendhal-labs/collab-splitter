@@ -6,8 +6,8 @@
 	export let closeModal;
 	export let callback;
 
-	let account;
-	let percent;
+	export let account;
+	export let percent;
 
 	$: canSubmit = isAddressValid(account) && !isNaN(percent) && percent > 0 && percent < 100;
 
@@ -57,10 +57,6 @@
 
 	label {
 		@apply font-medium;
-	}
-
-	label + input {
-		@apply mt-2;
 	}
 
 	input {

@@ -6,6 +6,7 @@
 	import OnlyConnected from '$lib/components/OnlyConnected.svelte';
 	import Loading from '$lib/components/Loading.svelte';
 	import { currentNetwork } from '$lib/modules/network';
+	import OnlyKnownNetwork from '$lib/components/Network/OnlyKnownNetwork.svelte';
 
 	let getAllocationsByAccountPromise;
 	let allocations;
@@ -61,43 +62,45 @@
 		<h1>Dashboard</h1>
 
 		<OnlyConnected>
-			{#if loading}
-				<div class="loading">
-					<Loading>
-						<p>Loading...</p>
-					</Loading>
-				</div>
-			{:else if allocations?.length > 0 && allocationsAdditionalInfo.length > 0}
-				<table>
-					<thead>
-						<tr>
-							<th>Splitter Name</th>
-							<th>My Percentage</th>
-							<th>Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						{#each allocations as allocation, index}
+			<OnlyKnownNetwork>
+				{#if loading}
+					<div class="loading">
+						<Loading>
+							<p>Loading...</p>
+						</Loading>
+					</div>
+				{:else if allocations?.length > 0 && allocationsAdditionalInfo.length > 0}
+					<table>
+						<thead>
 							<tr>
-								<td>{allocation.splitter.name}</td>
-								<td>{convertUIntToPercentage(allocation.allocation)}%</td>
-
-								<td class="actions">
-									<a href="/collab/{allocation.splitter.id}">See details</a>
-									<button
-										on:click={onClaimAll(allocation)}
-										class="actions__claim"
-										disabled={!allocationsAdditionalInfo[index]?.isThereSomethingToClaim}
-										>Claim</button
-									>
-								</td>
+								<th>Splitter Name</th>
+								<th>My Percentage</th>
+								<th>Action</th>
 							</tr>
-						{/each}
-					</tbody>
-				</table>
-			{:else}
-				No collaboration yet !
-			{/if}
+						</thead>
+						<tbody>
+							{#each allocations as allocation, index}
+								<tr>
+									<td>{allocation.splitter.name}</td>
+									<td>{convertUIntToPercentage(allocation.allocation)}%</td>
+
+									<td class="actions">
+										<a href="/collab/{allocation.splitter.id}">See details</a>
+										<button
+											on:click={onClaimAll(allocation)}
+											class="actions__claim"
+											disabled={!allocationsAdditionalInfo[index]?.isThereSomethingToClaim}
+											>Claim</button
+										>
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				{:else}
+					<p class="empty">No collaboration yet !</p>
+				{/if}
+			</OnlyKnownNetwork>
 		</OnlyConnected>
 	</div>
 </main>
@@ -131,5 +134,9 @@
 	}
 	.actions__claim {
 		@apply bg-green-600 hover:bg-green-700 focus:ring-green-600;
+	}
+
+	.empty {
+		@apply text-center;
 	}
 </style>

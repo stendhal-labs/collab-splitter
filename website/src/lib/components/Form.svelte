@@ -88,6 +88,17 @@
 		});
 	}
 
+	function editLine(index) {
+		openModal(AddRecipientModal, {
+			account: recipients[index].account,
+			percent: recipients[index].percent,
+			callback: (recipient) => {
+				recipients[index] = recipient;
+				recipients = recipients;
+			}
+		});
+	}
+
 	function removeLine(index) {
 		recipients.splice(index, 1);
 		recipients = [...recipients];
@@ -129,8 +140,11 @@
 								{recipient.percent}%
 							</td>
 							<td>
+								<button on:click={() => editLine(index)} class="form__recipient__remove"
+									>edit</button
+								>
 								<button on:click={() => removeLine(index)} class="form__recipient__remove light"
-									>Remove</button
+									>remove</button
 								>
 							</td>
 						</tr>
