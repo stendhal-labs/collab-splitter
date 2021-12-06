@@ -124,7 +124,9 @@
 				<strong>Name:</strong>
 				{collab.name || ''}
 			</div>
-			<a href="{$currentNetwork.explorer_url}/address/{collab.id}">{collab.id || ''}</a>
+			<a href="{$currentNetwork.explorer_url}/address/{collab.id}" target="_blank"
+				>{collab.id || ''}</a
+			>
 		</div>
 
 		<div class="actions">

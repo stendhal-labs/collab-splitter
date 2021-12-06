@@ -40,7 +40,7 @@
 					</a>
 					<ul class="menu__sub">
 						<li><a href="/dashboard">Dashboard</a></li>
-						<li><a href="/">Create</a></li>
+						<li><a href="/#create">Create</a></li>
 					</ul>
 				</div>
 			{/await}

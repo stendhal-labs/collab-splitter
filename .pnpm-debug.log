@@ -1,0 +1,14 @@
+{
+  "0 debug pnpm:scope": {
+    "selected": 1
+  },
+  "1 error pnpm": {
+    "code": "ERR_PNPM_NO_SCRIPT",
+    "err": {
+      "name": "pnpm",
+      "message": "Missing script: dev",
+      "code": "ERR_PNPM_NO_SCRIPT",
+      "stack": "pnpm: Missing script: dev\n    at Object.handler (/home/dievardump/.local/share/pnpm-global/5/node_modules/.pnpm/pnpm@6.22.2/node_modules/pnpm/dist/pnpm.cjs:129940:15)\n    at async /home/dievardump/.local/share/pnpm-global/5/node_modules/.pnpm/pnpm@6.22.2/node_modules/pnpm/dist/pnpm.cjs:134121:20\n    at async run (/home/dievardump/.local/share/pnpm-global/5/node_modules/.pnpm/pnpm@6.22.2/node_modules/pnpm/dist/pnpm.cjs:134095:34)\n    at async runPnpm (/home/dievardump/.local/share/pnpm-global/5/node_modules/.pnpm/pnpm@6.22.2/node_modules/pnpm/dist/pnpm.cjs:134307:5)\n    at async /home/dievardump/.local/share/pnpm-global/5/node_modules/.pnpm/pnpm@6.22.2/node_modules/pnpm/dist/pnpm.cjs:134299:7"
+    }
+  }
+}

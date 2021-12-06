@@ -48,7 +48,7 @@ main {
 }
 
 h1 {
-	@apply text-center text-2xl my-8;
+	@apply text-center text-2xl my-6;
 	@apply font-light uppercase;
 	position: relative;
 }

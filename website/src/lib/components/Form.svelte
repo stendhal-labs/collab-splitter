@@ -5,7 +5,7 @@
 	import { create, convertPercentageToUint } from '../../../../sdk/';
 
 	import { currentNetwork } from '$lib/modules/network';
-	import { connected, getAccount, getSigner } from '$lib/modules/wallet';
+	import { connected, getSigner } from '$lib/modules/wallet';
 
 	import AddRecipientModal from './Modals/AddRecipientModal.svelte';
 	import OnlyKnownNetwork from './Network/OnlyKnownNetwork.svelte';
@@ -42,8 +42,6 @@
 			.map((r) => ({ account: r.account, percent: convertPercentageToUint(r.percent) }));
 		const diff = withAllocation.length - recipients.length;
 
-		console.log(withAllocation);
-
 		if (
 			diff == 0 ||
 			confirm('Some recipients do not have any allocation and will be removed. Are you sure?')
@@ -57,7 +55,6 @@
 			)
 				.then((tx) => tx.wait())
 				.then((receipt) => {
-					console.log(receipt);
 					return receipt;
 				})
 				.then((receipt) => receipt.events)
@@ -69,7 +66,8 @@
 			loading = false;
 			mustReset = true;
 			dispatch('splitter', {
-				address: events[0].args[0]
+				address: events[0].args[0],
+				name
 			});
 		}
 	}
