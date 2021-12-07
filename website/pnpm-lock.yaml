@@ -17,7 +17,7 @@ specifiers:
   svelte: ^3.44.0
   svelte-check: ^2.2.7
   svelte-preprocess: ^4.9.8
-  sveltejs-adapter-ipfs: ^0.1.6
+  sveltejs-adapter-ipfs: ^0.1.10
   tailwindcss: ^2.2.17
   tslib: ^2.3.1
   typescript: ^4.4.4
@@ -43,7 +43,7 @@ devDependencies:
   svelte: 3.44.0
   svelte-check: 2.2.7_9cd47afbf674b8038a3115607d96b979
   svelte-preprocess: 4.9.8_8af7fd517983b7df64445aef3a9dbb88
-  sveltejs-adapter-ipfs: 0.1.6
+  sveltejs-adapter-ipfs: 0.1.10
   tailwindcss: 2.2.17_0c54bdadaf9d9c9c6c134cb2c6c061a3
   tslib: 2.3.1
   typescript: 4.4.4
@@ -2540,8 +2540,8 @@ packages:
     engines: {node: '>= 8'}
     dev: true
 
-  /sveltejs-adapter-ipfs/0.1.6:
-    resolution: {integrity: sha512-ZVybQWTZAMG9s8qh6NbDDxZ2Z8kheyhp2bNhYIy2du2sOnqiEN/+xEDiWWQi0kACwGcD4Sq4RtBdvt5iSpdpLg==}
+  /sveltejs-adapter-ipfs/0.1.10:
+    resolution: {integrity: sha512-f2HyZc7IutRD3EyVxFL6RZWmi20SklLMXWOw4TNTeKJKEKLrC3wuTohCsBhoiQgQGguq5i5SbQbVYlm83Hr3rQ==}
     dependencies:
       fs-extra: 10.0.0
       slash: 4.0.0
