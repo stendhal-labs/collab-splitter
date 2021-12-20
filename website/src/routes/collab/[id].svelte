@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import * as ethers from 'ethers';
 
 	import { currentNetwork } from '$lib/modules/network';
 	import { account, getSigner, provider } from '$lib/modules/wallet';
